@@ -1,22 +1,47 @@
 package com.jss.smartdustbin.Activities;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.jss.smartdustbin.API;
+import com.jss.smartdustbin.NetworkReceiver;
 import com.jss.smartdustbin.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,80 +52,63 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
     public static final String LOG_TAG = LoginActivity.class.getSimpleName();
     ProgressDialog progressDialog;
+    private SharedPreferences pref;
+    private NetworkReceiver receiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setTitle("Login");
+        receiver = new NetworkReceiver();
+        pref = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
 
         Button btLogin = findViewById(R.id.bt_login);
 
         btLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                progressDialog = new ProgressDialog(LoginActivity.this);
-                progressDialog.setMessage("Logging you in...");
+
                 EditText etUsername = findViewById(R.id.et_login_username);
                 EditText etUserPassword = findViewById(R.id.et_login_password);
-                if (etUserPassword.getText().toString().equals("12345qwerty")){
+                if (etUserPassword.getText().toString().equals("123")){
                     startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                     finish();
                 }
                 /*LoginAsyncTask loginAsyncTask = new LoginAsyncTask();
                 // loginAsyncTask.execute(etUsername.getText().toString(), etUserPassword.getText().toString());
                 loginAsyncTask.execute("hv3", "12345qwerty");*/
-                progressDialog.setCanceledOnTouchOutside(false);
-                progressDialog.setCancelable(false);
-                progressDialog.show();
+                hideKeyboard();
+                if (receiver.isConnected()) {
+                    String userName = etUsername.getText().toString();
+                    String password = etUserPassword.getText().toString();
 
-                final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
-                progressDialog.setMessage("Please wait...");
-                progressDialog.setCancelable(false);
-                progressDialog.setCanceledOnTouchOutside(false);
-                progressDialog.show();
-                /*
-                String url = "http://178.128.2.30/auth/login/";
-                StringRequest stringRequest = new StringRequest(
-                        Request.Method.POST,
-                        url,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                Toast.makeText(LoginActivity.this, response, Toast.LENGTH_SHORT).show();
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                progressDialog.dismiss();
-                                Toast.makeText(LoginActivity.this, "Volley error", Toast.LENGTH_SHORT).show();
-                            }
+                        if (userName.isEmpty() || password.isEmpty()) {
+                            Toast toast = Toast.makeText(LoginActivity.this, "Enter all fields!", Toast.LENGTH_SHORT);
+                            toast.show();
+                        } else{
+                            progressDialog = new ProgressDialog(LoginActivity.this);
+                            progressDialog.setMessage("Logging you in...");
+                            etUsername.setEnabled(false);
+                            etUserPassword.setEnabled(false);
+                            login(userName, password);
+                            progressDialog.setCanceledOnTouchOutside(false);
+                            progressDialog.setCancelable(false);
+                            progressDialog.show();
                         }
-                )
-                {
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String, String> params = new HashMap<>();
-                        params.put("username", etUsername.getText().toString());
-                        params.put("password", etUserPassword.getText().toString());
-                        return params;
+                    }
+                    else {
+                        Toast.makeText(LoginActivity.this, "No internet!", Toast.LENGTH_SHORT).show();
                     }
 
-                    @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
-                        Map<String, String> params = new HashMap<>();
-                        params.put("Content-Type", "application/x-www-form-urlencoded");
-                        return params;
-                    }
-                };
-                RequestQueue requestQueue = Volley.newRequestQueue(LoginActivity.this);
-                requestQueue.add(stringRequest);*/
+
             }
         });
     }
@@ -110,78 +118,136 @@ public class LoginActivity extends AppCompatActivity {
         finish();
         return true;
     }
-/*
-    class LoginAsyncTask extends AsyncTask<String, String, String> {
 
-        @RequiresApi(api = Build.VERSION_CODES.O)
-        @Override
-        protected String doInBackground(String... params) {
-            String data = " ";
+    private void hideKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
 
-            try {
-                data = URLEncoder.encode("username", "UTF-8") + "=" + URLEncoder.encode(params[0], "UTF-8");
-                data += "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(params[1], "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void login(final String username, final String password){
+        StringRequest loginReq = new StringRequest(Request.Method.POST, API.BASE + API.LOGIN, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e(LOG_TAG, " Login Activity onResponse: " + response);
+                Map<String, String> responseMap = new Gson().fromJson(response, new TypeToken<Map<String, String>>() {}.getType());
+                String access_token = responseMap.get("access_token");
+                String refresh_token = responseMap.get("refresh_token");
+                Log.e(LOG_TAG, "onResponse: " + access_token);
+
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("access_token", access_token);
+                editor.putString("refresh_token", refresh_token);
+                editor.apply();
+                startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                finish();
             }
-            boolean success = false;
-            try {
-                URL url = new URL("");
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(LOG_TAG, " Login Activity onErrorResponse: " + error.toString());
+                if (error.networkResponse!=null) {
+                    String json = new String(error.networkResponse.data);
+                    try {
+                        JSONObject jsonError = new JSONObject(json);
+                        if (jsonError.has("error")) {
+                            String errorString = "Invalid data! Try again.";
+                            /*final Dialog dialog = new Dialog(LoginActivity.this);
+                            dialog.setContentView(R.layout.dialog_layout);
+                            ImageView close = dialog.findViewById(R.id.close);
+                            close.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    dialog.dismiss();
+                                }
+                            });
 
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setUseCaches(false);
-                httpURLConnection.setDoInput(true);
-                httpURLConnection.setDoOutput(true);
-                OutputStreamWriter wr = new OutputStreamWriter(httpURLConnection.getOutputStream());
-                wr.write(data);
-                wr.flush();
-                wr.close();
+                            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                @Override
+                                public void onDismiss(DialogInterface dialogInterface) {
+                                    zealIdEditText.setText("");
+                                    passwordEditText.setText("");
+                                    zealIdEditText.setEnabled(true);
+                                    passwordEditText.setEnabled(true);
+                                    layer.setVisibility(View.INVISIBLE);
+                                    loader.setVisibility(View.INVISIBLE);
+                                }
+                            });
 
-                //System.out.println("-----------------" + httpURLConnection.getResponseCode() + "-------------");
+                            TextView errorView = dialog.findViewById(R.id.errorText);
+                            errorView.setText(errorString);
+                            dialog.show();
 
-                if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                    BufferedReader in = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-                    String line = in.readLine();
-                    JSONObject jsonObject = new JSONObject(line);
-                    Log.v(LOG_TAG, "json object created");
+                            layer.setVisibility(View.INVISIBLE);
+                            loader.setVisibility(View.INVISIBLE);
+                            zealIdEditText.setEnabled(true);
+                            passwordEditText.setEnabled(true);*/
+                            Toast toast = Toast.makeText(LoginActivity.this, errorString, Toast.LENGTH_LONG);
+                            progressDialog.hide();
 
-                    Intent homeActivityIntent = new Intent(LoginActivity.this, HomeActivity.class);
-                    homeActivityIntent.putExtra("token", (String) jsonObject.get("token"));
-                    homeActivityIntent.putExtra("id", String.valueOf(jsonObject.get("user_id")));
-                    homeActivityIntent.putExtra("email", (String) jsonObject.get("email"));
-                    homeActivityIntent.putExtra("username", String.valueOf(jsonObject.get("username")));
-                    homeActivityIntent.putExtra("first_name", (String) jsonObject.get("first_name"));
-                    homeActivityIntent.putExtra("last_name", (String) jsonObject.get("last_name"));
-                    startActivity(homeActivityIntent);
-                    success = true;
-                } else {
-                    success = false;
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
+                else {
+                    Toast.makeText(LoginActivity.this, "Network issue! Try again.", Toast.LENGTH_SHORT).show();
+                   /* layer.setVisibility(View.INVISIBLE);
+                    loader.setVisibility(View.INVISIBLE);
+                    zealIdEditText.setEnabled(true);
+                    passwordEditText.setEnabled(true);*/
+                }
+            }
+        }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<>();
+                params.put("username",username);
+                params.put("password",password);
+                params.put("grant_type", "password");
+                return params;
             }
 
-            return success ? "success" : "error";
-        }
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                String credentials = API.USERNAME + ":" + API.PASSWORD;
+                String encoding = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                Map<String,String> params = new HashMap<>();
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                params.put("Authorization", "Basic " + encoding);
 
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            progressDialog.hide();
-            if (s.equals("error")) {
-                Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_SHORT).show();
-            } else if (s.equals("success")) {
-                Toast.makeText(getApplicationContext(), "Successfully logged in!", Toast.LENGTH_SHORT).show();
-
+                return params;
             }
-        }
-    }*/
+        };
+        /*LineUpApplication.getInstance().addToRequestQueue(loginReq);*/
+        RequestQueue requestQueue = Volley.newRequestQueue(LoginActivity.this);
+        requestQueue.add(loginReq);
+
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        this.registerReceiver(receiver, filter);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        LoginActivity.this.unregisterReceiver(receiver);
+    }
+
 }
 
 

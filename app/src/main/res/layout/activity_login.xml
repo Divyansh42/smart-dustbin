@@ -65,7 +65,8 @@
                 android:textColor="@android:color/black"
                 android:textColorHint="@android:color/black"
                 android:textSize="16sp"
-                android:drawableLeft="@drawable/ic_vpn_key_black_24dp"/>
+                android:drawableLeft="@drawable/ic_vpn_key_black_24dp"
+                android:drawableStart="@drawable/ic_vpn_key_black_24dp" />
 
         </android.support.design.widget.TextInputLayout>
 
