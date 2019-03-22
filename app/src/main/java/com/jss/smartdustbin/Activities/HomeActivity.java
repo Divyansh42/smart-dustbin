@@ -44,6 +44,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         tvFirstName = view.findViewById(R.id.nav_header_user_first_name);
         tvLastName = view.findViewById(R.id.nav_header_user_last_name);
         tvDesignation = view.findViewById(R.id.nav_header_user_designation);
+
+        navigationView.setNavigationItemSelectedListener(this);
+
     }
 
     @Override
