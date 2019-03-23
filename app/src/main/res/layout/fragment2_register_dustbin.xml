@@ -14,7 +14,7 @@
         android:layout_marginRight="16dp">
 
 
-        <com.jss.smartdustbin.NoDefaultSpinner
+        <com.jss.smartdustbin.Models.NoDefaultSpinner
             android:id="@+id/spinner_states"
             android:layout_marginTop="64dp"
             android:layout_width="match_parent"
@@ -29,7 +29,7 @@
             android:background="@android:color/black"
             android:layout_marginBottom="8dp"/>
 
-        <com.jss.smartdustbin.NoDefaultSpinner
+        <com.jss.smartdustbin.Models.NoDefaultSpinner
             android:id="@+id/spinner_cities"
             android:layout_marginTop="64dp"
             android:layout_width="match_parent"

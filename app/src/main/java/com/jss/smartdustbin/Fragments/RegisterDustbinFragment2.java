@@ -1,53 +1,42 @@
 package com.jss.smartdustbin.Fragments;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
-import com.jss.smartdustbin.DustbinRegistrationData;
+import com.jss.smartdustbin.Models.DustbinRegistrationData;
+import com.jss.smartdustbin.Utils.CustomOnItemSelectedListener;
 import com.jss.smartdustbin.R;
 
-import java.net.SocketImpl;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link RegisterDustbinFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link RegisterDustbinFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class RegisterDustbinFragment2 extends Fragment {
+
+    public static final String LOG_TAG = RegisterDustbinFragment2.class.getSimpleName();
 
     Spinner spinnerStates, spinnerCities;
     Button btProceed2;
     List<String> statesList;
     List<String> citiesList;
+    DustbinRegistrationData dustbinRegistrationData;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment2_register_dustbin, null, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        getActivity().setTitle("Register Dustbin");
+        final View view = inflater.inflate(R.layout.fragment2_register_dustbin, container, false);
+        dustbinRegistrationData = (DustbinRegistrationData) getArguments().getSerializable("registrationDataObject");
 
         spinnerStates = (Spinner) view.findViewById(R.id.spinner_states);
         spinnerCities = (Spinner) view.findViewById(R.id.spinner_cities);
@@ -73,12 +62,38 @@ public class RegisterDustbinFragment2 extends Fragment {
         citiesDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCities.setAdapter(citiesDataAdapter);
 
+        spinnerStates.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+
+        Log.e(LOG_TAG, " Dustbin Registration data " + dustbinRegistrationData.toString());
+
         btProceed2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dustbinRegistrationData.setState(spinnerStates.getSelectedItem().toString());
+                dustbinRegistrationData.setCity(spinnerCities.getSelectedItem().toString());
+                Fragment fragment = new RegisterDustbinFragment3();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("registrationDataObject", (Serializable) dustbinRegistrationData);
+                fragment.setArguments(bundle);
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fl_home_activity, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
+               // Toast.makeText(getActivity(), dustbinRegistrationData.getId().toString(), Toast.LENGTH_SHORT).show();
 
             }
         });
+        return view;
+
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        getActivity().setTitle("Register Dustbin");
+
 
     }
 

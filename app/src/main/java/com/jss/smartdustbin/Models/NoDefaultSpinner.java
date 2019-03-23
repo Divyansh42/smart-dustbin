@@ -1,4 +1,4 @@
-package com.jss.smartdustbin;
+package com.jss.smartdustbin.Models;
 
 import android.content.Context;
 import android.util.AttributeSet;

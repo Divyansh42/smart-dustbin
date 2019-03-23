@@ -1,10 +1,10 @@
-package com.jss.smartdustbin;
+package com.jss.smartdustbin.Utils;
 
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-public class Utility extends Application {
+public class SharedPreferencesHandler extends Application {
 
     public SharedPreferences getDefaultSharedPreferences(){
         return PreferenceManager.getDefaultSharedPreferences(getApplicationContext());

@@ -1,19 +1,13 @@
 package com.jss.smartdustbin.Activities;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -22,8 +16,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -31,7 +23,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jss.smartdustbin.API;
-import com.jss.smartdustbin.NetworkReceiver;
+import com.jss.smartdustbin.Utils.NetworkReceiver;
 import com.jss.smartdustbin.R;
 
 import org.json.JSONException;
@@ -42,16 +34,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.jss.smartdustbin.Utils.VolleyRequestQueue;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -228,7 +212,7 @@ public class LoginActivity extends AppCompatActivity {
                 return params;
             }
         };
-        /*LineUpApplication.getInstance().addToRequestQueue(loginReq);*/
+        //VolleyRequestQueue.getInstance().addToRequestQueue(loginReq);
         RequestQueue requestQueue = Volley.newRequestQueue(LoginActivity.this);
         requestQueue.add(loginReq);
 

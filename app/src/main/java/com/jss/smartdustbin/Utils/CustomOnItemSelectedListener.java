@@ -1,4 +1,4 @@
-package com.jss.smartdustbin;
+package com.jss.smartdustbin.Utils;
 
 import android.view.View;
 import android.widget.AdapterView;

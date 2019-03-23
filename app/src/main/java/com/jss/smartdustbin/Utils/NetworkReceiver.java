@@ -1,4 +1,4 @@
-package com.jss.smartdustbin;
+package com.jss.smartdustbin.Utils;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

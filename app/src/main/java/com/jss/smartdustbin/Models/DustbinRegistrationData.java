@@ -1,8 +1,10 @@
-package com.jss.smartdustbin;
+package com.jss.smartdustbin.Models;
 
 import android.location.Location;
 
-public class DustbinRegistrationData {
+import java.io.Serializable;
+
+public class DustbinRegistrationData implements Serializable {
 
     String id;
     String state, city, locality;
