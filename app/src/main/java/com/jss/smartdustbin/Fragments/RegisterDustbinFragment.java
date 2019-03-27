@@ -16,14 +16,6 @@ import com.jss.smartdustbin.R;
 
 import java.io.Serializable;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link RegisterDustbinFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link RegisterDustbinFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class RegisterDustbinFragment extends Fragment {
 
     EditText editTextDustbinRegistrationId;

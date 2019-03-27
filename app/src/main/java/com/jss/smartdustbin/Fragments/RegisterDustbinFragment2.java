@@ -1,5 +1,6 @@
 package com.jss.smartdustbin.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.jss.smartdustbin.Activities.MapsActivity;
 import com.jss.smartdustbin.Models.DustbinRegistrationData;
 import com.jss.smartdustbin.Utils.CustomOnItemSelectedListener;
 import com.jss.smartdustbin.R;
@@ -71,14 +73,16 @@ public class RegisterDustbinFragment2 extends Fragment {
             public void onClick(View v) {
                 dustbinRegistrationData.setState(spinnerStates.getSelectedItem().toString());
                 dustbinRegistrationData.setCity(spinnerCities.getSelectedItem().toString());
-                Fragment fragment = new RegisterDustbinFragment3();
+                /*Fragment fragment = new RegisterDustbinFragment3();
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("registrationDataObject", (Serializable) dustbinRegistrationData);
                 fragment.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fl_home_activity, fragment);
                 fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                fragmentTransaction.commit();*/
+                Intent mapIntent = new Intent(getActivity(), MapsActivity.class);
+                startActivity(mapIntent);
 
                // Toast.makeText(getActivity(), dustbinRegistrationData.getId().toString(), Toast.LENGTH_SHORT).show();
 
