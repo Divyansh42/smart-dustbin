@@ -2,6 +2,8 @@ package com.jss.smartdustbin.Activities;
 
 import android.content.DialogInterface;
 import android.graphics.Point;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Build;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -29,11 +31,16 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.jss.smartdustbin.R;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
@@ -46,6 +53,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     GoogleApiClient mGoogleApiClient;
     LocationRequest mLocationRequest;
     LatLng latLng;
+    TextView locationMarkerText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +63,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(MapsActivity.this);
+        locationMarkerText = findViewById(R.id.locationMarkertext);
+
 
     }
 
@@ -195,6 +205,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("Current Position");
+        markerOptions.visible(false);
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
         mCurrLocationMarker = mMap.addMarker(markerOptions);
 
@@ -216,10 +227,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mCurrLocationMarker.remove();
                     mCurrLocationMarker=  mMap.addMarker(new MarkerOptions().position(center).title("new Position").draggable(true).visible(false));
                     latLng = mCurrLocationMarker.getPosition();
+                    locationMarkerText.setText(getStringAddress(latLng.latitude, latLng.longitude));
                 }
             }
         });
 
+    }
+
+    public String getStringAddress(Double lat, Double lng){
+        String address = "";
+        String city = "";
+        Geocoder geocoder;
+        List<Address> addresses;
+        geocoder = new Geocoder(this, Locale.getDefault());
+        try{
+            addresses = geocoder.getFromLocation(lat, lng, 1);
+
+            address = addresses.get(0).getAddressLine(0);
+           // city = addresses.get(0).getLocality();
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        return address;
     }
 
     @Override
