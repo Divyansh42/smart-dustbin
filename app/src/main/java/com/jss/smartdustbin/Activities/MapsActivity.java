@@ -1,5 +1,6 @@
 package com.jss.smartdustbin.Activities;
 
+import android.app.ActionBar;
 import android.content.DialogInterface;
 import android.graphics.Point;
 import android.location.Address;
@@ -8,6 +9,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -29,8 +31,12 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -43,7 +49,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         LocationListener,GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener{
     private GoogleMap mMap;
@@ -54,16 +60,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LocationRequest mLocationRequest;
     LatLng latLng;
     TextView locationMarkerText;
+    Toolbar mToolbar;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        mToolbar = (Toolbar) findViewById(R.id.map_toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Set Your Location");
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(MapsActivity.this);
         locationMarkerText = findViewById(R.id.locationMarkertext);
+        View locationButton = ((View) mapFragment.getView().findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
+        RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
+// position on right bottom
+        rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
+        rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+        rlp.setMargins(0, 1100, 0, 0);
+
 
 
     }
@@ -225,7 +244,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 LatLng center = mMap.getCameraPosition().target;
                 if(mCurrLocationMarker != null){
                     mCurrLocationMarker.remove();
-                    mCurrLocationMarker=  mMap.addMarker(new MarkerOptions().position(center).title("new Position").draggable(true).visible(false));
+                    mCurrLocationMarker=  mMap.addMarker(new MarkerOptions().position(center).title("New Position").draggable(true).visible(false));
                     latLng = mCurrLocationMarker.getPosition();
                     locationMarkerText.setText(getStringAddress(latLng.latitude, latLng.longitude));
                 }
