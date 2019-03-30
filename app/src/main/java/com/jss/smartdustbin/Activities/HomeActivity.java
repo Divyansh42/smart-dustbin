@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.jss.smartdustbin.Fragments.AllDustbinsFragment;
 import com.jss.smartdustbin.Fragments.RegisterDustbinFragment;
 import com.jss.smartdustbin.R;
 
@@ -93,7 +94,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         }
         if (id == R.id.nav_dustbins){
-            //fragment = new RegisterFragment();
+            fragment = new AllDustbinsFragment();
 
         }
         if (id == R.id.nav_localities){

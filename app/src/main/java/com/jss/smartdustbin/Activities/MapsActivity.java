@@ -36,6 +36,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -61,6 +62,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     LatLng latLng;
     TextView locationMarkerText;
     Toolbar mToolbar;
+    Button confirmLocationButton;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -69,16 +71,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_maps);
         mToolbar = (Toolbar) findViewById(R.id.map_toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Set Your Location");
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(MapsActivity.this);
+
         locationMarkerText = findViewById(R.id.locationMarkertext);
+        confirmLocationButton = findViewById(R.id.bt_confirm_location);
+
+        //code for locationButton on the bottom right
         View locationButton = ((View) mapFragment.getView().findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
         RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
-// position on right bottom
         rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
         rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
         rlp.setMargins(0, 1100, 0, 0);
@@ -90,16 +96,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        // int s = Build.VERSION.SDK_INT;
-        //int y =  Build.VERSION_CODES.M;
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            /*if (ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
-                buildGoogleApiClient();
-                mMap.setMyLocationEnabled(true);
-            }*/
             if(checkLocationPermission()){
                 buildGoogleApiClient();
                 mMap.setMyLocationEnabled(true);

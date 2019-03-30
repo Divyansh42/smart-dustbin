@@ -1,7 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/tools"
     android:background="@android:color/white"
     android:orientation="vertical">
@@ -63,7 +62,7 @@
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context="com.sample.sishin.maplocation.MapsActivity" />
+            tools:context=".Activities.MapsActivity" />
         <ImageView
             android:id="@+id/imageMarker"
             android:layout_width="40dp"
@@ -72,7 +71,7 @@
             android:src="@drawable/marker" />
 
         <Button
-            android:id="@+id/bt_proceed1"
+            android:id="@+id/bt_confirm_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
