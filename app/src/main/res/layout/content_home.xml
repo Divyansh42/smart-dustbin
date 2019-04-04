@@ -5,12 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".Activities.HomeActivity"
+    tools:context=".Activities.UserHomeActivity"
     tools:showIn="@layout/app_bar_home">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fl_home_activity"/>
+        android:id="@+id/fl_home_activity">
+
+    </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

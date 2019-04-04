@@ -9,6 +9,8 @@ public class DustbinRegistrationData implements Serializable {
     String id;
     String state, city, locality;
 
+
+
     public String getId() {
         return id;
     }

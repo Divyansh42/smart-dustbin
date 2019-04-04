@@ -3,12 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.HomeActivity">
+    tools:context=".Activities.UserHomeActivity">
 
     <fragment
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:id="@+id/all_dustbins_map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
 
 </FrameLayout>

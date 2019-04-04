@@ -34,7 +34,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.jss.smartdustbin.Utils.VolleyRequestQueue;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -63,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
                 EditText etUsername = findViewById(R.id.et_login_username);
                 EditText etUserPassword = findViewById(R.id.et_login_password);
                 if (etUserPassword.getText().toString().equals("123")){
-                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                    startActivity(new Intent(LoginActivity.this, UserHomeActivity.class));
                     finish();
                 }
                 /*LoginAsyncTask loginAsyncTask = new LoginAsyncTask();
@@ -131,7 +130,7 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString("access_token", access_token);
                 editor.putString("refresh_token", refresh_token);
                 editor.apply();
-                startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                startActivity(new Intent(LoginActivity.this, UserHomeActivity.class));
                 finish();
             }
         }, new Response.ErrorListener() {
