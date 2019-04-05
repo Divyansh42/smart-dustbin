@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.jss.smartdustbin.Activities.HomeActivity;
 import com.jss.smartdustbin.Activities.MapsActivity;
 import com.jss.smartdustbin.Models.DustbinRegistrationData;
 import com.jss.smartdustbin.Utils.CustomOnItemSelectedListener;
@@ -38,6 +39,8 @@ public class RegisterDustbinFragment2 extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment2_register_dustbin, container, false);
+        ((HomeActivity) getActivity()).setActionBarTitle("Register Dustbin");
+        ((HomeActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         dustbinRegistrationData = (DustbinRegistrationData) getArguments().getSerializable("registrationDataObject");
 
         spinnerStates = (Spinner) view.findViewById(R.id.spinner_states);

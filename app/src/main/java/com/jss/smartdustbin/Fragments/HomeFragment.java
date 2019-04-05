@@ -58,6 +58,7 @@ public class HomeFragment extends Fragment {
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.fl_home_activity, registerDustbinFragment);
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
 

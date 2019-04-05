@@ -11,7 +11,6 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
 import com.google.android.gms.common.api.GoogleApiClient;

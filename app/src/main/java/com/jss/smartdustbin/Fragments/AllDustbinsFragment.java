@@ -8,10 +8,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -20,15 +23,14 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.jss.smartdustbin.Activities.LoginActivity;
 import com.jss.smartdustbin.R;
 
-public class AllDustbinsFragment extends Fragment {
+public class AllDustbinsFragment extends Fragment implements GoogleMap.OnMarkerClickListener {
 
-    public AllDustbinsFragment() {
-        // Required empty public constructor
-    }
-
+    TextView dustbinId;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +42,7 @@ public class AllDustbinsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_all_dustbins, container, false);
+        dustbinId = rootView.findViewById(R.id.dustbin_id);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.all_dustbins_map);  //use SuppoprtMapFragment for using in fragment instead of activity  MapFragment = activity   SupportMapFragment = fragment
         mapFragment.getMapAsync(new OnMapReadyCallback() {
@@ -73,6 +76,15 @@ public class AllDustbinsFragment extends Fragment {
                 mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(37.3092293,-122.1136845))
                         .title("Captain America"));
+
+                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+                        dustbinId.setText("hey");
+                        return true;
+                    }
+                });
+
             }
         });
 
@@ -87,6 +99,16 @@ public class AllDustbinsFragment extends Fragment {
         Canvas canvas = new Canvas(bitmap);
         vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
+
+       /* if (marker.equals(myMarker))
+        {
+            //handle click here
+        }*/
+       return true;
     }
 
     @Override

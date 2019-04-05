@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.jss.smartdustbin.Activities.HomeActivity;
 import com.jss.smartdustbin.Models.DustbinRegistrationData;
 import com.jss.smartdustbin.R;
 
@@ -28,6 +29,8 @@ public class RegisterDustbinFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_register_dustbin, container, false);
+        ((HomeActivity) getActivity()).setActionBarTitle("Register Dustbin");
+        ((HomeActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         editTextDustbinRegistrationId = (EditText) view.findViewById(R.id.et_dustbin_registration_id);
         btProceed1 = (Button) view.findViewById(R.id.bt_proceed1);
 
@@ -61,6 +64,10 @@ public class RegisterDustbinFragment extends Fragment {
         getActivity().setTitle("Register Dustbin");
 
     }
+
+
+
+
 
 
 }
