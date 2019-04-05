@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.jss.smartdustbin.Activities.HomeActivity;
 import com.jss.smartdustbin.Activities.MapsActivity;
@@ -21,7 +19,6 @@ import com.jss.smartdustbin.Models.DustbinRegistrationData;
 import com.jss.smartdustbin.Utils.CustomOnItemSelectedListener;
 import com.jss.smartdustbin.R;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +27,8 @@ public class RegisterDustbinFragment2 extends Fragment {
     public static final String LOG_TAG = RegisterDustbinFragment2.class.getSimpleName();
 
     Spinner spinnerStates, spinnerCities;
-    Button btProceed2;
+    Button btNext2;
+    Button btPrevious2;
     List<String> statesList;
     List<String> citiesList;
     DustbinRegistrationData dustbinRegistrationData;
@@ -40,12 +38,12 @@ public class RegisterDustbinFragment2 extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment2_register_dustbin, container, false);
         ((HomeActivity) getActivity()).setActionBarTitle("Register Dustbin");
-        ((HomeActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         dustbinRegistrationData = (DustbinRegistrationData) getArguments().getSerializable("registrationDataObject");
 
         spinnerStates = (Spinner) view.findViewById(R.id.spinner_states);
         spinnerCities = (Spinner) view.findViewById(R.id.spinner_cities);
-        btProceed2 = (Button) view.findViewById(R.id.bt_proceed2);
+        btNext2 = (Button) view.findViewById(R.id.bt_next2);
+        btPrevious2 = (Button) view.findViewById(R.id.bt_previous2);
 
 
         statesList = new ArrayList<>();
@@ -71,7 +69,7 @@ public class RegisterDustbinFragment2 extends Fragment {
 
         Log.e(LOG_TAG, " Dustbin Registration data " + dustbinRegistrationData.toString());
 
-        btProceed2.setOnClickListener(new View.OnClickListener() {
+        btNext2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dustbinRegistrationData.setState(spinnerStates.getSelectedItem().toString());
@@ -89,6 +87,13 @@ public class RegisterDustbinFragment2 extends Fragment {
 
                // Toast.makeText(getActivity(), dustbinRegistrationData.getId().toString(), Toast.LENGTH_SHORT).show();
 
+            }
+        });
+
+        btPrevious2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
             }
         });
         return view;

@@ -20,7 +20,8 @@ import java.io.Serializable;
 public class RegisterDustbinFragment extends Fragment {
 
     EditText editTextDustbinRegistrationId;
-    Button btProceed1;
+    Button btNext1;
+    Button btPrevious1;
     String dustbinRegistrationId;
     DustbinRegistrationData dustbinRegistrationData;
 
@@ -30,14 +31,14 @@ public class RegisterDustbinFragment extends Fragment {
                            Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_register_dustbin, container, false);
         ((HomeActivity) getActivity()).setActionBarTitle("Register Dustbin");
-        ((HomeActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         editTextDustbinRegistrationId = (EditText) view.findViewById(R.id.et_dustbin_registration_id);
-        btProceed1 = (Button) view.findViewById(R.id.bt_proceed1);
+        btNext1 = (Button) view.findViewById(R.id.bt_next1);
+        btPrevious1 = (Button) view.findViewById(R.id.bt_previous1);
 
 
         dustbinRegistrationData = new DustbinRegistrationData();
 
-        btProceed1.setOnClickListener(new View.OnClickListener() {
+        btNext1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Fragment fragment = new RegisterDustbinFragment2();
@@ -51,6 +52,13 @@ public class RegisterDustbinFragment extends Fragment {
                 fragmentTransaction.commit();
 
 
+            }
+        });
+
+        btPrevious1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
             }
         });
         return view;
