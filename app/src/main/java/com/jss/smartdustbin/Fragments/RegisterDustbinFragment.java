@@ -1,10 +1,13 @@
+/*
 package com.jss.smartdustbin.Fragments;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import info.androidhive.barcode.BarcodeReader;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.jss.smartdustbin.Activities.HomeActivity;
+import com.jss.smartdustbin.Activities.UserHomeActivity;
 import com.jss.smartdustbin.Models.DustbinRegistrationData;
 import com.jss.smartdustbin.R;
 
@@ -22,7 +26,6 @@ public class RegisterDustbinFragment extends Fragment {
     EditText editTextDustbinRegistrationId;
     Button btNext1;
     Button btPrevious1;
-    String dustbinRegistrationId;
     DustbinRegistrationData dustbinRegistrationData;
 
 
@@ -30,7 +33,12 @@ public class RegisterDustbinFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_register_dustbin, container, false);
-        ((HomeActivity) getActivity()).setActionBarTitle("Register Dustbin");
+        if(getActivity().equals(UserHomeActivity.class)){
+            ((UserHomeActivity) getActivity()).setActionBarTitle("Register Dustbin");
+        } else if(getActivity().equals(HomeActivity.class)){
+            ((HomeActivity) getActivity()).setActionBarTitle("Register Dustbin");
+        }
+
         editTextDustbinRegistrationId = (EditText) view.findViewById(R.id.et_dustbin_registration_id);
         btNext1 = (Button) view.findViewById(R.id.bt_next1);
         btPrevious1 = (Button) view.findViewById(R.id.bt_previous1);
@@ -79,3 +87,4 @@ public class RegisterDustbinFragment extends Fragment {
 
 
 }
+*/

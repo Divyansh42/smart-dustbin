@@ -1,5 +1,7 @@
-/*
-package com.jss.smartdustbin.Fragments;
+package com.jss.smartdustbin.Activities;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,13 +9,8 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.core.content.ContextCompat;
-import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -29,12 +26,11 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.jss.smartdustbin.Activities.DustbinDetailsActivity;
 import com.jss.smartdustbin.R;
 
 import java.util.HashMap;
 
-public class AllDustbinsFragment extends Fragment implements GoogleMap.OnMarkerClickListener {
+public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.OnMarkerClickListener {
 
     TextView dustbinState;
     TextView dustbinCity;
@@ -44,41 +40,37 @@ public class AllDustbinsFragment extends Fragment implements GoogleMap.OnMarkerC
     ProgressBar dustbinLevelPb;
     Button dustbinMoreDetails;
     private HashMap<Marker, Integer> mHashMap;
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_all_dustbins, container, false);
+        setContentView(R.layout.activity_all_dustbin);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("All Dustbin");
         mHashMap = new HashMap<Marker, Integer>();
-        dustbinState = rootView.findViewById(R.id.state_text_view);
-        dustbinCity = rootView.findViewById(R.id.city_text_view);
-        dustbinLocality = rootView.findViewById(R.id.locality_text_view);
-        content = rootView.findViewById(R.id.comtent_all_dustbin_activity);
-        loader = rootView.findViewById(R.id.loader_all_dustbin_map);
-        dustbinLevelPb = rootView.findViewById(R.id.dustbin_progressbar);
-        dustbinMoreDetails = rootView.findViewById(R.id.bt_more_details);
+        dustbinState = findViewById(R.id.state_text_view);
+        dustbinCity = findViewById(R.id.city_text_view);
+        dustbinLocality = findViewById(R.id.locality_text_view);
+        content = findViewById(R.id.comtent_all_dustbin_activity);
+        loader = findViewById(R.id.loader_all_dustbin_map);
+        dustbinLevelPb = findViewById(R.id.dustbin_progressbar);
+        dustbinMoreDetails = findViewById(R.id.bt_more_details);
 
         dustbinLevelPb.setProgress(100);
 
         dustbinMoreDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent dustbinDetailsActivityIntent = new Intent(getActivity(), DustbinDetailsActivity.class);
+                Intent dustbinDetailsActivityIntent = new Intent(AllDustbinActivity.this, DustbinDetailsActivity.class);
                 startActivity(dustbinDetailsActivityIntent);
             }
         });
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.all_dustbins_map);  //use SuppoprtMapFragment for using in fragment instead of activity  MapFragment = activity   SupportMapFragment = fragment
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.all_dustbins_map);  //use SuppoprtMapFragment for using in fragment instead of activity  MapFragment = activity   SupportMapFragment = fragment
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap mMap) {
-               // mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                // mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
                 mMap.clear(); //clear old markers
 
@@ -90,11 +82,9 @@ public class AllDustbinsFragment extends Fragment implements GoogleMap.OnMarkerC
                         .build();
 
                 mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 1000, null);
-                */
-/*mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(37.4219999,-122.0862462)));
+                /*mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(37.4219999,-122.0862462)));
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(16));
-*//*
-
+*/
                 mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(37.4219999, -122.0862462))
                         .title("Spider Man")
@@ -123,7 +113,7 @@ public class AllDustbinsFragment extends Fragment implements GoogleMap.OnMarkerC
         });
 
 
-        return rootView;
+
     }
 
     private void updateMap(){
@@ -142,21 +132,27 @@ public class AllDustbinsFragment extends Fragment implements GoogleMap.OnMarkerC
     @Override
     public boolean onMarkerClick(final Marker marker) {
 
-       */
-/* if (marker.equals(myMarker))
+       /* if (marker.equals(myMarker))
         {
             //handle click here
-        }*//*
-
-       return true;
+        }*/
+        return true;
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
 
-        getActivity().setTitle("All Dustbins");
 
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
-}*/
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+}

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -14,7 +14,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp">
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/edit_text_height"
             android:textColorHint="@android:color/black">
@@ -36,7 +36,7 @@
                 android:textSize="16sp"
                 android:drawableLeft="@drawable/ic_person_black_24dp"/>
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <View
             android:layout_width="fill_parent"
@@ -44,7 +44,7 @@
             android:background="@android:color/black"
             android:layout_marginBottom="8dp"/>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/edit_text_height"
             android:textColorHint="@android:color/black"
@@ -68,7 +68,7 @@
                 android:drawableLeft="@drawable/ic_vpn_key_black_24dp"
                 android:drawableStart="@drawable/ic_vpn_key_black_24dp" />
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <View
             android:layout_width="fill_parent"
@@ -87,4 +87,4 @@
 
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

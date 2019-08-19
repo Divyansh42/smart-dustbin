@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.jss.smartdustbin">
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -18,7 +19,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.HomeActivity">
+        <activity android:name=".Activities.AllDustbinActivity"></activity>
+        <activity android:name=".Activities.RegistrationConfirmationActivity" />
+        <activity android:name=".Activities.ScanResultActivity" />
+        <activity android:name=".Activities.DustbinDetailsActivity" />
+        <activity android:name=".Activities.RegisterDustbinActivity" />
+        <activity android:name=".Activities.ScanActivity" />
+        <activity android:name=".Activities.HomeActivity" />
+        <activity android:name=".Activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -44,9 +52,6 @@
         <activity
             android:name=".Activities.UserHomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activities.LoginActivity">
-
-        </activity>
     </application>
 
 </manifest>

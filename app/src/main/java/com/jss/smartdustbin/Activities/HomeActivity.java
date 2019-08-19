@@ -1,18 +1,15 @@
+/*
 package com.jss.smartdustbin.Activities;
 
-import android.content.Intent;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import com.jss.smartdustbin.Fragments.HomeFragment;
-import com.jss.smartdustbin.Fragments.RegisterDustbinFragment;
 import com.jss.smartdustbin.R;
+
+import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -52,3 +49,4 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 }
+*/

@@ -1,10 +1,11 @@
+/*
 package com.jss.smartdustbin.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.Spinner;
 
 import com.jss.smartdustbin.Activities.HomeActivity;
 import com.jss.smartdustbin.Activities.MapsActivity;
+import com.jss.smartdustbin.Activities.UserHomeActivity;
 import com.jss.smartdustbin.Models.DustbinRegistrationData;
 import com.jss.smartdustbin.Utils.CustomOnItemSelectedListener;
 import com.jss.smartdustbin.R;
@@ -37,7 +39,12 @@ public class RegisterDustbinFragment2 extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment2_register_dustbin, container, false);
-        ((HomeActivity) getActivity()).setActionBarTitle("Register Dustbin");
+
+        if(getActivity().equals(UserHomeActivity.class)){
+            ((UserHomeActivity) getActivity()).setActionBarTitle("Register Dustbin");
+        } else if(getActivity().equals(HomeActivity.class)){
+            ((HomeActivity) getActivity()).setActionBarTitle("Register Dustbin");
+        }
         dustbinRegistrationData = (DustbinRegistrationData) getArguments().getSerializable("registrationDataObject");
 
         spinnerStates = (Spinner) view.findViewById(R.id.spinner_states);
@@ -74,14 +81,16 @@ public class RegisterDustbinFragment2 extends Fragment {
             public void onClick(View v) {
                 dustbinRegistrationData.setState(spinnerStates.getSelectedItem().toString());
                 dustbinRegistrationData.setCity(spinnerCities.getSelectedItem().toString());
-                /*Fragment fragment = new RegisterDustbinFragment3();
+                */
+/*Fragment fragment = new RegisterDustbinFragment3();
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("registrationDataObject", (Serializable) dustbinRegistrationData);
                 fragment.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fl_home_activity, fragment);
                 fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();*/
+                fragmentTransaction.commit();*//*
+
                 Intent mapIntent = new Intent(getActivity(), MapsActivity.class);
                 startActivity(mapIntent);
 
@@ -111,3 +120,4 @@ public class RegisterDustbinFragment2 extends Fragment {
 
 
 }
+*/
