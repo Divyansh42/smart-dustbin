@@ -19,7 +19,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.AllDustbinActivity"></activity>
+        <activity android:name=".Activities.AllLocalitiesActivity"></activity>
+        <activity android:name=".Activities.AllDustbinActivity" />
         <activity android:name=".Activities.RegistrationConfirmationActivity" />
         <activity android:name=".Activities.ScanResultActivity" />
         <activity android:name=".Activities.DustbinDetailsActivity" />

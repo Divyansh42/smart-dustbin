@@ -16,7 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.jss.smartdustbin.Fragments.AllDustbinsFragment;
+//import com.jss.smartdustbin.Fragments.AllDustbinsFragment;
 import com.jss.smartdustbin.R;
 
 public class UserHomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {

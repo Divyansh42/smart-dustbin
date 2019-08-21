@@ -3,9 +3,9 @@ package com.jss.smartdustbin.Models;
 import com.google.android.gms.maps.model.LatLng;
 
 public class Dustbin {
-    String id;
-    String state, city, locality;
-    LatLng latLng;
+    private String id;
+    private String state, city, locality;
+    private LatLng latLng;
 
     public String getId() {
         return id;

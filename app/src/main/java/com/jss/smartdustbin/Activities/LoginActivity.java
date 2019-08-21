@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jss.smartdustbin.API;
@@ -34,6 +35,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.jss.smartdustbin.Utils.VolleyRequestQueue;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     private SharedPreferences pref;
     private NetworkReceiver receiver;
+    EditText etUsername, etUserPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,37 +62,33 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                EditText etUsername = findViewById(R.id.et_login_username);
-                EditText etUserPassword = findViewById(R.id.et_login_password);
+                etUsername = findViewById(R.id.et_login_username);
+                etUserPassword = findViewById(R.id.et_login_password);
                 if (etUserPassword.getText().toString().equals("123")){
                     startActivity(new Intent(LoginActivity.this, UserHomeActivity.class));
                     finish();
                 }
-                /*LoginAsyncTask loginAsyncTask = new LoginAsyncTask();
-                // loginAsyncTask.execute(etUsername.getText().toString(), etUserPassword.getText().toString());
-                loginAsyncTask.execute("hv3", "12345qwerty");*/
                 hideKeyboard();
                 if (receiver.isConnected()) {
                     String userName = etUsername.getText().toString();
                     String password = etUserPassword.getText().toString();
-
-                        if (userName.isEmpty() || password.isEmpty()) {
-                            Toast toast = Toast.makeText(LoginActivity.this, "Enter all fields!", Toast.LENGTH_SHORT);
-                            toast.show();
-                        } else{
-                            progressDialog = new ProgressDialog(LoginActivity.this);
-                            progressDialog.setMessage("Logging you in...");
-                            etUsername.setEnabled(false);
-                            etUserPassword.setEnabled(false);
-                            login(userName, password);
-                            progressDialog.setCanceledOnTouchOutside(false);
-                            progressDialog.setCancelable(false);
-                            progressDialog.show();
-                        }
+                    if (userName.isEmpty() || password.isEmpty()) {
+                        Toast toast = Toast.makeText(LoginActivity.this, "Enter all fields!", Toast.LENGTH_SHORT);
+                        toast.show();
+                    } else{
+                        progressDialog = new ProgressDialog(LoginActivity.this);
+                        progressDialog.setMessage("Logging you in...");
+                        etUsername.setEnabled(false);
+                        etUserPassword.setEnabled(false);
+                        progressDialog.setCanceledOnTouchOutside(false);
+                        progressDialog.setCancelable(false);
+                        progressDialog.show();
+                        login(userName, password);
                     }
-                    else {
-                        Toast.makeText(LoginActivity.this, "No internet!", Toast.LENGTH_SHORT).show();
-                    }
+                }
+                else {
+                    Toast.makeText(LoginActivity.this, "No internet!", Toast.LENGTH_SHORT).show();
+                }
 
 
             }
@@ -143,39 +142,10 @@ public class LoginActivity extends AppCompatActivity {
                         JSONObject jsonError = new JSONObject(json);
                         if (jsonError.has("error")) {
                             String errorString = "Invalid data! Try again.";
-                            /*final Dialog dialog = new Dialog(LoginActivity.this);
-                            dialog.setContentView(R.layout.dialog_layout);
-                            ImageView close = dialog.findViewById(R.id.close);
-                            close.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    dialog.dismiss();
-                                }
-                            });
-
-                            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                                @Override
-                                public void onDismiss(DialogInterface dialogInterface) {
-                                    zealIdEditText.setText("");
-                                    passwordEditText.setText("");
-                                    zealIdEditText.setEnabled(true);
-                                    passwordEditText.setEnabled(true);
-                                    layer.setVisibility(View.INVISIBLE);
-                                    loader.setVisibility(View.INVISIBLE);
-                                }
-                            });
-
-                            TextView errorView = dialog.findViewById(R.id.errorText);
-                            errorView.setText(errorString);
-                            dialog.show();
-
-                            layer.setVisibility(View.INVISIBLE);
-                            loader.setVisibility(View.INVISIBLE);
-                            zealIdEditText.setEnabled(true);
-                            passwordEditText.setEnabled(true);*/
-                            Toast toast = Toast.makeText(LoginActivity.this, errorString, Toast.LENGTH_LONG);
+                            Toast.makeText(LoginActivity.this, errorString, Toast.LENGTH_SHORT).show();
                             progressDialog.hide();
-
+                            etUsername.setEnabled(true);
+                            etUserPassword.setEnabled(true);
                         }
 
                     } catch (JSONException e) {
@@ -184,10 +154,9 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else {
                     Toast.makeText(LoginActivity.this, "Network issue! Try again.", Toast.LENGTH_SHORT).show();
-                   /* layer.setVisibility(View.INVISIBLE);
-                    loader.setVisibility(View.INVISIBLE);
-                    zealIdEditText.setEnabled(true);
-                    passwordEditText.setEnabled(true);*/
+                    progressDialog.hide();
+                    etUsername.setEnabled(true);
+                    etUserPassword.setEnabled(true);
                 }
             }
         }){
@@ -211,9 +180,9 @@ public class LoginActivity extends AppCompatActivity {
                 return params;
             }
         };
-        //VolleyRequestQueue.getInstance().addToRequestQueue(loginReq);
-        RequestQueue requestQueue = Volley.newRequestQueue(LoginActivity.this);
-        requestQueue.add(loginReq);
+        VolleyRequestQueue.getInstance().addToRequestQueue(loginReq);
+        /*RequestQueue requestQueue = Volley.newRequestQueue(LoginActivity.this);
+        requestQueue.add(loginReq);*/
 
     }
 
