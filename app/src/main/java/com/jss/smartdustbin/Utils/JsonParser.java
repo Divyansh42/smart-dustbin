@@ -9,13 +9,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Jsonparser {
+public class JsonParser {
 
 
-    public static List<Dustbin> stringToDustbinsArray(String dustbinString) {
+    public static List<Dustbin> responseStringToDustbinsArray(String dustbinStringResponse) {
         List<Dustbin> dustbinList = new ArrayList<>();
         try {
-            JSONArray jsonArray = new JSONArray(dustbinString);
+            JSONArray jsonArray = new JSONArray(dustbinStringResponse);
             for (int j = 0; j < jsonArray.length(); j++) {
                 Dustbin dustbin;
                 try {
@@ -49,8 +49,7 @@ public class Jsonparser {
 
 
     public static Dustbin toObject(String jsonString) {
-        Dustbin dustbin = new
-                Dustbin();
+        Dustbin dustbin = new Dustbin();
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
             dustbin.setId(get(jsonObject, "_id"));

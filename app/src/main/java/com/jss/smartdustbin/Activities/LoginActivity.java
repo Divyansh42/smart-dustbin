@@ -122,12 +122,10 @@ public class LoginActivity extends AppCompatActivity {
                 Log.e(LOG_TAG, " Login Activity onResponse: " + response);
                 Map<String, String> responseMap = new Gson().fromJson(response, new TypeToken<Map<String, String>>() {}.getType());
                 String access_token = responseMap.get("access_token");
-                String refresh_token = responseMap.get("refresh_token");
                 Log.e(LOG_TAG, "onResponse: " + access_token);
 
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString("access_token", access_token);
-                editor.putString("refresh_token", refresh_token);
                 editor.apply();
                 startActivity(new Intent(LoginActivity.this, UserHomeActivity.class));
                 finish();

@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.jss.smartdustbin"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -42,5 +42,9 @@ dependencies {
 
     // vision barcode scanner
     implementation 'info.androidhive:barcode-reader:1.1.5'
-
+    //firebase cloud messaging
+    implementation 'com.google.firebase:firebase-core:17.2.0'
+    implementation 'com.google.firebase:firebase-messaging:20.0.0'
 }
+
+apply plugin: 'com.google.gms.google-services'
