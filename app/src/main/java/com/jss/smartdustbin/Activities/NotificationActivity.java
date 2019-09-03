@@ -23,6 +23,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.jss.smartdustbin.R;
 import com.jss.smartdustbin.Utils.Config;
 import com.jss.smartdustbin.Utils.NotificationUtils;
+import com.jss.smartdustbin.Utils.SharedPreferencesHandler;
 import com.jss.smartdustbin.service.MyFirebaseMessagingService;
 
 public class NotificationActivity extends AppCompatActivity {
@@ -39,6 +40,27 @@ public class NotificationActivity extends AppCompatActivity {
         txtRegId = (TextView) findViewById(R.id.txt_reg_id);
         txtMessage = (TextView) findViewById(R.id.txt_push_message);
 
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+                        SharedPreferencesHandler.getInstance().setFCMRegTokenInPref(token);
+
+
+                        // Log and toast
+                        String msg = getString(R.string.msg_token_fmt, token);
+                        Log.d(TAG, "token :: " + msg);
+                        //Toast.makeText(NotificationActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -49,7 +71,8 @@ public class NotificationActivity extends AppCompatActivity {
                     // now subscribe to `global` topic to receive app wide notifications
                     FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
 
-                    displayFirebaseRegId();
+                    //displayFirebaseRegId();
+                    SharedPreferencesHandler.getInstance().getFCMRegToken();
 
                 } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
                     // new push notification is received
@@ -63,7 +86,7 @@ public class NotificationActivity extends AppCompatActivity {
             }
         };
 
-        displayFirebaseRegId();
+        SharedPreferencesHandler.getInstance().getFCMRegToken();
 
 
     }
@@ -78,7 +101,7 @@ public class NotificationActivity extends AppCompatActivity {
 
     // Fetches reg id from shared preferences
     // and displays on the screen
-    private void displayFirebaseRegId() {
+    /*private void displayFirebaseRegId() {
         SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
         String regId = pref.getString("regId", null);
 
@@ -90,7 +113,7 @@ public class NotificationActivity extends AppCompatActivity {
         else
             txtRegId.setText("Firebase Reg Id is not received yet!");
     }
-
+*/
     @Override
     protected void onResume() {
         super.onResume();

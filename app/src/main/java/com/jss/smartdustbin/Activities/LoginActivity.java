@@ -124,9 +124,7 @@ public class LoginActivity extends AppCompatActivity {
                 String access_token = responseMap.get("access_token");
                 Log.e(LOG_TAG, "onResponse: " + access_token);
 
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putString("access_token", access_token);
-                editor.apply();
+
                 startActivity(new Intent(LoginActivity.this, UserHomeActivity.class));
                 finish();
             }
