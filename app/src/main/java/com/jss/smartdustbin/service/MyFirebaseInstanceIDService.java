@@ -25,9 +25,9 @@ public class MyFirebaseInstanceIDService extends FirebaseMessagingService {
         // Instance ID token to your app server.
         SharedPreferencesHandler.getInstance().setFCMRegTokenInPref(token);
         sendRegistrationToServer(token);
-        Intent registrationComplete = new Intent(Config.REGISTRATION_COMPLETE);
+       /* Intent registrationComplete = new Intent(Config.REGISTRATION_COMPLETE);
         registrationComplete.putExtra("token", token);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);*/
     }
 
 

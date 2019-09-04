@@ -1,6 +1,7 @@
 package com.jss.smartdustbin.Activities;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 
@@ -50,7 +51,7 @@ public class UserHomeActivity extends AppCompatActivity implements NavigationVie
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        FirebaseInstanceId.getInstance().getInstanceId()
+        /*FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
@@ -64,13 +65,24 @@ public class UserHomeActivity extends AppCompatActivity implements NavigationVie
                         SharedPreferencesHandler.getInstance().setFCMRegTokenInPref(token);
 
 
+
                         // Log and toast
                         String msg = getString(R.string.msg_token_fmt, token);
                         Log.d(TAG, "token :: " + msg);
                         //Toast.makeText(NotificationActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
-                });
-        SharedPreferencesHandler.getInstance().getFCMRegToken();
+                });*/
+
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( UserHomeActivity.this,  new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                String newToken = instanceIdResult.getToken();
+                Log.e("newToken",newToken);
+                SharedPreferencesHandler.getInstance().setFCMRegTokenInPref(newToken);
+
+            }
+        });
+        //SharedPreferencesHandler.getInstance().getFCMRegToken();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View view = navigationView.getHeaderView(0);

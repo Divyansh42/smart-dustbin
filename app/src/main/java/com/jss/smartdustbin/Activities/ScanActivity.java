@@ -57,11 +57,11 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
 
     private void getResultFromQrCode(String displayValue) {
         if (receiver.isConnected()) {
-            progressDialog = new ProgressDialog(ScanActivity.this);
+            /*progressDialog = new ProgressDialog(ScanActivity.this);
             progressDialog.setMessage("Fetching Details...");
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.setCancelable(false);
-            progressDialog.show();
+            progressDialog.show();*/
             registerDustbin(displayValue);
         }
         else {

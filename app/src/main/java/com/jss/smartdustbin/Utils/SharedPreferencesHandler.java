@@ -45,6 +45,8 @@ public class SharedPreferencesHandler extends Application {
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("regId", token);
         editor.commit();
+        Toast.makeText(getApplicationContext(), "RegToken " + token, Toast.LENGTH_SHORT).show();
+
     }
 
     public String getFCMRegToken(){
