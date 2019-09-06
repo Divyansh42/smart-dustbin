@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 
 import com.jss.smartdustbin.R;
@@ -19,10 +20,13 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+       Intent intent =  getIntent();
+
         new Handler().postDelayed(() -> {
             /* Create an Intent that will start the Menu-Activity. */
             Intent mainIntent;
-            if(SmartDustbinApplication.getInstance().getAccessToken() == null)
+            String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", null);
+            if( accessToken == null)
                 mainIntent = new Intent(SplashActivity.this, LoginActivity.class);
             else
                 mainIntent = new Intent(SplashActivity.this, UserHomeActivity.class);

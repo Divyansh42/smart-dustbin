@@ -1,6 +1,7 @@
 package com.jss.smartdustbin.Activities;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -20,8 +21,9 @@ public class DustbinDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dustbin_details);
         id = findViewById(R.id.SNo_text_view);
+        String FCMToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("FCM_token", "");
 
-       id.setText(SmartDustbinApplication.getInstance().getFCMRegToken());
+       id.setText(FCMToken);
 
        /* mToolbar = (Toolbar) findViewById(R.id.map_toolbar);
         //setSupportActionBar(mToolbar);

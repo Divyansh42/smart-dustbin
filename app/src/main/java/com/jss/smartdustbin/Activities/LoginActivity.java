@@ -126,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
                 String accessToken = jsonObject.get("access_token").getAsString();
                 Log.e(LOG_TAG, "onResponse: " + accessToken);
                 SharedPreferences.Editor editor = pref.edit();
-                editor.putString("token", accessToken);
+                editor.putString("access_token", accessToken);
                 editor.apply();
 
 

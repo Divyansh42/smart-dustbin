@@ -48,7 +48,7 @@ public class NotificationActivity extends AppCompatActivity {
 
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
-                        SmartDustbinApplication.getInstance().setFCMRegTokenInPref(token);
+                        //SmartDustbinApplication.getInstance().setFCMRegTokenInPref(token);
 
 
                         // Log and toast
@@ -69,7 +69,7 @@ public class NotificationActivity extends AppCompatActivity {
                     FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
 
                     //displayFirebaseRegId();
-                    SmartDustbinApplication.getInstance().getFCMRegToken();
+                    //SmartDustbinApplication.getInstance().getFCMRegToken();
 
                 } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
                     // new push notification is received
@@ -83,7 +83,7 @@ public class NotificationActivity extends AppCompatActivity {
             }
         };
 
-        SmartDustbinApplication.getInstance().getFCMRegToken();
+        //SmartDustbinApplication.getInstance().getFCMRegToken();
 
 
     }

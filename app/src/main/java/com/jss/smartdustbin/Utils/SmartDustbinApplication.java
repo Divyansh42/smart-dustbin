@@ -29,14 +29,14 @@ public class SmartDustbinApplication extends Application {
         return instance;
     }
 
-    public String getAccessToken() {
+    /*public String getAccessToken() {
         SharedPreferences sharedPreferences = getDefaultSharedPreferences();
         String token = null;
-        if (sharedPreferences.contains("token")) {
-            token = sharedPreferences.getString("token", "");
+        if (sharedPreferences.contains("access_token")) {
+            token = sharedPreferences.getString("access_token", "");
         }
         return token;
-    }
+    }*/
     public void setFCMRegTokenInPref(String token) {
         SharedPreferences pref = getDefaultSharedPreferences();
         SharedPreferences.Editor editor = pref.edit();
@@ -46,15 +46,6 @@ public class SmartDustbinApplication extends Application {
 
     }
 
-    public String getFCMRegToken(){
-        SharedPreferences sharedPreferences = getDefaultSharedPreferences();
-       // SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
-        String regToken = sharedPreferences.getString("regId", null);
-
-        Toast.makeText(getApplicationContext(), "RegToken " + regToken, Toast.LENGTH_SHORT).show();
-
-        return regToken;
-    }
 
 
     public RequestQueue getRequestQueue() {
