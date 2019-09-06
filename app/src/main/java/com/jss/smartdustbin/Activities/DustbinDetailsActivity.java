@@ -1,13 +1,11 @@
 package com.jss.smartdustbin.Activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import com.jss.smartdustbin.R;
-import com.jss.smartdustbin.Utils.SharedPreferencesHandler;
+import com.jss.smartdustbin.Utils.SmartDustbinApplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -23,7 +21,7 @@ public class DustbinDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dustbin_details);
         id = findViewById(R.id.SNo_text_view);
 
-       id.setText(SharedPreferencesHandler.getInstance().getFCMRegToken());
+       id.setText(SmartDustbinApplication.getInstance().getFCMRegToken());
 
        /* mToolbar = (Toolbar) findViewById(R.id.map_toolbar);
         //setSupportActionBar(mToolbar);

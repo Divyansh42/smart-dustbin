@@ -17,7 +17,6 @@ import com.jss.smartdustbin.Utils.NetworkReceiver;
 
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
 import info.androidhive.barcode.BarcodeReader;
 
 public class ScanActivity extends AppCompatActivity implements BarcodeReader.BarcodeReaderListener {

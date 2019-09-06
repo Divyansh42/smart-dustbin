@@ -5,11 +5,15 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
-import com.jss.smartdustbin.Activities.LoginActivity;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 
-public class SharedPreferencesHandler extends Application {
+public class SmartDustbinApplication extends Application {
 
-    private static SharedPreferencesHandler instance;
+    public static final String TAG = SmartDustbinApplication.class.getSimpleName();
+    private static SmartDustbinApplication instance;
+    private RequestQueue mRequestQueue;
 
     public SharedPreferences getDefaultSharedPreferences(){
         return PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -21,15 +25,8 @@ public class SharedPreferencesHandler extends Application {
         instance = this;
     }
 
-    public static synchronized SharedPreferencesHandler getInstance() {
+    public static synchronized SmartDustbinApplication getInstance() {
         return instance;
-    }
-
-    public void setAccessToken(String token){
-        SharedPreferences pref = getDefaultSharedPreferences();
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString("access_token", token);
-        editor.apply();
     }
 
     public String getAccessToken() {
@@ -59,6 +56,22 @@ public class SharedPreferencesHandler extends Application {
         return regToken;
     }
 
+
+    public RequestQueue getRequestQueue() {
+        if (mRequestQueue == null)
+            mRequestQueue = Volley.newRequestQueue(getApplicationContext());
+        return mRequestQueue;
+    }
+
+    public <T> void addToRequestQueue(Request<T> request) {
+        request.setTag(TAG);
+        getRequestQueue().add(request);
+    }
+
+    public void cancelRequest(Object tag) {
+        if (mRequestQueue != null)
+            mRequestQueue.cancelAll(tag);
+    }
 
 
 

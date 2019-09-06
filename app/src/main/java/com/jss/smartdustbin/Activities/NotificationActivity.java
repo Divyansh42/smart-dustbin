@@ -8,9 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,8 +21,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.jss.smartdustbin.R;
 import com.jss.smartdustbin.Utils.Config;
 import com.jss.smartdustbin.Utils.NotificationUtils;
-import com.jss.smartdustbin.Utils.SharedPreferencesHandler;
-import com.jss.smartdustbin.service.MyFirebaseMessagingService;
+import com.jss.smartdustbin.Utils.SmartDustbinApplication;
 
 public class NotificationActivity extends AppCompatActivity {
 
@@ -51,7 +48,7 @@ public class NotificationActivity extends AppCompatActivity {
 
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
-                        SharedPreferencesHandler.getInstance().setFCMRegTokenInPref(token);
+                        SmartDustbinApplication.getInstance().setFCMRegTokenInPref(token);
 
 
                         // Log and toast
@@ -72,7 +69,7 @@ public class NotificationActivity extends AppCompatActivity {
                     FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
 
                     //displayFirebaseRegId();
-                    SharedPreferencesHandler.getInstance().getFCMRegToken();
+                    SmartDustbinApplication.getInstance().getFCMRegToken();
 
                 } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
                     // new push notification is received
@@ -86,7 +83,7 @@ public class NotificationActivity extends AppCompatActivity {
             }
         };
 
-        SharedPreferencesHandler.getInstance().getFCMRegToken();
+        SmartDustbinApplication.getInstance().getFCMRegToken();
 
 
     }

@@ -1,7 +1,5 @@
 package com.jss.smartdustbin.Models;
 
-import android.location.Location;
-
 import java.io.Serializable;
 
 public class DustbinRegistrationData implements Serializable {

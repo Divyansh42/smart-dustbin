@@ -1,3 +1,4 @@
+/*
 package com.jss.smartdustbin.Utils;
 
 import android.app.Application;
@@ -32,3 +33,4 @@ public class VolleyRequestQueue extends Application {
             mRequestQueue.cancelAll(tag);
     }
 }
+*/

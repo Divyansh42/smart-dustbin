@@ -1,11 +1,8 @@
 package com.jss.smartdustbin.Activities;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -15,9 +12,11 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,14 +26,16 @@ import android.widget.TextView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.jss.smartdustbin.R;
-import com.jss.smartdustbin.Utils.SharedPreferencesHandler;
+import com.jss.smartdustbin.Utils.SmartDustbinApplication;
 
 public class UserHomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     TextView tvFirstName;
     TextView tvLastName;
     TextView tvDesignation;
-    private static final String TAG =  NotificationActivity.class.getSimpleName();
+    private static final String TAG =  UserHomeActivity.class.getSimpleName();
+    private SharedPreferences pref;
+    TextView accessToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,10 @@ public class UserHomeActivity extends AppCompatActivity implements NavigationVie
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        pref = PreferenceManager.getDefaultSharedPreferences(UserHomeActivity.this);
+        accessToken = findViewById(R.id.access_token);
+        accessToken.setText(SmartDustbinApplication.getInstance().getAccessToken());
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -62,7 +67,7 @@ public class UserHomeActivity extends AppCompatActivity implements NavigationVie
 
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
-                        SharedPreferencesHandler.getInstance().setFCMRegTokenInPref(token);
+                        SmartDustbinApplication.getInstance().setFCMRegTokenInPref(token);
 
 
 
@@ -76,13 +81,17 @@ public class UserHomeActivity extends AppCompatActivity implements NavigationVie
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( UserHomeActivity.this,  new OnSuccessListener<InstanceIdResult>() {
             @Override
             public void onSuccess(InstanceIdResult instanceIdResult) {
-                String newToken = instanceIdResult.getToken();
-                Log.e("newToken",newToken);
-                SharedPreferencesHandler.getInstance().setFCMRegTokenInPref(newToken);
+                String fcmToken = instanceIdResult.getToken();
+                Log.e("fcmToken",fcmToken);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("fcmRegToken" , fcmToken);
+                editor.apply();
+
+                //notify server for the token change
 
             }
         });
-        //SharedPreferencesHandler.getInstance().getFCMRegToken();
+        //SmartDustbinApplication.getInstance().getFCMRegToken();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View view = navigationView.getHeaderView(0);
@@ -149,6 +158,16 @@ public class UserHomeActivity extends AppCompatActivity implements NavigationVie
         }
         if (id == R.id.nav_localities){
            // fragment = new RegisterFragment();
+        }
+
+        if(id == R.id.logout){
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString("token", "");
+            editor.apply();
+            intent = new Intent(UserHomeActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+
         }
 
         if (fragment != null){

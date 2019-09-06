@@ -5,7 +5,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Build;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import android.os.Bundle;

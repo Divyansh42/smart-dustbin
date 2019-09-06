@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JsonParser {
+public class Jsonparser {
 
 
     public static List<Dustbin> responseStringToDustbinsArray(String dustbinStringResponse) {

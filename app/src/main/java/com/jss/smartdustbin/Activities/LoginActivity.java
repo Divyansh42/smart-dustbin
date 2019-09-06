@@ -18,12 +18,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.jss.smartdustbin.API;
+import com.jss.smartdustbin.Utils.Jsonparser;
 import com.jss.smartdustbin.Utils.NetworkReceiver;
 import com.jss.smartdustbin.R;
 
@@ -35,7 +35,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.jss.smartdustbin.Utils.VolleyRequestQueue;
+import com.jss.smartdustbin.Utils.SmartDustbinApplication;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -64,10 +64,11 @@ public class LoginActivity extends AppCompatActivity {
 
                 etUsername = findViewById(R.id.et_login_username);
                 etUserPassword = findViewById(R.id.et_login_password);
-                if (etUserPassword.getText().toString().equals("123")){
+               /* if (etUserPassword.getText().toString().equals("123")){
+                    SmartDustbinApplication.getInstance().setLogin(true);
                     startActivity(new Intent(LoginActivity.this, UserHomeActivity.class));
                     finish();
-                }
+                }*/
                 hideKeyboard();
                 if (receiver.isConnected()) {
                     String userName = etUsername.getText().toString();
@@ -120,11 +121,20 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 Log.e(LOG_TAG, " Login Activity onResponse: " + response);
-                Map<String, String> responseMap = new Gson().fromJson(response, new TypeToken<Map<String, String>>() {}.getType());
-                String access_token = responseMap.get("access_token");
-                Log.e(LOG_TAG, "onResponse: " + access_token);
+                JsonParser parser = new JsonParser();
+                JsonObject jsonObject = parser.parse(response).getAsJsonObject();
+                String accessToken = jsonObject.get("access_token").getAsString();
+                Log.e(LOG_TAG, "onResponse: " + accessToken);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("token", accessToken);
+                editor.apply();
 
 
+                /*Map<String, String> responseMap = new Gson().fromJson(response, new TypeToken<Map<String, String>>() {}.getType());
+                String accessToken = responseMap.get("access_token");
+                Log.e(LOG_TAG, "onResponse: " + accessToken);
+                SmartDustbinApplication.getInstance().setAccessToken(accessToken);
+                SmartDustbinApplication.getInstance().setLogin(true);*/
                 startActivity(new Intent(LoginActivity.this, UserHomeActivity.class));
                 finish();
             }
@@ -176,7 +186,7 @@ public class LoginActivity extends AppCompatActivity {
                 return params;
             }
         };
-        VolleyRequestQueue.getInstance().addToRequestQueue(loginReq);
+        SmartDustbinApplication.getInstance().addToRequestQueue(loginReq);
         /*RequestQueue requestQueue = Volley.newRequestQueue(LoginActivity.this);
         requestQueue.add(loginReq);*/
 
