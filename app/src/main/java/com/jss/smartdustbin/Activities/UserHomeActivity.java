@@ -183,14 +183,12 @@ public class UserHomeActivity extends AppCompatActivity implements NavigationVie
             startActivity(intent);
 
         }
-        if (id == R.id.nav_localities){
+        if (id == R.id.my_account){
            // fragment = new RegisterFragment();
         }
 
         if(id == R.id.logout){
-            SharedPreferences.Editor editor = pref.edit();
-            editor.putString("access_token", null);
-            editor.apply();
+            SmartDustbinApplication.getInstance().getDefaultSharedPreferences().edit().clear().apply();
             intent = new Intent(UserHomeActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
@@ -211,6 +209,7 @@ public class UserHomeActivity extends AppCompatActivity implements NavigationVie
         return true;
     }
 
+
     public void sendFCMToken() {
         final String FCMToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("FCM_token", "");
         final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
@@ -224,9 +223,15 @@ public class UserHomeActivity extends AppCompatActivity implements NavigationVie
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, " onErrorResponse: " + error.toString());
-                if(error.networkResponse != null){
+                Toast.makeText(UserHomeActivity.this, "Something went wrong! Please login again", Toast.LENGTH_SHORT).show();
+                SmartDustbinApplication.getInstance().getDefaultSharedPreferences().edit().clear().apply();
+                pref.edit().clear().apply();
+                Intent login = new Intent(UserHomeActivity.this, LoginActivity.class);
+                finishAffinity();
+                startActivity(login);
+               /* if(error.networkResponse != null){
                     onError(error.networkResponse.statusCode);
-                }
+                }*/
             }
         }){
             @Override
