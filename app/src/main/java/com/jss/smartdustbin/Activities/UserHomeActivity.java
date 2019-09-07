@@ -5,6 +5,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.android.gms.common.internal.Constants;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 
@@ -39,6 +40,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.jss.smartdustbin.API;
 import com.jss.smartdustbin.R;
 import com.jss.smartdustbin.Utils.Config;
+import com.jss.smartdustbin.Utils.HttpStatus;
 import com.jss.smartdustbin.Utils.NotificationUtils;
 import com.jss.smartdustbin.Utils.SmartDustbinApplication;
 
@@ -222,6 +224,9 @@ public class UserHomeActivity extends AppCompatActivity implements NavigationVie
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, " onErrorResponse: " + error.toString());
+                if(error.networkResponse != null){
+                    onError(error.networkResponse.statusCode);
+                }
             }
         }){
             @Override
@@ -242,6 +247,20 @@ public class UserHomeActivity extends AppCompatActivity implements NavigationVie
         };
 
         SmartDustbinApplication.getInstance().addToRequestQueue(fcmTokenPostReq);
+    }
+
+    public void onError(int status) {
+        if(status == HttpStatus.UNAUTHORIZED.value()){
+            Toast.makeText(UserHomeActivity.this, "Please login to perform this action.", Toast.LENGTH_SHORT).show();
+            SmartDustbinApplication.getInstance().getDefaultSharedPreferences().edit().clear().apply();
+            pref.edit().clear().apply();
+            Intent login = new Intent(UserHomeActivity.this, LoginActivity.class);
+            finishAffinity();
+            startActivity(login);
+        } else{
+            Toast.makeText(UserHomeActivity.this, "Error fetching data, Please try again.", Toast.LENGTH_SHORT).show();
+            //startActivity(new Intent(YourRouteActivity.this, MainActivity.class));
+        }
     }
 
     @Override
