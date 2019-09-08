@@ -105,7 +105,9 @@ public class UserHomeActivity extends AppCompatActivity implements NavigationVie
                     FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
                     String FCMToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("FCM_token", null);
                     Toast.makeText(getApplicationContext(), "FCM Token :" + FCMToken, Toast.LENGTH_SHORT).show();
-                    sendFCMToken();
+                    if(FCMToken != null){
+                        sendFCMToken(FCMToken);
+                    }
 
 
                 } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
@@ -210,8 +212,8 @@ public class UserHomeActivity extends AppCompatActivity implements NavigationVie
     }
 
 
-    public void sendFCMToken() {
-        final String FCMToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("FCM_token", "");
+    public void sendFCMToken(String FCMToken) {
+        //final String FCMToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("FCM_token", "");
         final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
         StringRequest fcmTokenPostReq = new StringRequest(Request.Method.POST,API.BASE + API.FCM_TOKEN_POST, new Response.Listener<String>() {
             @Override

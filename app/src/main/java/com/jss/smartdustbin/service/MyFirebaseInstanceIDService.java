@@ -28,16 +28,11 @@ public class MyFirebaseInstanceIDService extends FirebaseMessagingService {
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("FCM_token", token);
         editor.apply();
-        sendRegistrationToServer(token);
         Intent registrationComplete = new Intent(Config.REGISTRATION_COMPLETE);
         registrationComplete.putExtra("token", token);
         LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
     }
 
 
-    private void sendRegistrationToServer(final String token) {
-        // sending gcm token to server
-        Log.e(TAG, "sendRegistrationToServer: " + token);
-    }
 
 }
