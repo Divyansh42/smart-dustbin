@@ -110,56 +110,58 @@ public class ScanResultActivity extends AppCompatActivity {
 
     }
 
-    private void sendBarCodeResult(String barCodeResult, double latitude, double longitude) {
-        final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
-        StringRequest fcmTokenPostReq = new StringRequest(Request.Method.POST, API.BASE + API.FCM_TOKEN_POST, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.e(TAG, " onResponse: " + response);
-                while(response == null){
-                    sendBarCodeResult(barCodeResult, latitude, longitude);
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+    private void sendBarCodeResult(String barCodeResult, double latitude, double longitude, String response) {
+        if(!isRequiresResponse(response)){
+            final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, API.BASE + API.FCM_TOKEN_POST, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Log.e(TAG, " onResponse: " + response);
+                    progressDialog.hide();
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e(TAG, " onErrorResponse: " + error.toString());
+                    if(error.networkResponse != null){
+                        onError(error.networkResponse.statusCode);
                     }
                 }
-
-                progressDialog.hide();
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, " onErrorResponse: " + error.toString());
-                if(error.networkResponse != null){
-                    onError(error.networkResponse.statusCode);
+            }){
+                @Override
+                protected Map<String, String> getParams(){
+                    Map<String,String> params = new HashMap<>();
+                    params.put("lat", Double.toString(latitude));
+                    params.put("long", Double.toString(longitude));
+                    params.put("qr", barCodeResult);
+                    return params;
                 }
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams(){
-                Map<String,String> params = new HashMap<>();
-                params.put("lat", Double.toString(latitude));
-                params.put("long", Double.toString(longitude));
-                params.put("qr", barCodeResult);
-                return params;
-            }
 
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                params.put("Content-Type","application/x-www-form-urlencoded");
-                params.put("Authorization", "Bearer " + accessToken);
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String,String> params = new HashMap<>();
+                    params.put("Content-Type","application/x-www-form-urlencoded");
+                    params.put("Authorization", "Bearer " + accessToken);
 
-                return params;
-            }
+                    return params;
+                }
 
-        };
+            };
 
-        SmartDustbinApplication.getInstance().addToRequestQueue(fcmTokenPostReq);
+            SmartDustbinApplication.getInstance().addToRequestQueue(stringRequest);
+
+        }
+
+        else{
+            progressDialog.hide();
+        }
 
 
+    }
+
+    private boolean isRequiresResponse(String response) {
+        return true;
     }
 
     public void onError(int status) {

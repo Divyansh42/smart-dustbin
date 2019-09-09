@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
@@ -27,6 +28,7 @@ import com.jss.smartdustbin.Utils.Jsonparser;
 import com.jss.smartdustbin.Utils.NetworkReceiver;
 import com.jss.smartdustbin.R;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,8 +39,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.jss.smartdustbin.Utils.SmartDustbinApplication;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -124,9 +130,11 @@ public class LoginActivity extends AppCompatActivity {
                 JsonParser parser = new JsonParser();
                 JsonObject jsonObject = parser.parse(response).getAsJsonObject();
                 String accessToken = jsonObject.get("access_token").getAsString();
+                Set<String> authoritiesList = getAuthoritiesFromJsonObject(jsonObject);
                 Log.e(LOG_TAG, "onResponse: " + accessToken);
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString("access_token", accessToken);
+                editor.putStringSet("authority_list", authoritiesList);
                 editor.apply();
 
 
@@ -190,6 +198,18 @@ public class LoginActivity extends AppCompatActivity {
         /*RequestQueue requestQueue = Volley.newRequestQueue(LoginActivity.this);
         requestQueue.add(loginReq);*/
 
+    }
+
+
+    private Set<String> getAuthoritiesFromJsonObject(JsonObject jsonObject) {
+        JsonArray jsonArray = jsonObject.getAsJsonArray("authorities");
+        Set<String> authorities = new HashSet<>();
+        for(int i = 0; i < jsonArray.size(); i++){
+            JsonObject authorityObject = jsonArray.get(i).getAsJsonObject();
+            String authority = authorityObject.get("authority").getAsString();
+            authorities.add(authority);
+        }
+        return authorities;
     }
 
 
