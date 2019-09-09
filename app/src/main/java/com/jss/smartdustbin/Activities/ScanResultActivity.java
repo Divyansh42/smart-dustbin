@@ -4,20 +4,33 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.jss.smartdustbin.API;
 import com.jss.smartdustbin.R;
+import com.jss.smartdustbin.Utils.HttpStatus;
 import com.jss.smartdustbin.Utils.LocationTrack;
+import com.jss.smartdustbin.Utils.SmartDustbinApplication;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -26,13 +39,15 @@ public class ScanResultActivity extends AppCompatActivity {
 
     Button btnDone;
     String barCodeResult;
+    ProgressDialog progressDialog;
+    private static final String TAG =  ScanResultActivity.class.getSimpleName();
     private ArrayList<String> permissionsToRequest;
     private ArrayList<String> permissionsRejected = new ArrayList<>();
     private ArrayList<String> permissions = new ArrayList<>();
 
     private final static int ALL_PERMISSIONS_RESULT = 101;
     LocationTrack locationTrack;
-
+    double longitude, latitude;
 
 
 
@@ -66,8 +81,8 @@ public class ScanResultActivity extends AppCompatActivity {
         if (locationTrack.canGetLocation()) {
 
 
-            double longitude = locationTrack.getLongitude();
-            double latitude = locationTrack.getLatitude();
+            longitude = locationTrack.getLongitude();
+            latitude = locationTrack.getLatitude();
 
             Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
         } else {
@@ -76,43 +91,88 @@ public class ScanResultActivity extends AppCompatActivity {
         }
 
 
-       /* Button btn = (Button) findViewById(R.id.btn);
-
-
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                locationTrack = new LocationTrack(ScanResultActivity.this);
-
-
-                if (locationTrack.canGetLocation()) {
-
-
-                    double longitude = locationTrack.getLongitude();
-                    double latitude = locationTrack.getLatitude();
-
-                    Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
-                } else {
-
-                    locationTrack.showSettingsAlert();
-                }
-
-            }
-        });*/
-
         btnDone = findViewById(R.id.btn_done);
 
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //sendBarCodeResult(barCodeResult, Lat)
+                progressDialog = new ProgressDialog(ScanResultActivity.this);
+                progressDialog.setMessage("Confirming registration...");
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+                //sendBarCodeResult(barCodeResult,latitude, longitude);
                 Intent registrationConfirmActivity = new Intent(ScanResultActivity.this, RegistrationConfirmationActivity.class);
                 startActivity(registrationConfirmActivity);
             }
         });
 
 
+    }
+
+    private void sendBarCodeResult(String barCodeResult, double latitude, double longitude) {
+        final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
+        StringRequest fcmTokenPostReq = new StringRequest(Request.Method.POST, API.BASE + API.FCM_TOKEN_POST, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e(TAG, " onResponse: " + response);
+                while(response == null){
+                    sendBarCodeResult(barCodeResult, latitude, longitude);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                progressDialog.hide();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, " onErrorResponse: " + error.toString());
+                if(error.networkResponse != null){
+                    onError(error.networkResponse.statusCode);
+                }
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams(){
+                Map<String,String> params = new HashMap<>();
+                params.put("lat", Double.toString(latitude));
+                params.put("long", Double.toString(longitude));
+                params.put("qr", barCodeResult);
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                params.put("Authorization", "Bearer " + accessToken);
+
+                return params;
+            }
+
+        };
+
+        SmartDustbinApplication.getInstance().addToRequestQueue(fcmTokenPostReq);
+
+
+    }
+
+    public void onError(int status) {
+        if(status == HttpStatus.UNAUTHORIZED.value()){
+            Toast.makeText(ScanResultActivity.this, "Please login to perform this action.", Toast.LENGTH_SHORT).show();
+            SmartDustbinApplication.getInstance().getDefaultSharedPreferences().edit().clear().apply();
+            Intent login = new Intent(ScanResultActivity.this, LoginActivity.class);
+            finishAffinity();
+            startActivity(login);
+        } else{
+            Toast.makeText(ScanResultActivity.this, "Error fetching data, Please try again.", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(ScanResultActivity.this, ScanActivity.class));
+        }
     }
 
     @Override

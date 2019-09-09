@@ -46,6 +46,11 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
 
         // playing barcode reader beep sound
         barcodeReader.playBeep();
+        /*progressDialog = new ProgressDialog(ScanActivity.this);
+            progressDialog.setMessage("Fetching Details...");
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.setCancelable(false);
+            progressDialog.show();*/
         getResultFromQrCode(barcode.displayValue);
 
         // ticket details activity by passing barcode

@@ -13,14 +13,19 @@ import com.jss.smartdustbin.Utils.SmartDustbinApplication;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private final int SPLASH_DISPLAY_LENGTH = 4000;
+    private final int SPLASH_DISPLAY_LENGTH = 2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-       Intent intent =  getIntent();
+        String dustbinId = getIntent().getStringExtra("id");
+        if(dustbinId != null){
+            Intent notificationActivity = new Intent(SplashActivity.this, DustbinDetailsActivity.class);
+            notificationActivity.putExtra("id", dustbinId);
+            startActivity(notificationActivity);
+        }
 
         new Handler().postDelayed(() -> {
             /* Create an Intent that will start the Menu-Activity. */

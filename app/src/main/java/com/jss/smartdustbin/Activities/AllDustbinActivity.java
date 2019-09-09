@@ -178,7 +178,7 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
     @Override
     public boolean onMarkerClick(final Marker marker) {
 
-        Toast.makeText(this,"MArker is clicked" ,Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"Marker is clicked" ,Toast.LENGTH_LONG).show();
 
        /* if (marker.equals,(myMarker))
         {
