@@ -48,7 +48,8 @@
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
-        </service> <!-- ./Firebase Notifications -->
+        </service>
+        <service android:name=".Utils.LocationTrack" /> <!-- ./Firebase Notifications -->
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
