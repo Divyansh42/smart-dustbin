@@ -111,13 +111,18 @@ public class ScanResultActivity extends AppCompatActivity {
     }
 
     private void sendBarCodeResult(String barCodeResult, double latitude, double longitude, String response) {
-        if(!isRequiresResponse(response)){
+        if(isRequiredResponse(response)){
+
+            progressDialog.hide();
+
+        }
+
+        else{
             final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
             StringRequest stringRequest = new StringRequest(Request.Method.POST, API.BASE + API.FCM_TOKEN_POST, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     Log.e(TAG, " onResponse: " + response);
-                    progressDialog.hide();
 
                 }
             }, new Response.ErrorListener() {
@@ -151,16 +156,20 @@ public class ScanResultActivity extends AppCompatActivity {
 
             SmartDustbinApplication.getInstance().addToRequestQueue(stringRequest);
 
-        }
 
-        else{
-            progressDialog.hide();
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            sendBarCodeResult(barCodeResult, latitude, longitude, response);
         }
 
 
     }
 
-    private boolean isRequiresResponse(String response) {
+    private boolean isRequiredResponse(String response) {
         return true;
     }
 

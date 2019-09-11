@@ -116,7 +116,7 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
                         .tilt(45)
                         .build();
 
-                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 1000, null);
+                                                                                                                                                                                                                                                                                                                                                                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 1000, null);
                 /*mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(37.4219999,-122.0862462)));
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(16));
 
@@ -150,7 +150,7 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
                         marker.getId();
                         dustbinCity.setText(markerDustbinHashMap.get(marker.getId()).getCity());
                         dustbinLocality.setText(markerDustbinHashMap.get(marker.getId()).getLocality());
-                        Toast.makeText(getApplicationContext(),"MArker is clicked" ,Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),"Marker is clicked" ,Toast.LENGTH_LONG).show();
                         return true;
                     }
                 });
