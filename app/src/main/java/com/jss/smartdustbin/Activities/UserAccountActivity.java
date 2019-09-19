@@ -4,11 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.jss.smartdustbin.R;
 
 public class UserAccountActivity extends AppCompatActivity {
-
+    TextView userFullName;
+    TextView userGender;
+    TextView userAge;
+    TextView userContactNo;
+    TextView userEmail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -16,6 +21,13 @@ public class UserAccountActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("My Account");
+
+        userFullName = findViewById(R.id.user_name);
+        userGender = findViewById(R.id.user_gender);
+        userAge = findViewById(R.id.user_age);
+        userContactNo = findViewById(R.id.user_phoneNo);
+        userEmail = findViewById(R.id.user_email);
+
     }
 
     @Override

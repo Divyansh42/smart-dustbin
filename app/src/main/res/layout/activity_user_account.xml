@@ -21,7 +21,6 @@
 
 
     <TextView
-        android:id="@+id/txt_name_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -33,7 +32,7 @@
 
 
     <TextView
-        android:id="@+id/txt_name"
+        android:id="@+id/user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -55,7 +54,7 @@
 
 
     <TextView
-        android:id="@+id/txt_gender"
+        android:id="@+id/user_gender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -77,7 +76,7 @@
 
 
     <TextView
-        android:id="@+id/txt_age"
+        android:id="@+id/user_age"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -98,7 +97,7 @@
 
 
     <TextView
-        android:id="@+id/txt_email"
+        android:id="@+id/user_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -120,7 +119,7 @@
 
 
     <TextView
-        android:id="@+id/txt_phoneNo"
+        android:id="@+id/user_phoneNo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"

@@ -6,8 +6,11 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.jss.smartdustbin.API;
 import com.jss.smartdustbin.Interfaces.VolleyCallback;
+import com.jss.smartdustbin.Models.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,4 +47,27 @@ public class Helper {
 
         SmartDustbinApplication.getInstance().addToRequestQueue(tokenPutRequest);
     }
+
+    public static User getUserFromResponse(String response){
+        JsonParser parser = new JsonParser();
+        JsonObject jsonObject = parser.parse(response).getAsJsonObject();
+        String name = jsonObject.get("full_name").getAsString();
+        String gender = jsonObject.get("gender").getAsString();
+        int age = jsonObject.get("age").getAsInt();
+        String email = jsonObject.get("email").getAsString();
+        String contactNo = jsonObject.get("contact_no").getAsString();
+
+        User user = new User();
+        user.setName(name);
+        user.setGender(gender);
+        user.setAge(age);
+        user.setContactNo(contactNo);
+        user.setEmail(email);
+
+        return  user;
+    }
+
+
 }
+
+
