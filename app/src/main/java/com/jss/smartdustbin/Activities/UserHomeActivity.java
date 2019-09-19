@@ -186,7 +186,9 @@ public class UserHomeActivity extends AppCompatActivity implements NavigationVie
 
         }
         if (id == R.id.my_account){
-           // fragment = new RegisterFragment();
+
+            intent = new Intent(UserHomeActivity.this, UserAccountActivity.class);
+            startActivity(intent);
         }
 
         if(id == R.id.logout){

@@ -45,6 +45,8 @@ dependencies {
     //firebase cloud messaging
     implementation 'com.google.firebase:firebase-core:17.2.0'
     implementation 'com.google.firebase:firebase-messaging:20.0.0'
+
+    implementation 'com.github.siyamed:android-shape-imageview:0.9.+@aar'
 }
 
 apply plugin: 'com.google.gms.google-services'
