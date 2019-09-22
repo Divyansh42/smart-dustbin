@@ -130,11 +130,15 @@ public class LoginActivity extends AppCompatActivity {
                 JsonParser parser = new JsonParser();
                 JsonObject jsonObject = parser.parse(response).getAsJsonObject();
                 String accessToken = jsonObject.get("access_token").getAsString();
-                Set<String> authoritiesList = getAuthoritiesFromJsonObject(jsonObject);
+                String authorities = jsonObject.get("authorities").getAsString();
+                //String[] authorityList = authorities.split(",");
+               /* Set<String> authoritiesList = getAuthoritiesFromJsonObject(jsonObject);*/
                 Log.e(LOG_TAG, "onResponse: " + accessToken);
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString("access_token", accessToken);
-                editor.putStringSet("authority_list", authoritiesList);
+                editor.putString("authority_list", authorities);
+                // //String[] authorityList = authorities.split(",");
+                //use this method while getting string of authorities from sharedpref
                 editor.apply();
 
 
