@@ -21,6 +21,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -69,7 +70,7 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
         dustbinMoreDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent dustbinDetailsActivityIntent = new Intent(AllDustbinActivity.this, DustbinDetailsActivity.class);
+                Intent dustbinDetailsActivityIntent = new Intent(AllDustbinActivity.this, MapsActivity.class);
                 startActivity(dustbinDetailsActivityIntent);
             }
         });
@@ -126,20 +127,21 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
                 }
                 Marker marker = mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(28.605223, 77.376407))
-                        .title("Spider Man")
+                        .title("Status")
+                        .snippet("Dustbin is 30% full")
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
                 markerDustbinHashMap.put(marker.getId(), dustbinArrayList.get(0));
 
 
                 Marker marker1 =  mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(28.584881,77.309219))
-                        .title("Iron Man")
-                        .snippet("His Talent : Plenty of money"));
+                        .title("Status")
+                        .snippet("Dustbin is 50% full"));
                 markerDustbinHashMap.put(marker1.getId(), dustbinArrayList.get(1));
 
                 Marker marker2 = mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(28.583724,77.360467))
-                        .title("Captain America"));
+                        .title("Status"));
                 markerDustbinHashMap.put(marker2.getId(), dustbinArrayList.get(2));
 
                 Marker marker3 = mMap.addMarker(new MarkerOptions()
@@ -157,6 +159,9 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
                         dustbinCity.setText(markerDustbinHashMap.get(marker.getId()).getCity());
                         dustbinLocality.setText(markerDustbinHashMap.get(marker.getId()).getLocality());
                         Toast.makeText(getApplicationContext(),"Marker is clicked" ,Toast.LENGTH_LONG).show();
+                        marker.showInfoWindow();
+                        mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
+                        mMap.getUiSettings().setMapToolbarEnabled(true);
                         return true;
                     }
                 });

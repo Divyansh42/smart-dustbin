@@ -31,6 +31,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.location.LocationListener;
@@ -94,17 +95,36 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.getUiSettings().setMapToolbarEnabled(true);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if(checkLocationPermission()){
                 buildGoogleApiClient();
                 mMap.setMyLocationEnabled(true);
+                mMap.getUiSettings().setMapToolbarEnabled(true);
             }
         }
         else {
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setMapToolbarEnabled(true);
         }
+
+       /* mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+
+                mMap.getUiSettings().setMapToolbarEnabled(true);
+                Toast.makeText(getApplicationContext(),"Marker is clicked" ,Toast.LENGTH_LONG).show();
+                return false;
+            }
+        });*/
+
+        Marker marker = mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(28.605223, 77.376407))
+                .title("Spider Man")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+
 
     }
 
@@ -222,7 +242,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         markerOptions.title("Current Position");
         markerOptions.visible(false);
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-        mCurrLocationMarker = mMap.addMarker(markerOptions);
+         mCurrLocationMarker = mMap.addMarker(markerOptions);
+
 
         //move map camera
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -272,6 +293,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }
+
+
 
     /*@Override
     public void onBackPressed() {
