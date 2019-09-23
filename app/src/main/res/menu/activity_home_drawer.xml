@@ -14,10 +14,6 @@
             android:id="@+id/my_account"
             android:title="My Account" />
 
-        <item
-            android:id="@+id/logout"
-            android:title="Logout"/>
-
     </group>
 
 </menu>

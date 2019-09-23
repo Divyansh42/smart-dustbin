@@ -30,6 +30,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +57,7 @@ public class UserHomeActivity extends AppCompatActivity implements NavigationVie
     private SharedPreferences pref;
     TextView accessToken;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
+    Button logoutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +78,8 @@ public class UserHomeActivity extends AppCompatActivity implements NavigationVie
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        logoutButton = findViewById(R.id.bt_logout);
 
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( UserHomeActivity.this,  new OnSuccessListener<InstanceIdResult>() {
             @Override
@@ -129,6 +133,16 @@ public class UserHomeActivity extends AppCompatActivity implements NavigationVie
         tvDesignation = view.findViewById(R.id.nav_header_user_designation);
 
         navigationView.setNavigationItemSelectedListener(this);
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SmartDustbinApplication.getInstance().getDefaultSharedPreferences().edit().clear().apply();
+                Intent intent = new Intent(UserHomeActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
     }
 
@@ -191,15 +205,6 @@ public class UserHomeActivity extends AppCompatActivity implements NavigationVie
             startActivity(intent);
         }
 
-        if(id == R.id.logout){
-            SmartDustbinApplication.getInstance().getDefaultSharedPreferences().edit().clear().apply();
-            intent = new Intent(UserHomeActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-
-            //notify server that user is logged out
-
-        }
 
         if (fragment != null){
             FragmentManager fragmentManager = getSupportFragmentManager();
