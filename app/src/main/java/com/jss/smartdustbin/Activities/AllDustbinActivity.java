@@ -64,7 +64,7 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
         dustbinMoreDetails = findViewById(R.id.bt_more_details);
         markerDustbinHashMap = new HashMap<String, Dustbin>();
 
-        dustbinLevelPb.setProgress(100);
+        dustbinLevelPb.setProgress(70);
 
         dustbinMoreDetails.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,24 +77,24 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
         dustbin1.setState("UP");
         dustbin1.setCity("Noida");
         dustbin1.setId("102");
-        dustbin1.setLocality("Sector 58");
+        dustbin1.setLocality("Sector 66");
 
         Dustbin dustbin2 = new Dustbin();
         dustbin2.setState("UP");
         dustbin2.setCity("Noida");
         dustbin2.setId("106");
-        dustbin2.setLocality("Sector 62");
+        dustbin2.setLocality("Sector 15");
 
         Dustbin dustbin3 = new Dustbin();
         dustbin3.setState("UP");
         dustbin3.setCity("Noida");
-        dustbin3.setId("102");
-        dustbin3.setLocality("Sector 64");
+        dustbin3.setId("112");
+        dustbin3.setLocality("Sector 34");
 
         Dustbin dustbin4 = new Dustbin();
         dustbin4.setCity("Noida");
-        dustbin4.setId("102");
-        dustbin4.setLocality("Sector 64");
+        dustbin4.setId("108");
+        dustbin4.setLocality("Sector 22");
 
         dustbinArrayList.add(dustbin1);
         dustbinArrayList.add(dustbin2);
@@ -110,8 +110,8 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
                 mMap.clear(); //clear old markers
 
                 CameraPosition googlePlex = CameraPosition.builder()
-                        .target(new LatLng(37.4219999,-122.0862462))
-                        .zoom(10)
+                        .target(new LatLng(28.605223,77.376407))
+                        .zoom(12)
                         .bearing(0)
                         .tilt(45)
                         .build();
@@ -125,22 +125,28 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
 
                 }
                 Marker marker = mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(37.4219999, -122.0862462))
+                        .position(new LatLng(28.605223, 77.376407))
                         .title("Spider Man")
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
                 markerDustbinHashMap.put(marker.getId(), dustbinArrayList.get(0));
 
 
                 Marker marker1 =  mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(37.4629101,-122.2449094))
+                        .position(new LatLng(28.584881,77.309219))
                         .title("Iron Man")
                         .snippet("His Talent : Plenty of money"));
                 markerDustbinHashMap.put(marker1.getId(), dustbinArrayList.get(1));
 
                 Marker marker2 = mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(37.3092293,-122.1136845))
+                        .position(new LatLng(28.583724,77.360467))
                         .title("Captain America"));
                 markerDustbinHashMap.put(marker2.getId(), dustbinArrayList.get(2));
+
+                Marker marker3 = mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(28.595203,77.347282))
+                        .title("Captain America"));
+                markerDustbinHashMap.put(marker3.getId(), dustbinArrayList.get(3));
+
 
                 mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override

@@ -58,6 +58,7 @@ public class ScanResultActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         barCodeResult = getIntent().getStringExtra("code");
+        setTitle("Register");
 
         permissions.add(ACCESS_FINE_LOCATION);
         permissions.add(ACCESS_COARSE_LOCATION);

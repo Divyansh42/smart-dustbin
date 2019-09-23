@@ -22,6 +22,7 @@ public class RegisterDustbinActivity extends AppCompatActivity {
 
         // making toolbar transparent
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("Register");
         //transparentToolbar();
 
         setContentView(R.layout.activity_register_dustbin);
