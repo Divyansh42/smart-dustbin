@@ -35,7 +35,8 @@
         <activity android:name=".Activities.AllDustbinActivity" />
         <activity android:name=".Activities.RegistrationConfirmationActivity" />
         <activity android:name=".Activities.ScanResultActivity" />
-        <activity android:name=".Activities.DustbinDetailsActivity" />
+        <activity android:name=".Activities.DustbinDetailsActivity"
+            android:hardwareAccelerated="true"/>
         <activity android:name=".Activities.RegisterDustbinActivity" />
         <activity android:name=".Activities.ScanActivity" />
         <activity android:name=".Activities.LoginActivity" /> <!-- Firebase Notifications -->

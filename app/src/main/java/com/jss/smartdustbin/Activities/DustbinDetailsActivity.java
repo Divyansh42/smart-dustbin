@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.jss.smartdustbin.R;
 import com.jss.smartdustbin.Utils.SmartDustbinApplication;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -55,6 +56,7 @@ public class DustbinDetailsActivity extends AppCompatActivity implements OnMapRe
     LocationRequest mLocationRequest;
     LatLng latLng;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +65,7 @@ public class DustbinDetailsActivity extends AppCompatActivity implements OnMapRe
         dustbinLevelPb = findViewById(R.id.dustbin_progressbar);
         String FCMToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("FCM_token", "");
 
-       //id.setText(FCMToken);
+        //id.setText(FCMToken);
 
        /* mToolbar = (Toolbar) findViewById(R.id.map_toolbar);
         //setSupportActionBar(mToolbar);
@@ -86,13 +88,14 @@ public class DustbinDetailsActivity extends AppCompatActivity implements OnMapRe
         RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
         rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
         rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-        rlp.setMargins(0, 1100, 0, 0);
+        rlp.setMargins(0, 700, 0, 0);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.getUiSettings().setMapToolbarEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if(checkLocationPermission()){
