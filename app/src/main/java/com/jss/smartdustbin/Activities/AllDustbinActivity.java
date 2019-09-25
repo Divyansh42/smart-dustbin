@@ -70,7 +70,7 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
         dustbinMoreDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent dustbinDetailsActivityIntent = new Intent(AllDustbinActivity.this, MapsActivity.class);
+                Intent dustbinDetailsActivityIntent = new Intent(AllDustbinActivity.this, DustbinDetailsActivity.class);
                 startActivity(dustbinDetailsActivityIntent);
             }
         });

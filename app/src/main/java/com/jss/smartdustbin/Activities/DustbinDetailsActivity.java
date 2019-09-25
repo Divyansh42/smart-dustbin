@@ -3,6 +3,7 @@ package com.jss.smartdustbin.Activities;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.jss.smartdustbin.R;
@@ -15,15 +16,17 @@ public class DustbinDetailsActivity extends AppCompatActivity {
 
     Toolbar mToolbar;
     TextView id;
+    ProgressBar dustbinLevelPb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dustbin_details);
         id = findViewById(R.id.SNo_text_view);
+        dustbinLevelPb = findViewById(R.id.dustbin_progressbar);
         String FCMToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("FCM_token", "");
 
-       id.setText(FCMToken);
+       //id.setText(FCMToken);
 
        /* mToolbar = (Toolbar) findViewById(R.id.map_toolbar);
         //setSupportActionBar(mToolbar);
@@ -35,6 +38,8 @@ public class DustbinDetailsActivity extends AppCompatActivity {
         });*/
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("All Details");
+
+        dustbinLevelPb.setProgress(100);
     }
 
     @Override
