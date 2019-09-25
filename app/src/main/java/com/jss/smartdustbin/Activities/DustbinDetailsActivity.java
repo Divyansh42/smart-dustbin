@@ -89,25 +89,47 @@ public class DustbinDetailsActivity extends AppCompatActivity implements OnMapRe
         rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
         rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
         rlp.setMargins(0, 700, 0, 0);
+
+        /*View directionButton = ((View) mapFragment.getView().findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("4"));
+        RelativeLayout.LayoutParams rlp1 = (RelativeLayout.LayoutParams) directionButton.getLayoutParams();
+        rlp1.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
+        rlp1.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+        rlp1.setMargins(0, 700, 100, 0);*/
+
+        /*View directionButton1 = mapFragment.getView().findViewWithTag("GoogleMapDirectionsButton");
+        RelativeLayout.LayoutParams rlp1 = (RelativeLayout.LayoutParams) directionButton1.getLayoutParams();
+        rlp1.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
+        rlp1.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+        rlp1.setMargins(0, 700, 100, 0);*/
+
+        View toolbar = ((View) mapFragment.getView().findViewById(Integer.parseInt("1")).
+                getParent()).findViewById(Integer.parseInt("4"));
+
+        // and next place it, for example, on bottom right (as Google Maps app)
+        RelativeLayout.LayoutParams rlp2 = (RelativeLayout.LayoutParams) toolbar.getLayoutParams();
+        // position on right bottom
+        rlp2.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
+        rlp2.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        rlp2.setMargins(0,0, 0, 0);
+
+
     }
+
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.getUiSettings().setMapToolbarEnabled(true);
-        mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if(checkLocationPermission()){
                 buildGoogleApiClient();
                 mMap.setMyLocationEnabled(true);
-                mMap.getUiSettings().setMapToolbarEnabled(true);
             }
         }
         else {
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
-            mMap.getUiSettings().setMapToolbarEnabled(true);
         }
 
        /* mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
