@@ -66,7 +66,7 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
         dustbinMoreDetails = findViewById(R.id.bt_more_details);
         markerDustbinHashMap = new HashMap<String, Dustbin>();
 
-        dustbinLevelPb.setProgress(70);
+        //dustbinLevelPb.setProgress(70);
 
         dustbinMoreDetails.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,10 +160,10 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
                     @Override
                     public boolean onMarkerClick(Marker marker) {
 
-                        dustbinState.setText(markerDustbinHashMap.get(marker.getId()).getState());
+                       // dustbinState.setText(markerDustbinHashMap.get(marker.getId()).getState());
                         marker.getId();
-                        dustbinCity.setText(markerDustbinHashMap.get(marker.getId()).getCity());
-                        dustbinLocality.setText(markerDustbinHashMap.get(marker.getId()).getLocality());
+                        //dustbinCity.setText(markerDustbinHashMap.get(marker.getId()).getCity());
+                        //dustbinLocality.setText(markerDustbinHashMap.get(marker.getId()).getLocality());
                         Toast.makeText(getApplicationContext(),"Marker is clicked" ,Toast.LENGTH_LONG).show();
                         marker.showInfoWindow();
                         mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
