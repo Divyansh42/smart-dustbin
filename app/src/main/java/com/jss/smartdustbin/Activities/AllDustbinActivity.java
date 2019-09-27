@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -127,26 +128,31 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
                 }
                 Marker marker = mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(28.605223, 77.376407))
-                        .title("Status")
-                        .snippet("Dustbin is 30% full")
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                        .title("50% full")
+                        .snippet("click here for more details")
+                        .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker_green", 100, 125))));
                 markerDustbinHashMap.put(marker.getId(), dustbinArrayList.get(0));
 
 
                 Marker marker1 =  mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(28.584881,77.309219))
-                        .title("Status")
-                        .snippet("Dustbin is 50% full"));
+                        .title("50% full")
+                        .snippet("click here for more details")
+                        .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker_red", 100, 125))));
                 markerDustbinHashMap.put(marker1.getId(), dustbinArrayList.get(1));
 
                 Marker marker2 = mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(28.583724,77.360467))
-                        .title("Status"));
+                        .title("50% full")
+                        .snippet("click here for more details")
+                        .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker_orange", 100, 125))));
                 markerDustbinHashMap.put(marker2.getId(), dustbinArrayList.get(2));
 
                 Marker marker3 = mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(28.595203,77.347282))
-                        .title("Captain America"));
+                        .title("50% full")
+                        .snippet("click here for more details")
+                        .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker_red", 100, 125))));
                 markerDustbinHashMap.put(marker3.getId(), dustbinArrayList.get(3));
 
 
@@ -163,6 +169,15 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
                         mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
                         mMap.getUiSettings().setMapToolbarEnabled(true);
                         return true;
+                    }
+                });
+
+                mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                    @Override
+                    public void onInfoWindowClick(Marker marker) {
+                        mMap.getUiSettings().setMapToolbarEnabled(true);
+                        Intent dustbinDetailsActivityIntent = new Intent(AllDustbinActivity.this, DustbinDetailsActivity.class);
+                        startActivity(dustbinDetailsActivityIntent);
                     }
                 });
 
@@ -196,6 +211,12 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
             //handle click here
         }*/
         return true;
+    }
+
+    public Bitmap resizeMapIcons(String iconName,int width, int height){
+        Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(),getResources().getIdentifier(iconName, "drawable", getPackageName()));
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, width, height, false);
+        return resizedBitmap;
     }
 
     @Override
