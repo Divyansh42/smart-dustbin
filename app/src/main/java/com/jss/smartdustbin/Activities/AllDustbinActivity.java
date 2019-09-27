@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -27,6 +28,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.jss.smartdustbin.Models.Dustbin;
@@ -65,6 +67,7 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
         dustbinLevelPb = findViewById(R.id.dustbin_progressbar);
         dustbinMoreDetails = findViewById(R.id.bt_more_details);
         markerDustbinHashMap = new HashMap<String, Dustbin>();
+        ArrayList<Marker> markers = new ArrayList<Marker>();
 
         //dustbinLevelPb.setProgress(70);
 
@@ -111,14 +114,15 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
 
                 mMap.clear(); //clear old markers
 
-                CameraPosition googlePlex = CameraPosition.builder()
+                /*CameraPosition googlePlex = CameraPosition.builder()
                         .target(new LatLng(28.605223,77.376407))
                         .zoom(12)
                         .bearing(0)
                         .tilt(45)
                         .build();
 
-                                                                                                                                                                                                                                                                                                                                                                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 1000, null);
+
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 1000, null);*/
                 /*mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(37.4219999,-122.0862462)));
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(16));
 
@@ -126,12 +130,7 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
 */              for (int i = 0; i < dustbinArrayList.size(); i++){
 
                 }
-                Marker marker = mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(28.605223, 77.376407))
-                        .title("50% full")
-                        .snippet("click here for more details")
-                        .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker_green", 100, 125))));
-                markerDustbinHashMap.put(marker.getId(), dustbinArrayList.get(0));
+
 
 
                 Marker marker1 =  mMap.addMarker(new MarkerOptions()
@@ -140,6 +139,7 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
                         .snippet("click here for more details")
                         .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker_red", 100, 125))));
                 markerDustbinHashMap.put(marker1.getId(), dustbinArrayList.get(1));
+                markers.add(marker1);
 
                 Marker marker2 = mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(28.583724,77.360467))
@@ -147,6 +147,7 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
                         .snippet("click here for more details")
                         .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker_orange", 100, 125))));
                 markerDustbinHashMap.put(marker2.getId(), dustbinArrayList.get(2));
+                markers.add(marker2);
 
                 Marker marker3 = mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(28.595203,77.347282))
@@ -154,6 +155,24 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
                         .snippet("click here for more details")
                         .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker_red", 100, 125))));
                 markerDustbinHashMap.put(marker3.getId(), dustbinArrayList.get(3));
+                markers.add(marker3);
+
+                Marker marker4 = mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(28.605223, 77.376407))
+                        .title("50% full")
+                        .snippet("click here for more details")
+                        .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker_green", 100, 125))));
+                markerDustbinHashMap.put(marker4.getId(), dustbinArrayList.get(0));
+                markers.add(marker4);
+
+                LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                for (Marker marker : markers) {
+                    builder.include(marker.getPosition());
+                }
+                LatLngBounds bounds = builder.build();
+                int padding = 60; // offset from edges of the map in pixels
+                CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+                mMap.animateCamera(cu);
 
 
                 mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
