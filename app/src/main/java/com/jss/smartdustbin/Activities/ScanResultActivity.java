@@ -31,6 +31,8 @@ import com.jss.smartdustbin.Utils.SmartDustbinApplication;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -48,6 +50,8 @@ public class ScanResultActivity extends AppCompatActivity {
     private final static int ALL_PERMISSIONS_RESULT = 101;
     LocationTrack locationTrack;
     double longitude, latitude;
+
+    Timer timer;
 
 
 
@@ -91,7 +95,7 @@ public class ScanResultActivity extends AppCompatActivity {
             locationTrack.showSettingsAlert();
         }
 
-
+        timer = new Timer();
         btnDone = findViewById(R.id.btn_done);
 
         btnDone.setOnClickListener(new View.OnClickListener() {
@@ -102,16 +106,25 @@ public class ScanResultActivity extends AppCompatActivity {
                 progressDialog.setCanceledOnTouchOutside(false);
                 progressDialog.setCancelable(false);
                 progressDialog.show();
-                //sendBarCodeResult(barCodeResult,latitude, longitude);
-                Intent registrationConfirmActivity = new Intent(ScanResultActivity.this, RegistrationConfirmationActivity.class);
-                startActivity(registrationConfirmActivity);
+                timer = new Timer();
+                TimerTask task = new TimerTask() {
+                    @Override
+                    public void run () {
+                        //send volley request here
+                        fetchRegistrationConfirmation(barCodeResult, latitude, longitude);
+                    }
+                };
+                timer.schedule(task, 0, 60000);
+                //fetchRegistrationConfirmation(barCodeResult,latitude, longitude);
+               /* Intent registrationConfirmActivity = new Intent(ScanResultActivity.this, RegistrationConfirmationActivity.class);
+                startActivity(registrationConfirmActivity);*/
             }
         });
 
 
     }
 
-    private void sendBarCodeResult(String barCodeResult, double latitude, double longitude, String response) {
+    /*private void fetchRegistrationConfirmation(String barCodeResult, double latitude, double longitude, String response) {
         if(isRequiredResponse(response)){
 
             progressDialog.hide();
@@ -164,11 +177,53 @@ public class ScanResultActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            sendBarCodeResult(barCodeResult, latitude, longitude, response);
+            fetchRegistrationConfirmation(barCodeResult, latitude, longitude, response);
         }
 
 
+    }*/
+    private void fetchRegistrationConfirmation(String barCodeResult, double latitude, double longitude) {
+            final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, API.BASE + API.REGISTER, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Log.e(TAG, " onResponse: " + response);
+                    timer.cancel();
+                    progressDialog.hide();
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e(TAG, " onErrorResponse: " + error.toString());
+                    if(error.networkResponse != null){
+                        onError(error.networkResponse.statusCode);
+                    }
+                }
+            }){
+                @Override
+                protected Map<String, String> getParams(){
+                    Map<String,String> params = new HashMap<>();
+                    //params.put("lat", Double.toString(latitude));
+                   // params.put("long", Double.toString(longitude));
+                   // params.put("din", barCodeResult);
+                    return params;
+                }
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String,String> params = new HashMap<>();
+                    params.put("Content-Type","application/x-www-form-urlencoded");
+                    params.put("Authorization", "Bearer " + accessToken);
+
+                    return params;
+                }
+
+            };
+
+            SmartDustbinApplication.getInstance().addToRequestQueue(stringRequest);
     }
+
 
     private boolean isRequiredResponse(String response) {
         return true;
@@ -183,7 +238,7 @@ public class ScanResultActivity extends AppCompatActivity {
             startActivity(login);
         } else{
             Toast.makeText(ScanResultActivity.this, "Error fetching data, Please try again.", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(ScanResultActivity.this, ScanActivity.class));
+           // startActivity(new Intent(ScanResultActivity.this, ScanActivity.class));
         }
     }
 
@@ -287,4 +342,6 @@ public class ScanResultActivity extends AppCompatActivity {
         startActivity(intent);*/
         finish();
     }
+
+
 }

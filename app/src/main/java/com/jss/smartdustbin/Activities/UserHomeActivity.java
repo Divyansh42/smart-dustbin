@@ -70,7 +70,7 @@ public class UserHomeActivity extends AppCompatActivity implements NavigationVie
 
         pref = PreferenceManager.getDefaultSharedPreferences(UserHomeActivity.this);
         accessToken = findViewById(R.id.access_token);
-        //accessToken.setText(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", ""));
+        accessToken.setText(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", ""));
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

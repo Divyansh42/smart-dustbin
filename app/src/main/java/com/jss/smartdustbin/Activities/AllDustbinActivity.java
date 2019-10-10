@@ -145,7 +145,7 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
                         .position(new LatLng(28.583724,77.360467))
                         .title("50% full")
                         .snippet("click here for more details")
-                        .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker_orange", 100, 125))));
+                        .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker_orange", 75, 115))));
                 markerDustbinHashMap.put(marker2.getId(), dustbinArrayList.get(2));
                 markers.add(marker2);
 
@@ -161,7 +161,7 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
                         .position(new LatLng(28.605223, 77.376407))
                         .title("50% full")
                         .snippet("click here for more details")
-                        .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker_green", 100, 125))));
+                        .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker_green", 75, 115))));
                 markerDustbinHashMap.put(marker4.getId(), dustbinArrayList.get(0));
                 markers.add(marker4);
 
@@ -237,6 +237,8 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
         Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, width, height, false);
         return resizedBitmap;
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
