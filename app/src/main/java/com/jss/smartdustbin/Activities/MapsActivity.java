@@ -1,6 +1,7 @@
 package com.jss.smartdustbin.Activities;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Build;
@@ -80,6 +81,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         locationMarkerText = findViewById(R.id.locationMarkertext);
         confirmLocationButton = findViewById(R.id.bt_confirm_location);
+
+        confirmLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MapsActivity.this, ScanResultActivity.class);
+                startActivity(intent);
+            }
+        });
 
         //code for locationButton on the bottom right
         View locationButton = ((View) mapFragment.getView().findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));

@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -21,6 +22,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.StringRequest;
 import com.jss.smartdustbin.API;
 import com.jss.smartdustbin.R;
@@ -28,6 +30,18 @@ import com.jss.smartdustbin.Utils.HttpStatus;
 import com.jss.smartdustbin.Utils.LocationTrack;
 import com.jss.smartdustbin.Utils.SmartDustbinApplication;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +50,7 @@ import java.util.TimerTask;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.READ_CALENDAR;
 
 public class ScanResultActivity extends AppCompatActivity {
 
@@ -52,6 +67,7 @@ public class ScanResultActivity extends AppCompatActivity {
     double longitude, latitude;
 
     Timer timer;
+    boolean success = false;
 
 
 
@@ -106,140 +122,100 @@ public class ScanResultActivity extends AppCompatActivity {
                 progressDialog.setCanceledOnTouchOutside(false);
                 progressDialog.setCancelable(false);
                 progressDialog.show();
-                timer = new Timer();
-                TimerTask task = new TimerTask() {
-                    @Override
-                    public void run () {
-                        //send volley request here
-                        fetchRegistrationConfirmation(barCodeResult, latitude, longitude);
-                    }
-                };
-                timer.schedule(task, 0, 60000);
-                //fetchRegistrationConfirmation(barCodeResult,latitude, longitude);
-               /* Intent registrationConfirmActivity = new Intent(ScanResultActivity.this, RegistrationConfirmationActivity.class);
-                startActivity(registrationConfirmActivity);*/
+
+
+               confirmRegistration();
+
+
             }
         });
 
 
     }
 
-    /*private void fetchRegistrationConfirmation(String barCodeResult, double latitude, double longitude, String response) {
-        if(isRequiredResponse(response)){
+    private void confirmRegistration() {
 
-            progressDialog.hide();
+        final Thread fetchRegistrationConfirmationThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int count = 0;
+                final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
 
-        }
+                while(!success){
+                    try {
+                        httpRequest(accessToken);
+                        Thread.sleep(10000);
 
-        else{
-            final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, API.BASE + API.FCM_TOKEN_POST, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    Log.e(TAG, " onResponse: " + response);
-
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e(TAG, " onErrorResponse: " + error.toString());
-                    if(error.networkResponse != null){
-                        onError(error.networkResponse.statusCode);
+                    }
+                    catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }
-            }){
-                @Override
-                protected Map<String, String> getParams(){
-                    Map<String,String> params = new HashMap<>();
-                    params.put("lat", Double.toString(latitude));
-                    params.put("long", Double.toString(longitude));
-                    params.put("qr", barCodeResult);
-                    return params;
-                }
-
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String,String> params = new HashMap<>();
-                    params.put("Content-Type","application/x-www-form-urlencoded");
-                    params.put("Authorization", "Bearer " + accessToken);
-
-                    return params;
-                }
-
-            };
-
-            SmartDustbinApplication.getInstance().addToRequestQueue(stringRequest);
-
-
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
+        });
 
-            fetchRegistrationConfirmation(barCodeResult, latitude, longitude, response);
-        }
-
-
-    }*/
-    private void fetchRegistrationConfirmation(String barCodeResult, double latitude, double longitude) {
-            final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, API.BASE + API.REGISTER, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    Log.e(TAG, " onResponse: " + response);
-                    timer.cancel();
-                    progressDialog.hide();
-
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e(TAG, " onErrorResponse: " + error.toString());
-                    if(error.networkResponse != null){
-                        onError(error.networkResponse.statusCode);
-                    }
-                }
-            }){
-                @Override
-                protected Map<String, String> getParams(){
-                    Map<String,String> params = new HashMap<>();
-                    //params.put("lat", Double.toString(latitude));
-                   // params.put("long", Double.toString(longitude));
-                   // params.put("din", barCodeResult);
-                    return params;
-                }
-
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String,String> params = new HashMap<>();
-                    params.put("Content-Type","application/x-www-form-urlencoded");
-                    params.put("Authorization", "Bearer " + accessToken);
-
-                    return params;
-                }
-
-            };
-
-            SmartDustbinApplication.getInstance().addToRequestQueue(stringRequest);
+        fetchRegistrationConfirmationThread.start();
     }
 
+    private void httpRequest(String accessToken) throws IOException, JSONException {
+        URL url = new URL(API.BASE + API.REGISTER);
 
-    private boolean isRequiredResponse(String response) {
-        return true;
+        HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+        httpURLConnection.setRequestMethod("GET");
+        httpURLConnection.setRequestProperty ("Authorization", "Bearer " + accessToken);
+        httpURLConnection.setUseCaches(false);
+        httpURLConnection.setDoInput(false);
+        httpURLConnection.setDoOutput(false);
+        int responseCode = httpURLConnection.getResponseCode();
+        Log.e(TAG, "response code-----------" + responseCode);
+        //System.out.println("--------------" + httpURLConnection.getResponseCode() + "------------------");
+
+        if (responseCode == HttpStatus.OK.value()) {
+           /* BufferedReader in = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+            String line = in.readLine();
+            JSONObject jsonObject = new JSONObject(line);*/
+            Log.v(TAG, "json object created");
+            success = true;
+            runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+
+                    // Stuff that updates the UI
+                    progressDialog.hide();
+                    Intent intent = new Intent(ScanResultActivity.this, RegistrationConfirmationActivity.class);
+                    startActivity(intent);
+                    finish();
+
+                }
+            });
+        } else{
+            success = false;
+            onError(httpURLConnection.getResponseCode());
+        }
     }
 
     public void onError(int status) {
-        if(status == HttpStatus.UNAUTHORIZED.value()){
-            Toast.makeText(ScanResultActivity.this, "Please login to perform this action.", Toast.LENGTH_SHORT).show();
-            SmartDustbinApplication.getInstance().getDefaultSharedPreferences().edit().clear().apply();
-            Intent login = new Intent(ScanResultActivity.this, LoginActivity.class);
-            finishAffinity();
-            startActivity(login);
-        } else{
-            Toast.makeText(ScanResultActivity.this, "Error fetching data, Please try again.", Toast.LENGTH_SHORT).show();
-           // startActivity(new Intent(ScanResultActivity.this, ScanActivity.class));
-        }
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+
+                if (status == HttpStatus.UNAUTHORIZED.value()) {
+                    Toast.makeText(ScanResultActivity.this, "Please login to perform this action.", Toast.LENGTH_SHORT).show();
+                    SmartDustbinApplication.getInstance().getDefaultSharedPreferences().edit().clear().apply();
+                    Intent login = new Intent(ScanResultActivity.this, LoginActivity.class);
+                    finishAffinity();
+                    startActivity(login);
+                }
+            }
+        });
     }
 
     @Override

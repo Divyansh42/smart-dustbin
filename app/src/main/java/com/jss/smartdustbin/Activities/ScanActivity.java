@@ -1,15 +1,18 @@
 package com.jss.smartdustbin.Activities;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -20,6 +23,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.jss.smartdustbin.API;
 import com.jss.smartdustbin.R;
+import com.jss.smartdustbin.Utils.HttpStatus;
 import com.jss.smartdustbin.Utils.NetworkReceiver;
 import com.jss.smartdustbin.Utils.SmartDustbinApplication;
 
@@ -46,6 +50,7 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
         setTitle("Register");
         receiver = new NetworkReceiver();
         pref = PreferenceManager.getDefaultSharedPreferences(ScanActivity.this);
+        progressDialog = new ProgressDialog(this);
 
         // get the barcode reader instance
         barcodeReader = (BarcodeReader) getSupportFragmentManager().findFragmentById(R.id.barcode_scanner);
@@ -56,15 +61,12 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
 
         // playing barcode reader beep sound
         barcodeReader.playBeep();
-        /*progressDialog = new ProgressDialog(ScanActivity.this);
-            progressDialog.setMessage("Fetching Details...");
-            progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.setCancelable(false);
-            progressDialog.show();*/
-        //getResultFromQrCode(barcode.displayValue);
-
         // ticket details activity by passing barcode
-        Intent intent = new Intent(ScanActivity.this, ScanResultActivity.class);
+        /*progressDialog.setMessage("Confirming registration...");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setCancelable(false);
+        progressDialog.show();*/
+        Intent intent = new Intent(ScanActivity.this, MapsActivity.class);
         intent.putExtra("code", barcode.displayValue);
         startActivity(intent);
     }
@@ -76,6 +78,9 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
             public void onResponse(String response) {
                 Log.e(LOG_TAG, " onResponse: " + response);
                 progressDialog.hide();
+                Intent intent = new Intent(ScanActivity.this, ScanResultActivity.class);
+                startActivity(intent);
+
 
             }
         }, new Response.ErrorListener() {
@@ -83,16 +88,16 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
             public void onErrorResponse(VolleyError error) {
                 Log.e(LOG_TAG, " onErrorResponse: " + error.toString());
                 if(error.networkResponse != null){
-                    //onError(error.networkResponse.statusCode);
+                    onError(error.networkResponse.statusCode);
                 }
             }
         }){
             @Override
             protected Map<String, String> getParams(){
                 Map<String,String> params = new HashMap<>();
-                //params.put("lat", Double.toString(latitude));
-                // params.put("long", Double.toString(longitude));
-                // params.put("din", barCodeResult);
+                params.put("lat", Double.toString(latitude));
+                params.put("long", Double.toString(longitude));
+                params.put("din", barCodeResult);
                 return params;
             }
 
@@ -109,6 +114,22 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
 
         SmartDustbinApplication.getInstance().addToRequestQueue(stringRequest);
     }
+
+    public void onError(int status) {
+        if(status == HttpStatus.UNAUTHORIZED.value()){
+            Toast.makeText(ScanActivity.this, "Please login to perform this action.", Toast.LENGTH_SHORT).show();
+            SmartDustbinApplication.getInstance().getDefaultSharedPreferences().edit().clear().apply();
+            Intent login = new Intent(ScanActivity.this, LoginActivity.class);
+            finishAffinity();
+            startActivity(login);
+        } else{
+            Toast.makeText(ScanActivity.this, "Please try again.", Toast.LENGTH_SHORT).show();
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+        }
+    }
+
 
     private void registerDustbin(String displayValue) {
     }
