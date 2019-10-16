@@ -42,6 +42,7 @@ dependencies {
 
     // vision barcode scanner
     implementation 'info.androidhive:barcode-reader:1.1.5'
+    implementation 'me.dm7.barcodescanner:zxing:1.9.13'
     //firebase cloud messaging
     implementation 'com.google.firebase:firebase-core:17.2.0'
     implementation 'com.google.firebase:firebase-messaging:20.0.0'

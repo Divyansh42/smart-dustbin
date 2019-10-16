@@ -21,7 +21,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.jss.smartdustbin.Activities.NotificationActivity;
 import com.jss.smartdustbin.Activities.SplashActivity;
 import com.jss.smartdustbin.R;
 import com.jss.smartdustbin.Utils.Config;
@@ -41,14 +40,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.e(TAG, "From: " + remoteMessage.getFrom());
         super.onMessageReceived(remoteMessage);
-
-       /* Notification notification = new NotificationCompat.Builder(this)
-                .setContentTitle(remoteMessage.getNotification().getTitle())
-                .setContentText(remoteMessage.getNotification().getBody())
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .build();
-        NotificationManagerCompat manager = NotificationManagerCompat.from(getApplicationContext());
-        manager.notify(123, notification);*/
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
 

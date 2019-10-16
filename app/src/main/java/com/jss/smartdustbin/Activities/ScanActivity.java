@@ -1,11 +1,22 @@
 package com.jss.smartdustbin.Activities;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.res.AssetFileDescriptor;
+import android.hardware.Camera;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.preference.PreferenceManager;
@@ -21,6 +32,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.android.gms.vision.barcode.Barcode;
+import com.google.zxing.Result;
 import com.jss.smartdustbin.API;
 import com.jss.smartdustbin.R;
 import com.jss.smartdustbin.Utils.HttpStatus;
@@ -32,126 +44,166 @@ import java.util.List;
 import java.util.Map;
 
 import info.androidhive.barcode.BarcodeReader;
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-public class ScanActivity extends AppCompatActivity implements BarcodeReader.BarcodeReaderListener {
+import static android.Manifest.permission.CAMERA;
 
-    BarcodeReader barcodeReader;
-    public static final String LOG_TAG = ScanActivity.class.getSimpleName();
-    ProgressDialog progressDialog;
-    private SharedPreferences pref;
-    private NetworkReceiver receiver;
+public class ScanActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler  {
+
+    private static final int REQUEST_CAMERA = 1;
+    private ZXingScannerView mScannerView;
+    private static int camId = Camera.CameraInfo.CAMERA_FACING_BACK;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scan);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Register");
-        receiver = new NetworkReceiver();
-        pref = PreferenceManager.getDefaultSharedPreferences(ScanActivity.this);
-        progressDialog = new ProgressDialog(this);
 
-        // get the barcode reader instance
-        barcodeReader = (BarcodeReader) getSupportFragmentManager().findFragmentById(R.id.barcode_scanner);
-    }
-
-    @Override
-    public void onScanned(Barcode barcode) {
-
-        // playing barcode reader beep sound
-        barcodeReader.playBeep();
-        // ticket details activity by passing barcode
-        /*progressDialog.setMessage("Confirming registration...");
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.setCancelable(false);
-        progressDialog.show();*/
-        Intent intent = new Intent(ScanActivity.this, MapsActivity.class);
-        intent.putExtra("code", barcode.displayValue);
-        startActivity(intent);
-    }
-
-    private void sendQrCodeResult(String barCodeResult, double latitude, double longitude) {
-        final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, API.BASE + API.REGISTER, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.e(LOG_TAG, " onResponse: " + response);
-                progressDialog.hide();
-                Intent intent = new Intent(ScanActivity.this, ScanResultActivity.class);
-                startActivity(intent);
-
-
+        mScannerView = new ZXingScannerView(this);
+        setContentView(mScannerView);
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
+            if (!checkPermission()) {
+                requestPermission();
+            } else {
+                requestPermission();
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(LOG_TAG, " onErrorResponse: " + error.toString());
-                if(error.networkResponse != null){
-                    onError(error.networkResponse.statusCode);
+        }
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_DENIED)
+            ActivityCompat.requestPermissions(ScanActivity.this, new String[] {Manifest.permission.CAMERA}, REQUEST_CAMERA);
+    }
+
+
+
+    private boolean checkPermission() {
+        return ( ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA ) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{CAMERA}, REQUEST_CAMERA);
+    }
+
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CAMERA:
+                if (grantResults.length > 0) {
+
+                    boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    if (cameraAccepted){
+                        Toast.makeText(getApplicationContext(), "Permission Granted, Now you can access camera", Toast.LENGTH_LONG).show();
+                    }else {
+                        Toast.makeText(getApplicationContext(), "Permission Denied, You cannot access and camera", Toast.LENGTH_LONG).show();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (shouldShowRequestPermissionRationale(CAMERA)) {
+                                showMessageOKCancel("You need to allow access to both the permissions",
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                    requestPermissions(new String[]{CAMERA},
+                                                            REQUEST_CAMERA);
+                                                }
+                                            }
+                                        });
+                                return;
+                            }
+                        }
+                    }
                 }
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams(){
-                Map<String,String> params = new HashMap<>();
-                params.put("lat", Double.toString(latitude));
-                params.put("long", Double.toString(longitude));
-                params.put("din", barCodeResult);
-                return params;
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                params.put("Content-Type","application/x-www-form-urlencoded");
-                params.put("Authorization", "Bearer " + accessToken);
-
-                return params;
-            }
-
-        };
-
-        SmartDustbinApplication.getInstance().addToRequestQueue(stringRequest);
-    }
-
-    public void onError(int status) {
-        if(status == HttpStatus.UNAUTHORIZED.value()){
-            Toast.makeText(ScanActivity.this, "Please login to perform this action.", Toast.LENGTH_SHORT).show();
-            SmartDustbinApplication.getInstance().getDefaultSharedPreferences().edit().clear().apply();
-            Intent login = new Intent(ScanActivity.this, LoginActivity.class);
-            finishAffinity();
-            startActivity(login);
-        } else{
-            Toast.makeText(ScanActivity.this, "Please try again.", Toast.LENGTH_SHORT).show();
-            Intent intent = getIntent();
-            finish();
-            startActivity(intent);
+                break;
         }
     }
 
-
-    private void registerDustbin(String displayValue) {
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(ScanActivity.this)
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
     }
 
     @Override
-    public void onScannedMultiple(List<Barcode> list) {
+    public void onResume() {
+        super.onResume();
 
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
+            if (checkPermission()) {
+                if(mScannerView == null) {
+                    mScannerView = new ZXingScannerView(this);
+                    setContentView(mScannerView);
+                }
+                mScannerView.setResultHandler(this);
+                mScannerView.startCamera(camId);
+            } else {
+                requestPermission();
+            }
+        }
     }
 
     @Override
-    public void onBitmapScanned(SparseArray<Barcode> sparseArray) {
-
+    public void onDestroy() {
+        super.onDestroy();
+        mScannerView.stopCamera();
+        mScannerView = null;
     }
 
     @Override
-    public void onScanError(String s) {
-        Toast.makeText(getApplicationContext(), "Error occurred while scanning " + s, Toast.LENGTH_SHORT).show();
+    public void handleResult(Result rawResult) {
+        playBeep();
+        final String barCodeResult = rawResult.getText();
+        Intent intent = new Intent(ScanActivity.this, MapsActivity.class);
+        intent.putExtra("code", barCodeResult);
+        startActivity(intent);
+
+
+        /*Log.e("QRCodeScanner", rawResult.getText());
+        Log.e("QRCodeScanner", rawResult.getBarcodeFormat().toString());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Scan Result");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mScannerView.resumeCameraPreview(ScanActivity.this);
+            }
+        });
+        builder.setNeutralButton("Visit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(result));
+                startActivity(browserIntent);
+            }
+        });
+        builder.setMessage(rawResult.getText());
+        AlertDialog alert1 = builder.create();
+        alert1.show();*/
     }
 
-    @Override
-    public void onCameraPermissionDenied() {
-        finish();
+    public void playBeep() {
+        MediaPlayer m = new MediaPlayer();
+        try {
+            if (m.isPlaying()) {
+                m.stop();
+                m.release();
+                m = new MediaPlayer();
+            }
+
+            AssetFileDescriptor descriptor = this.getAssets().openFd("beep.mp3");
+            m.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(), descriptor.getLength());
+            descriptor.close();
+
+            m.prepare();
+            m.setVolume(1f, 1f);
+            m.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -161,4 +213,6 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }

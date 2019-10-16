@@ -1,3 +1,4 @@
+/*
 package com.jss.smartdustbin.Activities;
 
 import androidx.annotation.NonNull;
@@ -88,17 +89,20 @@ public class NotificationActivity extends AppCompatActivity {
 
     }
 
-    /**
+    */
+/**
      * Called if InstanceID token is updated. This may occur if the security of
      * the previous token had been compromised. Note that this is called when the InstanceID token
      * is initially generated so this is where you would retrieve the token.
-     */
+     *//*
+
 
 
 
     // Fetches reg id from shared preferences
     // and displays on the screen
-    /*private void displayFirebaseRegId() {
+    */
+/*private void displayFirebaseRegId() {
         SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
         String regId = pref.getString("regId", null);
 
@@ -110,7 +114,8 @@ public class NotificationActivity extends AppCompatActivity {
         else
             txtRegId.setText("Firebase Reg Id is not received yet!");
     }
-*/
+*//*
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -134,3 +139,4 @@ public class NotificationActivity extends AppCompatActivity {
         super.onPause();
     }
 }
+*/
