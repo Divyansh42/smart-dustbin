@@ -20,8 +20,18 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        String dustbinId = getIntent().getStringExtra("id");
-        if(dustbinId != null){
+
+        /*String dustbinId = getIntent().getStringExtra("id");
+        Intent notificationActivity = new Intent(SplashActivity.this, DustbinDetailsActivity.class);
+        notificationActivity.putExtra("id", dustbinId);
+        startActivity(notificationActivity);*/
+        /*if(dustbinId != null){
+            Intent notificationActivity = new Intent(SplashActivity.this, DustbinDetailsActivity.class);
+            notificationActivity.putExtra("id", dustbinId);
+            startActivity(notificationActivity);
+        }*/
+        if(getIntent().getExtras() != null){
+            String dustbinId = getIntent().getStringExtra("id");
             Intent notificationActivity = new Intent(SplashActivity.this, DustbinDetailsActivity.class);
             notificationActivity.putExtra("id", dustbinId);
             startActivity(notificationActivity);
@@ -38,5 +48,5 @@ public class SplashActivity extends AppCompatActivity {
             startActivity(mainIntent);
             finish();
         }, SPLASH_DISPLAY_LENGTH);
-    }
+        }
 }

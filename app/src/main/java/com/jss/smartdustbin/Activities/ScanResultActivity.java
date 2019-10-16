@@ -144,7 +144,7 @@ public class ScanResultActivity extends AppCompatActivity {
                 while(!success){
                     try {
                         httpRequest(accessToken);
-                        Thread.sleep(10000);
+                        Thread.sleep(2000);
 
                     }
                     catch (MalformedURLException e) {

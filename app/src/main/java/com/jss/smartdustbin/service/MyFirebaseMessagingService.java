@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -21,6 +22,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.jss.smartdustbin.Activities.NotificationActivity;
+import com.jss.smartdustbin.Activities.SplashActivity;
 import com.jss.smartdustbin.R;
 import com.jss.smartdustbin.Utils.Config;
 import com.jss.smartdustbin.Utils.NotificationUtils;
@@ -64,11 +66,30 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentText(remoteMessage.getNotification().getBody())
                 .setSmallIcon(R.mipmap.ic_launcher);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
+        Intent notificationIntent = new Intent(this, SplashActivity.class);
+
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        PendingIntent intent = PendingIntent.getActivity(this, 0,
+                notificationIntent, 0);
+        notification.setContentIntent(intent);
         notificationManager.notify(1, notification.build());
-
 /*
+        NotificationManager notificationManager = (NotificationManager) context
+                .getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification notification = new Notification(icon, message, when);*/
 
 
+
+       // notification.setLatestEventInfo(context, title, message, intent);
+
+       // notificationManager.notify(0, notification);
+
+
+/*fi
+
+    
         if (remoteMessage == null)
             return;
 
