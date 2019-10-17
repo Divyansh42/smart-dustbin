@@ -10,6 +10,11 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import android.os.Bundle;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -28,6 +33,9 @@ import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -37,11 +45,18 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+import com.jss.smartdustbin.API;
 import com.jss.smartdustbin.R;
+import com.jss.smartdustbin.Utils.HttpStatus;
+import com.jss.smartdustbin.Utils.SmartDustbinApplication;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+
+import static com.jss.smartdustbin.Activities.LoginActivity.LOG_TAG;
 
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
@@ -57,6 +72,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     TextView locationMarkerText;
     Toolbar mToolbar;
     Button confirmLocationButton;
+    String qrCodeResult;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -74,6 +90,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Set Your Location");
 
+        qrCodeResult = getIntent().getStringExtra("code");
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -85,8 +103,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         confirmLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //sendQrCodeResult(qrCodeResult, latLng.latitude, latLng.longitude);
                 Intent intent = new Intent(MapsActivity.this, ScanResultActivity.class);
                 startActivity(intent);
+
             }
         });
 
@@ -129,10 +149,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });*/
 
-        Marker marker = mMap.addMarker(new MarkerOptions()
+        /*Marker marker = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(28.605223, 77.376407))
                 .title("Spider Man")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));*/
 
 
     }
@@ -192,8 +212,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             Manifest.permission.ACCESS_FINE_LOCATION)
                             == PackageManager.PERMISSION_GRANTED) {
 
-                        //buildGoogleApiClient();
-                        //mMap.setMyLocationEnabled(true);
+                        buildGoogleApiClient();
+                        mMap.setMyLocationEnabled(true);
                     }
 
                 } else {
@@ -301,6 +321,64 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
+    }
+
+    private void sendQrCodeResult(String barCodeResult, double latitude, double longitude) {
+        final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, API.BASE + API.REGISTER, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e(LOG_TAG, " onResponse: " + response);
+                Intent intent = new Intent(MapsActivity.this, ScanResultActivity.class);
+                startActivity(intent);
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(LOG_TAG, " onErrorResponse: " + error.toString());
+                if(error.networkResponse != null){
+                    onError(error.networkResponse.statusCode);
+                }
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams(){
+                Map<String,String> params = new HashMap<>();
+                params.put("lat", Double.toString(latitude));
+                params.put("long", Double.toString(longitude));
+                params.put("din", barCodeResult);
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                params.put("Authorization", "Bearer " + accessToken);
+
+                return params;
+            }
+
+        };
+
+        SmartDustbinApplication.getInstance().addToRequestQueue(stringRequest);
+    }
+
+    public void onError(int status) {
+        if(status == HttpStatus.UNAUTHORIZED.value()){
+            Toast.makeText(MapsActivity.this, "Please login to perform this action.", Toast.LENGTH_SHORT).show();
+            SmartDustbinApplication.getInstance().getDefaultSharedPreferences().edit().clear().apply();
+            Intent login = new Intent(MapsActivity.this, LoginActivity.class);
+            finishAffinity();
+            startActivity(login);
+        } else{
+            Toast.makeText(MapsActivity.this, "Please try again.", Toast.LENGTH_SHORT).show();
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+        }
     }
 
 

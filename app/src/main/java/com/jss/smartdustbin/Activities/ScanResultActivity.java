@@ -80,7 +80,7 @@ public class ScanResultActivity extends AppCompatActivity {
         barCodeResult = getIntent().getStringExtra("code");
         setTitle("Register");
 
-        permissions.add(ACCESS_FINE_LOCATION);
+        /*permissions.add(ACCESS_FINE_LOCATION);
         permissions.add(ACCESS_COARSE_LOCATION);
 
         permissionsToRequest = findUnAskedPermissions(permissions);
@@ -111,7 +111,7 @@ public class ScanResultActivity extends AppCompatActivity {
             locationTrack.showSettingsAlert();
         }
 
-        timer = new Timer();
+        timer = new Timer();*/
         btnDone = findViewById(R.id.btn_done);
 
         btnDone.setOnClickListener(new View.OnClickListener() {
@@ -177,9 +177,6 @@ public class ScanResultActivity extends AppCompatActivity {
         //System.out.println("--------------" + httpURLConnection.getResponseCode() + "------------------");
 
         if (responseCode == HttpStatus.OK.value()) {
-           /* BufferedReader in = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-            String line = in.readLine();
-            JSONObject jsonObject = new JSONObject(line);*/
             Log.v(TAG, "json object created");
             success = true;
             runOnUiThread(new Runnable() {
@@ -222,16 +219,12 @@ public class ScanResultActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
 
-           /* Intent intent = new Intent(ScanResultActivity.this, RegisterDustbinActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);*/
-
             finish();
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private ArrayList<String> findUnAskedPermissions(ArrayList<String> wanted) {
+    /*private ArrayList<String> findUnAskedPermissions(ArrayList<String> wanted) {
         ArrayList result = new ArrayList();
 
         for (String perm : wanted) {
@@ -303,19 +296,16 @@ public class ScanResultActivity extends AppCompatActivity {
                 .create()
                 .show();
     }
-
+*/
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        locationTrack.stopListener();
+        //locationTrack.stopListener();
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        /*Intent intent = new Intent(ScanResultActivity.this, RegisterDustbinActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);*/
         finish();
     }
 
