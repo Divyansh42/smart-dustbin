@@ -118,7 +118,8 @@ public class ScanResultActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 progressDialog = new ProgressDialog(ScanResultActivity.this);
-                progressDialog.setMessage("Confirming registration...");
+                progressDialog.setTitle("Confirming registration");
+                progressDialog.setMessage("Please wait...");
                 progressDialog.setCanceledOnTouchOutside(false);
                 progressDialog.setCancelable(false);
                 progressDialog.show();
