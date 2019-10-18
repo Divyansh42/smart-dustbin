@@ -58,6 +58,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setSmallIcon(R.mipmap.ic_launcher);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
         Intent notificationIntent = new Intent(this, SplashActivity.class);
+        notificationIntent.putExtra("bin", remoteMessage.getData().get("bin"));
 
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                 | Intent.FLAG_ACTIVITY_SINGLE_TOP);

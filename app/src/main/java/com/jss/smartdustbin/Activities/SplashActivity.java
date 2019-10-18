@@ -30,10 +30,10 @@ public class SplashActivity extends AppCompatActivity {
             notificationActivity.putExtra("id", dustbinId);
             startActivity(notificationActivity);
         }*/
-        if(getIntent().getExtras() != null){
-            String dustbinId = getIntent().getStringExtra("id");
+        if (getIntent().getStringExtra("bin") != null) {
+            String dustbinId = getIntent().getStringExtra("bin");
             Intent notificationActivity = new Intent(SplashActivity.this, DustbinDetailsActivity.class);
-            notificationActivity.putExtra("id", dustbinId);
+            notificationActivity.putExtra("bin", dustbinId);
             startActivity(notificationActivity);
         }
 
@@ -41,12 +41,12 @@ public class SplashActivity extends AppCompatActivity {
             /* Create an Intent that will start the Menu-Activity. */
             Intent mainIntent;
             String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", null);
-            if( accessToken == null)
+            if (accessToken == null)
                 mainIntent = new Intent(SplashActivity.this, LoginActivity.class);
             else
                 mainIntent = new Intent(SplashActivity.this, UserHomeActivity.class);
             startActivity(mainIntent);
             finish();
         }, SPLASH_DISPLAY_LENGTH);
-        }
+    }
 }

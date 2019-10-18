@@ -144,7 +144,7 @@ public class ScanResultActivity extends AppCompatActivity {
 
                 while(!success){
                     try {
-                        httpRequest(accessToken);
+                        httpRequest(accessToken, barCodeResult);
                         Thread.sleep(2000);
 
                     }
@@ -164,8 +164,18 @@ public class ScanResultActivity extends AppCompatActivity {
         fetchRegistrationConfirmationThread.start();
     }
 
-    private void httpRequest(String accessToken) throws IOException, JSONException {
-        URL url = new URL(API.BASE + API.REGISTER);
+    private void httpRequest(String accessToken, String bin) throws IOException, JSONException {
+        String data = "?";
+        try {
+            data += URLEncoder.encode("bin", "UTF-8") + "=" + URLEncoder.encode("987543222", "UTF-8");
+            /*data += "&" + URLEncoder.encode("description", "UTF-8") + "=" + URLEncoder.encode(params[1], "UTF-8");
+            data += "&" + URLEncoder.encode("remark", "UTF-8") + "=" + URLEncoder.encode(params[2], "UTF-8");
+            data += "&" + URLEncoder.encode("customer", "UTF-8") + "=" + URLEncoder.encode(params[3], "UTF-8");
+            data += "&" + URLEncoder.encode("salesman", "UTF-8") + "=" + URLEncoder.encode(params[4], "UTF-8");*/
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        URL url = new URL(API.BASE + API.CONFIRM_REGISTRATION + "?bin=" + bin);
 
         HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
         httpURLConnection.setRequestMethod("GET");
@@ -173,6 +183,10 @@ public class ScanResultActivity extends AppCompatActivity {
         httpURLConnection.setUseCaches(false);
         httpURLConnection.setDoInput(false);
         httpURLConnection.setDoOutput(false);
+       /* OutputStreamWriter wr = new OutputStreamWriter(httpURLConnection.getOutputStream());
+        wr.write(data);
+        wr.flush();
+        wr.close();*/
         int responseCode = httpURLConnection.getResponseCode();
         Log.e(TAG, "response code-----------" + responseCode);
         //System.out.println("--------------" + httpURLConnection.getResponseCode() + "------------------");

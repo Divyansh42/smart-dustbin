@@ -1,5 +1,6 @@
 package com.jss.smartdustbin.Activities;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
@@ -73,6 +74,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     Toolbar mToolbar;
     Button confirmLocationButton;
     String qrCodeResult;
+    ProgressDialog progressDialog;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -103,9 +105,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         confirmLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //sendQrCodeResult(qrCodeResult, latLng.latitude, latLng.longitude);
-                Intent intent = new Intent(MapsActivity.this, ScanResultActivity.class);
-                startActivity(intent);
+                progressDialog = new ProgressDialog(MapsActivity.this);
+                progressDialog.setTitle("Confirming registration");
+                progressDialog.setMessage("Please wait...");
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+                sendQrCodeResult(qrCodeResult, latLng.latitude, latLng.longitude);
+
 
             }
         });
@@ -325,11 +332,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void sendQrCodeResult(String barCodeResult, double latitude, double longitude) {
         final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, API.BASE + API.REGISTER, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, API.BASE + API.REGISTER_DUSTBIN + "?bin=" + barCodeResult, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.e(LOG_TAG, " onResponse: " + response);
+                progressDialog.hide();
                 Intent intent = new Intent(MapsActivity.this, ScanResultActivity.class);
+                intent.putExtra("code", barCodeResult);
                 startActivity(intent);
 
 
@@ -346,9 +355,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             protected Map<String, String> getParams(){
                 Map<String,String> params = new HashMap<>();
-                params.put("lat", Double.toString(latitude));
-                params.put("long", Double.toString(longitude));
-                params.put("din", barCodeResult);
+                //params.put("lat", Double.toString(latitude));
+                //params.put("long", Double.toString(longitude));
+                params.put("bin", barCodeResult);
                 return params;
             }
 
@@ -357,7 +366,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Map<String,String> params = new HashMap<>();
                 params.put("Content-Type","application/x-www-form-urlencoded");
                 params.put("Authorization", "Bearer " + accessToken);
-
                 return params;
             }
 
