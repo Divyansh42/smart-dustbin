@@ -1,6 +1,6 @@
-package com.jss.smartdustbin.Utils;
+package com.jss.smartdustbin.utils;
 
-import com.jss.smartdustbin.Models.Dustbin;
+import com.jss.smartdustbin.model.Dustbin;
 
 import org.json.JSONArray;
 import org.json.JSONException;

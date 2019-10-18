@@ -1,4 +1,4 @@
-package com.jss.smartdustbin.Utils;
+package com.jss.smartdustbin.utils;
 
 import android.util.Log;
 
@@ -9,8 +9,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.jss.smartdustbin.API;
-import com.jss.smartdustbin.Interfaces.VolleyCallback;
-import com.jss.smartdustbin.Models.User;
+import com.jss.smartdustbin.interfaces.VolleyCallback;
+import com.jss.smartdustbin.model.User;
 
 import java.util.HashMap;
 import java.util.Map;

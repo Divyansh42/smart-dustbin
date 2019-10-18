@@ -1,17 +1,14 @@
-package com.jss.smartdustbin.Activities;
+package com.jss.smartdustbin.activity;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.google.android.gms.common.internal.Constants;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -40,10 +37,10 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.jss.smartdustbin.API;
 import com.jss.smartdustbin.R;
-import com.jss.smartdustbin.Utils.Config;
-import com.jss.smartdustbin.Utils.HttpStatus;
-import com.jss.smartdustbin.Utils.NotificationUtils;
-import com.jss.smartdustbin.Utils.SmartDustbinApplication;
+import com.jss.smartdustbin.utils.Config;
+import com.jss.smartdustbin.utils.HttpStatus;
+import com.jss.smartdustbin.utils.NotificationUtils;
+import com.jss.smartdustbin.utils.SmartDustbinApplication;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.jss.smartdustbin.Models;
+package com.jss.smartdustbin.model;
 
 public class User {
 

@@ -1,15 +1,9 @@
-package com.jss.smartdustbin.Activities;
+package com.jss.smartdustbin.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.TargetApi;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -18,39 +12,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.RequestFuture;
-import com.android.volley.toolbox.StringRequest;
 import com.jss.smartdustbin.API;
 import com.jss.smartdustbin.R;
-import com.jss.smartdustbin.Utils.HttpStatus;
-import com.jss.smartdustbin.Utils.LocationTrack;
-import com.jss.smartdustbin.Utils.SmartDustbinApplication;
+import com.jss.smartdustbin.utils.HttpStatus;
+import com.jss.smartdustbin.utils.LocationTrack;
+import com.jss.smartdustbin.utils.SmartDustbinApplication;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Timer;
-import java.util.TimerTask;
-
-import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-import static android.Manifest.permission.READ_CALENDAR;
 
 public class ScanResultActivity extends AppCompatActivity {
 

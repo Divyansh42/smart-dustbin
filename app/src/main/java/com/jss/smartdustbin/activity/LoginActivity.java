@@ -1,4 +1,4 @@
-package com.jss.smartdustbin.Activities;
+package com.jss.smartdustbin.activity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -18,17 +18,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
 import com.jss.smartdustbin.API;
-import com.jss.smartdustbin.Utils.Jsonparser;
-import com.jss.smartdustbin.Utils.NetworkReceiver;
+import com.jss.smartdustbin.utils.NetworkReceiver;
 import com.jss.smartdustbin.R;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,12 +33,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.jss.smartdustbin.Utils.SmartDustbinApplication;
+import com.jss.smartdustbin.utils.SmartDustbinApplication;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 

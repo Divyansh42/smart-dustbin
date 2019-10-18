@@ -1,49 +1,23 @@
-package com.jss.smartdustbin.Activities;
+package com.jss.smartdustbin.activity;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.hardware.Camera;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 
-import android.preference.PreferenceManager;
-import android.util.Log;
-import android.util.SparseArray;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.google.android.gms.vision.barcode.Barcode;
 import com.google.zxing.Result;
-import com.jss.smartdustbin.API;
-import com.jss.smartdustbin.R;
-import com.jss.smartdustbin.Utils.HttpStatus;
-import com.jss.smartdustbin.Utils.NetworkReceiver;
-import com.jss.smartdustbin.Utils.SmartDustbinApplication;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import info.androidhive.barcode.BarcodeReader;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 import static android.Manifest.permission.CAMERA;

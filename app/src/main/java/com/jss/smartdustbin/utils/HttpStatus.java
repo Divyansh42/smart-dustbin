@@ -1,4 +1,4 @@
-package com.jss.smartdustbin.Utils;
+package com.jss.smartdustbin.utils;
 
 public enum HttpStatus {
 

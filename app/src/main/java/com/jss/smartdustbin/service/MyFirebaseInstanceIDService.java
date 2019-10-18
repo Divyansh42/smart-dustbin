@@ -9,8 +9,7 @@ import android.util.Log;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
-import com.jss.smartdustbin.Utils.Config;
-import com.jss.smartdustbin.Utils.SmartDustbinApplication;
+import com.jss.smartdustbin.utils.Config;
 
 public class MyFirebaseInstanceIDService extends FirebaseMessagingService {
 

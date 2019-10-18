@@ -1,4 +1,4 @@
-package com.jss.smartdustbin.Activities;
+package com.jss.smartdustbin.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,10 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.view.Menu;
 
 import com.jss.smartdustbin.R;
-import com.jss.smartdustbin.Utils.SmartDustbinApplication;
 
 public class SplashActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.jss.smartdustbin.Activities;
+package com.jss.smartdustbin.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,11 +19,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.jss.smartdustbin.API;
-import com.jss.smartdustbin.Models.User;
+import com.jss.smartdustbin.model.User;
 import com.jss.smartdustbin.R;
-import com.jss.smartdustbin.Utils.Helper;
-import com.jss.smartdustbin.Utils.HttpStatus;
-import com.jss.smartdustbin.Utils.SmartDustbinApplication;
+import com.jss.smartdustbin.utils.Helper;
+import com.jss.smartdustbin.utils.HttpStatus;
+import com.jss.smartdustbin.utils.SmartDustbinApplication;
 
 import java.util.HashMap;
 import java.util.Map;

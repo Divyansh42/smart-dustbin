@@ -1,4 +1,4 @@
-package com.jss.smartdustbin.Interfaces;
+package com.jss.smartdustbin.interfaces;
 
 public interface VolleyCallback {
 

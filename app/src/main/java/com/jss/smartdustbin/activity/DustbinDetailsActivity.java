@@ -1,22 +1,25 @@
-package com.jss.smartdustbin.Activities;
+package com.jss.smartdustbin.activity;
 
-import android.app.ProgressDialog;
+import android.Manifest;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -25,125 +28,105 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.location.LocationServices;
+import com.jss.smartdustbin.R;
 
-import android.location.Location;
-import android.Manifest;
-import android.content.pm.PackageManager;
-import androidx.core.content.ContextCompat;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.preference.PreferenceManager;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.jss.smartdustbin.API;
-import com.jss.smartdustbin.R;
-import com.jss.smartdustbin.Utils.HttpStatus;
-import com.jss.smartdustbin.Utils.SmartDustbinApplication;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
-import static com.jss.smartdustbin.Activities.LoginActivity.LOG_TAG;
+public class DustbinDetailsActivity extends AppCompatActivity implements OnMapReadyCallback,
+        LocationListener, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
-
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
-        LocationListener,GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener{
+    TextView id;
+    ProgressBar dustbinLevelPb;
     private GoogleMap mMap;
     Location mLastLocation;
     Marker mCurrLocationMarker;
-    Marker mNewLocationMarker;
     GoogleApiClient mGoogleApiClient;
     LocationRequest mLocationRequest;
     LatLng latLng;
-    TextView locationMarkerText;
-    Toolbar mToolbar;
-    Button confirmLocationButton;
-    String qrCodeResult;
-    ProgressDialog progressDialog;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
-        mToolbar = (Toolbar) findViewById(R.id.map_toolbar);
-        setSupportActionBar(mToolbar);
+        setContentView(R.layout.activity_dustbin_details);
+        id = findViewById(R.id.SNo_text_view);
+        dustbinLevelPb = findViewById(R.id.dustbin_progressbar);
+        String FCMToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("FCM_token", "");
+
+        //id.setText(FCMToken);
+
+       /* mToolbar = (Toolbar) findViewById(R.id.map_toolbar);
+        //setSupportActionBar(mToolbar);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
             }
-        });
+        });*/
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Set Your Location");
+        getSupportActionBar().setTitle("All Details");
 
-        qrCodeResult = getIntent().getStringExtra("code");
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        dustbinLevelPb.setProgress(100);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(MapsActivity.this);
-
-        locationMarkerText = findViewById(R.id.locationMarkertext);
-        confirmLocationButton = findViewById(R.id.bt_confirm_location);
-
-        confirmLocationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                progressDialog = new ProgressDialog(MapsActivity.this);
-                progressDialog.setTitle("Confirming registration");
-                progressDialog.setMessage("Please wait...");
-                progressDialog.setCanceledOnTouchOutside(false);
-                progressDialog.setCancelable(false);
-                progressDialog.show();
-                sendQrCodeResult(qrCodeResult, latLng.latitude, latLng.longitude);
-
-
-            }
-        });
+        mapFragment.getMapAsync(DustbinDetailsActivity.this);
 
         //code for locationButton on the bottom right
         View locationButton = ((View) mapFragment.getView().findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
         RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
         rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
         rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-        rlp.setMargins(0, 1100, 0, 0);
+        rlp.setMargins(0, 700, 0, 0);
 
+        /*View directionButton = ((View) mapFragment.getView().findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("4"));
+        RelativeLayout.LayoutParams rlp1 = (RelativeLayout.LayoutParams) directionButton.getLayoutParams();
+        rlp1.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
+        rlp1.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+        rlp1.setMargins(0, 700, 100, 0);*/
+
+        /*View directionButton1 = mapFragment.getView().findViewWithTag("GoogleMapDirectionsButton");
+        RelativeLayout.LayoutParams rlp1 = (RelativeLayout.LayoutParams) directionButton1.getLayoutParams();
+        rlp1.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
+        rlp1.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+        rlp1.setMargins(0, 700, 100, 0);*/
+
+        View toolbar = ((View) mapFragment.getView().findViewById(Integer.parseInt("1")).
+                getParent()).findViewById(Integer.parseInt("4"));
+
+        // and next place it, for example, on bottom right (as Google Maps app)
+        RelativeLayout.LayoutParams rlp2 = (RelativeLayout.LayoutParams) toolbar.getLayoutParams();
+        // position on right bottom
+        rlp2.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
+        rlp2.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        rlp2.setMargins(0,0, 0, 0);
 
 
     }
 
+
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.getUiSettings().setMapToolbarEnabled(true);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if(checkLocationPermission()){
                 buildGoogleApiClient();
                 mMap.setMyLocationEnabled(true);
-                mMap.getUiSettings().setMapToolbarEnabled(true);
             }
         }
         else {
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
-            mMap.getUiSettings().setMapToolbarEnabled(true);
         }
 
        /* mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -156,10 +139,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });*/
 
-        /*Marker marker = mMap.addMarker(new MarkerOptions()
+        Marker marker = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(28.605223, 77.376407))
                 .title("Spider Man")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));*/
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 
 
     }
@@ -183,7 +166,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 //Prompt the user once explanation has been shown
-                                ActivityCompat.requestPermissions(MapsActivity.this,
+                                ActivityCompat.requestPermissions(DustbinDetailsActivity.this,
                                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                                         123);
                             }
@@ -219,8 +202,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             Manifest.permission.ACCESS_FINE_LOCATION)
                             == PackageManager.PERMISSION_GRANTED) {
 
-                        buildGoogleApiClient();
-                        mMap.setMyLocationEnabled(true);
+                        //buildGoogleApiClient();
+                        //mMap.setMyLocationEnabled(true);
                     }
 
                 } else {
@@ -278,7 +261,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         markerOptions.title("Current Position");
         markerOptions.visible(false);
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-         mCurrLocationMarker = mMap.addMarker(markerOptions);
+        mCurrLocationMarker = mMap.addMarker(markerOptions);
 
 
         //move map camera
@@ -299,7 +282,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     mCurrLocationMarker.remove();
                     mCurrLocationMarker=  mMap.addMarker(new MarkerOptions().position(center).title("New Position").draggable(true).visible(false));
                     latLng = mCurrLocationMarker.getPosition();
-                    locationMarkerText.setText(getStringAddress(latLng.latitude, latLng.longitude));
+                    //locationMarkerText.setText(getStringAddress(latLng.latitude, latLng.longitude));
                 }
             }
         });
@@ -316,7 +299,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             addresses = geocoder.getFromLocation(lat, lng, 1);
 
             address = addresses.get(0).getAddressLine(0);
-           // city = addresses.get(0).getLocality();
+            // city = addresses.get(0).getLocality();
 
         } catch (IOException e){
             e.printStackTrace();
@@ -330,71 +313,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    private void sendQrCodeResult(String barCodeResult, double latitude, double longitude) {
-        final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, API.BASE + API.REGISTER_DUSTBIN + "?bin=" + barCodeResult, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.e(LOG_TAG, " onResponse: " + response);
-                progressDialog.hide();
-                Intent intent = new Intent(MapsActivity.this, ScanResultActivity.class);
-                intent.putExtra("code", barCodeResult);
-                startActivity(intent);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
 
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(LOG_TAG, " onErrorResponse: " + error.toString());
-                if(error.networkResponse != null){
-                    onError(error.networkResponse.statusCode);
-                }
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams(){
-                Map<String,String> params = new HashMap<>();
-                //params.put("lat", Double.toString(latitude));
-                //params.put("long", Double.toString(longitude));
-                params.put("bin", barCodeResult);
-                return params;
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                params.put("Content-Type","application/x-www-form-urlencoded");
-                params.put("Authorization", "Bearer " + accessToken);
-                return params;
-            }
-
-        };
-
-        SmartDustbinApplication.getInstance().addToRequestQueue(stringRequest);
-    }
-
-    public void onError(int status) {
-        if(status == HttpStatus.UNAUTHORIZED.value()){
-            Toast.makeText(MapsActivity.this, "Please login to perform this action.", Toast.LENGTH_SHORT).show();
-            SmartDustbinApplication.getInstance().getDefaultSharedPreferences().edit().clear().apply();
-            Intent login = new Intent(MapsActivity.this, LoginActivity.class);
-            finishAffinity();
-            startActivity(login);
-        } else{
-            Toast.makeText(MapsActivity.this, "Please try again.", Toast.LENGTH_SHORT).show();
-            Intent intent = getIntent();
             finish();
-            startActivity(intent);
         }
+        return super.onOptionsItemSelected(item);
     }
 
-
-
-    /*@Override
+    @Override
     public void onBackPressed() {
-        //super.onBackPressed();
+        super.onBackPressed();
         finish();
-    }*/
+    }
 }
-

@@ -1,33 +1,23 @@
 package com.jss.smartdustbin.service;
 
-import android.annotation.TargetApi;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
-import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.jss.smartdustbin.Activities.SplashActivity;
+import com.jss.smartdustbin.activity.SplashActivity;
 import com.jss.smartdustbin.R;
-import com.jss.smartdustbin.Utils.Config;
-import com.jss.smartdustbin.Utils.NotificationUtils;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.jss.smartdustbin.utils.NotificationUtils;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 

@@ -1,4 +1,4 @@
-package com.jss.smartdustbin.Activities;
+package com.jss.smartdustbin.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 

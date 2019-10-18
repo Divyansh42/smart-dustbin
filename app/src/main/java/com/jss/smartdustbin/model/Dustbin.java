@@ -1,4 +1,4 @@
-package com.jss.smartdustbin.Models;
+package com.jss.smartdustbin.model;
 
 import com.google.android.gms.maps.model.LatLng;
 
