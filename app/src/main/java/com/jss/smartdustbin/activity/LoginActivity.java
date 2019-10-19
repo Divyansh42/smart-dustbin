@@ -51,8 +51,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        setTitle("Login");
+        setContentView(R.layout.activity_login2);
         receiver = new NetworkReceiver();
         pref = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
 

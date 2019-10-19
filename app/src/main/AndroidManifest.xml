@@ -46,7 +46,8 @@
             android:hardwareAccelerated="true" />
         <activity android:name=".activity.RegisterDustbinActivity" />
         <activity android:name=".activity.ScanActivity" />
-        <activity android:name=".activity.LoginActivity" /> <!-- Firebase Notifications -->
+        <activity android:name=".activity.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar"/> <!-- Firebase Notifications -->
         <service android:name=".service.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

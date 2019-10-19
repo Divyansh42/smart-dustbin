@@ -54,7 +54,7 @@ public class UserAccountActivity extends AppCompatActivity {
 
         progressBar = findViewById(R.id.progress_bar);
         linearLayout = findViewById(R.id.content);
-        fetchUserInfo();
+        //fetchUserInfo();
     }
 
     private void fetchUserInfo() {
