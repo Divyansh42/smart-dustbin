@@ -47,33 +47,40 @@ import java.util.Map;
 
 public class UserHomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    TextView tvFirstName;
-    TextView tvLastName;
-    TextView tvDesignation;
+    //TextView tvFirstName;
+    //TextView tvLastName;
+   // TextView tvDesignation;
     private static final String TAG =  UserHomeActivity.class.getSimpleName();
     private SharedPreferences pref;
-    TextView accessToken;
+    //TextView accessToken;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
-    Button logoutButton;
+    //Button logoutButton;
+    View registerCard;
+    View registeredDustbinCard;
+    View myAccountCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_home);
+        setContentView(R.layout.activity_user_home2);
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("Smart Dustbin");
 
         pref = PreferenceManager.getDefaultSharedPreferences(UserHomeActivity.this);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        registerCard = (View) findViewById(R.id.layout_register_card);
+        registeredDustbinCard = (View) findViewById(R.id.layout_registerd_dustbins_card);
+        myAccountCard = (View) findViewById(R.id.layout_my_account_card);
+
+        /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        toggle.syncState();*/
 
-        logoutButton = findViewById(R.id.bt_logout);
+        //logoutButton = findViewById(R.id.bt_logout);
 
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( UserHomeActivity.this,  new OnSuccessListener<InstanceIdResult>() {
             @Override
@@ -120,13 +127,13 @@ public class UserHomeActivity extends AppCompatActivity implements NavigationVie
             }
         };
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        /*NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View view = navigationView.getHeaderView(0);
         tvFirstName = view.findViewById(R.id.nav_header_user_first_name);
         tvLastName = view.findViewById(R.id.nav_header_user_last_name);
-        tvDesignation = view.findViewById(R.id.nav_header_user_designation);
+        tvDesignation = view.findViewById(R.id.nav_header_user_designation);*/
 
-        navigationView.setNavigationItemSelectedListener(this);
+        /*navigationView.setNavigationItemSelectedListener(this);
 
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,7 +143,7 @@ public class UserHomeActivity extends AppCompatActivity implements NavigationVie
                 startActivity(intent);
                 finish();
             }
-        });
+        });*/
 
     }
 
