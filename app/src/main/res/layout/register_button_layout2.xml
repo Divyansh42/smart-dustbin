@@ -7,7 +7,7 @@
         android:background="@android:color/white"
         android:layout_marginRight="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:optRoundCardCornerRadius="16dp"
         app:optRoundCardLeftTopCorner="true"
         app:optRoundCardRightTopCorner="true"
@@ -30,12 +30,13 @@
         android:focusable="true"
         android:background="?attr/selectableItemBackground"
         android:orientation="horizontal"
+        android:layout_gravity="center_vertical"
         android:layout_width="match_parent"
         android:weightSum="7"
         android:layout_height="wrap_content">
 
        <ImageView
-            app:srcCompat="@drawable/garbage"
+            android:src="@drawable/ic_dustbin"
            android:layout_gravity="center_vertical"
             android:layout_width="0dp"
             android:layout_height="51dp"
@@ -45,8 +46,6 @@
             android:layout_marginLeft="16dp"
             android:layout_weight="5"
             android:layout_width="0dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp">
 
@@ -56,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="17dp"
                 android:textColor="#000000"
-                android:text="Register Dustbin"
+                android:text="Install"
                 />
 
             <TextView
@@ -66,7 +65,7 @@
                 android:layout_marginTop="8dp"
                 android:textSize="14dp"
                 android:textColor="#808080"
-                android:text="Register dustbin here to start monitoring of the bin"
+                android:text="Install and activate new bins in the allocated wards."
                 />
 
         </RelativeLayout>

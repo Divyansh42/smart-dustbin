@@ -8,7 +8,7 @@
 
     android:layout_marginRight="8dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     app:optRoundCardCornerRadius="16dp"
     app:optRoundCardLeftTopCorner="true"
     app:optRoundCardRightTopCorner="true"
@@ -30,6 +30,7 @@
         android:id="@+id/registered_dustbin_card"
         android:clickable="true"
         android:focusable="true"
+        android:layout_gravity="center_vertical"
         android:background="?attr/selectableItemBackground"
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -37,7 +38,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            app:srcCompat="@drawable/bin2"
+           android:src="@drawable/ic_dustbins"
             android:layout_gravity="center_vertical"
             android:layout_width="0dp"
             android:layout_height="51dp"
@@ -47,8 +48,6 @@
             android:layout_marginLeft="16dp"
             android:layout_weight="5"
             android:layout_width="0dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp">
 
@@ -58,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="17dp"
                 android:textColor="#000000"
-                android:text="Registered Dustbins"
+                android:text="Manage"
                 />
 
             <TextView
@@ -68,15 +67,10 @@
                 android:layout_marginTop="8dp"
                 android:textSize="14dp"
                 android:textColor="#808080"
-                android:text="Get details of all registered dustbins here."
+                android:text="Click to monitor bins in the allocated wards."
                 />
 
         </RelativeLayout>
-
-        <!--<View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />-->
 
         <ImageView
             android:layout_gravity="center_vertical"

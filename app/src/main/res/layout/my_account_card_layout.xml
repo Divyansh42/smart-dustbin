@@ -8,7 +8,7 @@
 
     android:layout_marginRight="8dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     app:optRoundCardCornerRadius="16dp"
     app:optRoundCardLeftTopCorner="true"
     app:optRoundCardRightTopCorner="true"
@@ -31,12 +31,13 @@
         android:focusable="true"
         android:background="?attr/selectableItemBackground"
         android:orientation="horizontal"
+        android:layout_gravity="center_vertical"
         android:layout_width="match_parent"
         android:weightSum="7"
         android:layout_height="wrap_content">
 
         <ImageView
-            app:srcCompat="@drawable/user_account"
+            android:src="@drawable/ic_policeman"
             android:layout_gravity="center_vertical"
             android:layout_width="0dp"
             android:layout_height="51dp"
@@ -46,9 +47,7 @@
             android:layout_marginLeft="16dp"
             android:layout_weight="5"
             android:layout_width="0dp"
-            android:layout_marginTop="8dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginBottom="16dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp">
 
@@ -58,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="17dp"
                 android:textColor="#000000"
-                android:text="My Account"
+                android:text="Account"
                 />
 
             <TextView
@@ -68,7 +67,7 @@
                 android:layout_marginTop="8dp"
                 android:textSize="14dp"
                 android:textColor="#808080"
-                android:text="Get all your profile details here."
+                android:text="Find all your account details here."
                 />
 
         </RelativeLayout>
