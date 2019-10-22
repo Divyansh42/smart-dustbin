@@ -23,12 +23,15 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.jss.smartdustbin.activity.DustbinDetailsActivity;
 import com.jss.smartdustbin.model.Dustbin;
 import com.jss.smartdustbin.R;
 
@@ -168,8 +171,11 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
                     builder.include(marker.getPosition());
                 }
                 LatLngBounds bounds = builder.build();
+                int width = getResources().getDisplayMetrics().widthPixels;
+                //int height = Utilities.dp(309.50f);
+                int height = getResources().getDisplayMetrics().heightPixels;
                 int padding = 60; // offset from edges of the map in pixels
-                CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+                CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds,width, height, padding);
                 mMap.animateCamera(cu);
 
 
@@ -177,7 +183,7 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
                     @Override
                     public boolean onMarkerClick(Marker marker) {
 
-                       // dustbinState.setText(markerDustbinHashMap.get(marker.getId()).getState());
+                        // dustbinState.setText(markerDustbinHashMap.get(marker.getId()).getState());
                         marker.getId();
                         //dustbinCity.setText(markerDustbinHashMap.get(marker.getId()).getCity());
                         //dustbinLocality.setText(markerDustbinHashMap.get(marker.getId()).getLocality());

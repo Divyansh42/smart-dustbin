@@ -332,7 +332,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void sendQrCodeResult(String barCodeResult, double latitude, double longitude) {
         final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, API.BASE + API.REGISTER_DUSTBIN + "?bin=" + barCodeResult, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, API.BASE + API.REGISTER_DUSTBIN + "?bin=78&lat=2&lng=1", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.e(LOG_TAG, " onResponse: " + response);
@@ -357,7 +357,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Map<String,String> params = new HashMap<>();
                 //params.put("lat", Double.toString(latitude));
                 //params.put("long", Double.toString(longitude));
-                params.put("bin", barCodeResult);
+               // params.put("bin", barCodeResult);
                 return params;
             }
 

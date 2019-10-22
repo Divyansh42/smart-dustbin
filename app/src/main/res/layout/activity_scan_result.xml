@@ -38,7 +38,7 @@
             android:textSize="16dp" />
     </LinearLayout>
 
-    <Button
+    <!--<Button
         android:id="@+id/btn_done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,6 +52,23 @@
         android:fontFamily="sans-serif-medium"
         android:text="DONE"
         android:textColor="@android:color/black"
-        android:textSize="18sp" />
+        android:textSize="18sp" />-->
+    <Button
+        android:id="@+id/btn_done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
+        android:text="DONE"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textSize="17sp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        app:strokeColor="#db4c6d"
+        android:textColor="#db4c6d"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
 
 </RelativeLayout>

@@ -41,7 +41,8 @@
         <activity android:name=".activity.AllDustbinActivity" />
         <activity android:name=".activity.RegistrationConfirmationActivity" />
         <activity android:name=".activity.ScanResultActivity" />
-        <activity android:name=".activity.UserHomeActivity"/>
+        <activity android:name=".activity.UserHomeActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activity.DustbinDetailsActivity"
             android:hardwareAccelerated="true" />

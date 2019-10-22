@@ -177,19 +177,6 @@
                        android:textSize="14sp"
                        android:layout_marginEnd="5dp" />
 
-                   <Button
-                       android:id="@+id/button1"
-                       android:layout_width="match_parent"
-                       android:layout_height="35dp"
-                       android:layout_marginLeft="20dp"
-                       android:layout_marginRight="20dp"
-                       android:layout_marginTop="20dp"
-                       android:background="@color/colorPrimaryDark"
-                       android:text="Dustbin Emptied"
-                       android:textAllCaps="false"
-                       android:textColor="@android:color/white"
-                       app:layout_constraintTop_toBottomOf="@+id/model"
-                       android:textSize="16sp" />
 
 
 

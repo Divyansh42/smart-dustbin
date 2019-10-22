@@ -71,7 +71,7 @@
             android:paddingBottom="28dp"
             android:src="@drawable/marker" />
 
-        <Button
+        <!--<Button
             android:id="@+id/bt_confirm_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -79,7 +79,20 @@
             android:background="@color/colorPrimaryDark"
             android:text="Confirm Location"
             android:textSize="18sp"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white" />-->
+        <Button
+            android:id="@+id/bt_confirm_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:textSize="18sp"
+            android:text="Confirm Location"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            app:strokeColor="#db4c6d"
+            android:textColor="#db4c6d"
+            />
 
 
 

@@ -24,6 +24,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.preference.PreferenceManager;
+import android.text.Layout;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,7 +46,7 @@ import com.jss.smartdustbin.utils.SmartDustbinApplication;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserHomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class UserHomeActivity extends AppCompatActivity {
 
     //TextView tvFirstName;
     //TextView tvLastName;
@@ -54,10 +55,11 @@ public class UserHomeActivity extends AppCompatActivity implements NavigationVie
     private SharedPreferences pref;
     //TextView accessToken;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
-    //Button logoutButton;
-    View registerCard;
+    Button logoutButton;
     View registeredDustbinCard;
     View myAccountCard;
+    Intent intent;
+    View registerCard;;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,13 +68,50 @@ public class UserHomeActivity extends AppCompatActivity implements NavigationVie
 
 
        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("Smart Dustbin");
+        //setTitle("Smart Dustbin");
 
         pref = PreferenceManager.getDefaultSharedPreferences(UserHomeActivity.this);
 
-        registerCard = (View) findViewById(R.id.layout_register_card);
-        registeredDustbinCard = (View) findViewById(R.id.layout_registerd_dustbins_card);
-        myAccountCard = (View) findViewById(R.id.layout_my_account_card);
+        registerCard = findViewById(R.id.register_card);
+        registeredDustbinCard = (View) findViewById(R.id.registered_dustbin_card);
+        myAccountCard = (View) findViewById(R.id.my_account_card);
+
+        logoutButton = findViewById(R.id.bt_logout);
+        registerCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent = new Intent(UserHomeActivity.this, RegisterDustbinActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        registeredDustbinCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent = new Intent(UserHomeActivity.this, AllDustbinActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        myAccountCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent = new Intent(UserHomeActivity.this, UserAccountActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SmartDustbinApplication.getInstance().getDefaultSharedPreferences().edit().clear().apply();
+                Intent intent = new Intent(UserHomeActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
 
         /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -80,7 +119,6 @@ public class UserHomeActivity extends AppCompatActivity implements NavigationVie
         drawer.addDrawerListener(toggle);
         toggle.syncState();*/
 
-        //logoutButton = findViewById(R.id.bt_logout);
 
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( UserHomeActivity.this,  new OnSuccessListener<InstanceIdResult>() {
             @Override
@@ -109,7 +147,7 @@ public class UserHomeActivity extends AppCompatActivity implements NavigationVie
                     // now subscribe to `global` topic to receive app wide notifications
                     FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
                     String FCMToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("FCM_token", null);
-                    Toast.makeText(getApplicationContext(), "FCM Token :" + FCMToken, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "FCM Token :" + FCMToken, Toast.LENGTH_SHORT).show();
                     if(FCMToken != null){
                         sendFCMToken(FCMToken);
                     }
@@ -147,15 +185,6 @@ public class UserHomeActivity extends AppCompatActivity implements NavigationVie
 
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
     public void setActionBarTitle(String title){
         getSupportActionBar().setTitle(title);
     }
@@ -182,7 +211,7 @@ public class UserHomeActivity extends AppCompatActivity implements NavigationVie
         return super.onOptionsItemSelected(item);
     }*/
 
-    @SuppressWarnings("StatementWithEmptyBody")
+    /*@SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -207,18 +236,18 @@ public class UserHomeActivity extends AppCompatActivity implements NavigationVie
         }
 
 
-       /* if (fragment != null){
+       *//* if (fragment != null){
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.fl_home_activity, fragment);
             fragmentTransaction.commit();
-        }*/
+        }*//*
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
+*/
 
     public void sendFCMToken(String FCMToken) {
         //final String FCMToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("FCM_token", "");
