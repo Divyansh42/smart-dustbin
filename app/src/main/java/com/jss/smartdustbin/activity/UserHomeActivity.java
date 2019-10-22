@@ -7,9 +7,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -100,28 +100,23 @@ public class UserHomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                    final androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(UserHomeActivity.this);
+                    builder.setTitle("Logout");
+                    builder.setMessage("Are you sure you want to logout?");
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            SmartDustbinApplication.getInstance().getDefaultSharedPreferences().edit().clear().apply();
+                            Intent intent = new Intent(UserHomeActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
 
-                new AlertDialog.Builder(UserHomeActivity.this)
-                        .setTitle("Logout")
-                        .setMessage("Are you sure you want to logout?")
-
-                        // Specifying a listener allows you to take an action before dismissing the dialog.
-                        // The dialog is automatically dismissed when a dialog button is clicked.
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Continue with delete operation
-                                SmartDustbinApplication.getInstance().getDefaultSharedPreferences().edit().clear().apply();
-                                Intent intent = new Intent(UserHomeActivity.this, LoginActivity.class);
-                                startActivity(intent);
-                                finish();
-
-                            }
-                        })
-
-                        // A null listener allows the button to dismiss the dialog and take no further action.
-                        .setNegativeButton("NO", null)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
+                    builder.setNegativeButton("No", null);
+                    builder.setIcon(android.R.drawable.ic_dialog_alert);
+                    AlertDialog alert1 = builder.create();
+                    alert1.show();
 
             }
         });
