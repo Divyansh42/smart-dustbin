@@ -47,7 +47,7 @@
             android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
            android:layout_height="wrap_content"
-            layout="@layout/register_button_layout2">
+            layout="@layout/install_card_layout">
         </include>
 
         <include
@@ -59,7 +59,7 @@
             android:layout_marginRight="14dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            layout="@layout/dustbins_button_layout2">
+            layout="@layout/manage_card_layout">
         </include>
         <include
             android:id="@+id/layout_my_account_card"
@@ -70,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            layout="@layout/my_account_card_layout">
+            layout="@layout/account_card_layout">
         </include>
 
 

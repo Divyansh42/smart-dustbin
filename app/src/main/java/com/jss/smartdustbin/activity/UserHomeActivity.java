@@ -6,12 +6,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.navigation.NavigationView;
 
-import androidx.fragment.app.Fragment;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.BroadcastReceiver;
@@ -20,16 +15,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.appcompat.widget.Toolbar;
+
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.preference.PreferenceManager;
-import android.text.Layout;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 //import com.jss.smartdustbin.Fragments.AllDustbinsFragment;
@@ -64,7 +56,7 @@ public class UserHomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_home2);
+        setContentView(R.layout.activity_user_home);
 
 
        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
