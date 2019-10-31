@@ -12,8 +12,14 @@ import com.jss.smartdustbin.API;
 import com.jss.smartdustbin.interfaces.VolleyCallback;
 import com.jss.smartdustbin.model.User;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class Helper {
 
@@ -65,6 +71,14 @@ public class Helper {
         user.setEmail(email);
 
         return  user;
+    }
+
+    public static Date getDateFromString(String dateString) throws ParseException {
+        DateFormat formatterIST = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH);
+        formatterIST.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date date = formatterIST.parse(dateString);
+        Log.i(TAG, "Helper parse date {}" + formatterIST.format(date));
+        return date;
     }
 
 

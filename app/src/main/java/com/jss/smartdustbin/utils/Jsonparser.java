@@ -1,21 +1,24 @@
 package com.jss.smartdustbin.utils;
 
+import com.google.gson.JsonObject;
 import com.jss.smartdustbin.model.Dustbin;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Jsonparser {
 
 
-    public static List<Dustbin> responseStringToDustbinsArray(String dustbinStringResponse) {
+    public static List<Dustbin> responseStringToDustbinList(String dustbinStringResponse) {
         List<Dustbin> dustbinList = new ArrayList<>();
         try {
-            JSONArray jsonArray = new JSONArray(dustbinStringResponse);
+            JSONObject jsonObject = new JSONObject(dustbinStringResponse);
+            JSONArray jsonArray = jsonObject.getJSONArray("content");
             for (int j = 0; j < jsonArray.length(); j++) {
                 Dustbin dustbin;
                 try {
@@ -52,12 +55,23 @@ public class Jsonparser {
         Dustbin dustbin = new Dustbin();
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
-            dustbin.setId(get(jsonObject, "_id"));
-            dustbin.setState(get(jsonObject, "state"));
-            dustbin.setCity(get(jsonObject, "city"));
+            dustbin.setId(get(jsonObject, "id"));
+            dustbin.setBin(get(jsonObject, "bin"));
+            dustbin.setLandmark(get(jsonObject, "landmark"));
             dustbin.setLocality(get(jsonObject, "locality"));
-           // dustbin.setLatLng(get(jsonObject, "latlang"));
+
+            JSONObject locationJsonObject = jsonObject.getJSONObject("location");
+            dustbin.setLatitude(get(locationJsonObject, "x"));
+            dustbin.setLongitude(get(locationJsonObject, "y"));
+
+            JSONObject statusJsonObject = jsonObject.getJSONObject("status");
+            dustbin.setGarbageLevel(get(statusJsonObject, "percentage"));
+            String dateString = get(statusJsonObject, "lastUpdatedAt");
+            dustbin.setLastUpdated(Helper.getDateFromString(dateString));
+            dustbin.setComment(get(statusJsonObject, "comment"));
         } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         return dustbin;

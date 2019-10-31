@@ -11,6 +11,7 @@ public class API {
 
     public static final String REGISTER_DUSTBIN = "/api/dustbin/bin/register";
     public static final String CONFIRM_REGISTRATION = "/api/dustbin/bin/status";
+    public static final String DUSTBIN_LIST = "/api/bin";
 
 
 }

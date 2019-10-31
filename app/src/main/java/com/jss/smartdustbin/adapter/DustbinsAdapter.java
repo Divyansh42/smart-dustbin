@@ -13,6 +13,7 @@ import com.google.android.gms.vision.L;
 import com.jss.smartdustbin.R;
 import com.jss.smartdustbin.model.Dustbin;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DustbinsAdapter extends RecyclerView.Adapter<DustbinsAdapter.MyViewHolder> {
@@ -32,7 +33,11 @@ public class DustbinsAdapter extends RecyclerView.Adapter<DustbinsAdapter.MyView
     }
     public DustbinsAdapter(Context context, List<Dustbin> dustbinList) {
         this.context = context;
-        this.dustbinList = dustbinList;
+        this.dustbinList = new ArrayList<>(dustbinList);
+    }
+
+    public void setItems(List<Dustbin> dustbins){
+        this.dustbinList = dustbins;
     }
 
     @Override

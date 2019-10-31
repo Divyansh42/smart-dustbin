@@ -8,21 +8,38 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.jss.smartdustbin.API;
 import com.jss.smartdustbin.R;
 import com.jss.smartdustbin.adapter.DustbinsAdapter;
 import com.jss.smartdustbin.model.Dustbin;
+import com.jss.smartdustbin.utils.HttpStatus;
+import com.jss.smartdustbin.utils.Jsonparser;
+import com.jss.smartdustbin.utils.SmartDustbinApplication;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.jss.smartdustbin.activity.LoginActivity.LOG_TAG;
 
 public class DustbinListActivity extends AppCompatActivity {
 
@@ -33,6 +50,8 @@ public class DustbinListActivity extends AppCompatActivity {
     private DustbinsAdapter dustbinsAdapter;
     ProgressBar progressBar;
     TextView defaultTv;
+    ImageView mapIcon;
+    ImageView filterIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +77,9 @@ public class DustbinListActivity extends AppCompatActivity {
         /*recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new MyDividerItemDecoration(this, DividerItemDecoration.VERTICAL, 36));*/
         recyclerView.setAdapter(dustbinsAdapter);
-        defaultTv.setVisibility(View.GONE);
+        loadDustbinList("5db97bb11a5e5700049482c1");
 
-        Dustbin d1 = new Dustbin("75", "12/09/19 10:14 AM");
+       /* Dustbin d1 = new Dustbin("75", "12/09/19 10:14 AM");
         Dustbin d2 = new Dustbin("25", "12/09/19 10:14 AM");
         Dustbin d3 = new Dustbin("50", "12/09/19 10:14 AM");
         Dustbin d4 = new Dustbin("40", "12/09/19 10:14 AM");
@@ -74,9 +93,66 @@ public class DustbinListActivity extends AppCompatActivity {
         dustbinList.add(d5);
         dustbinList.add(d6);
 
-        dustbinsAdapter.notifyDataSetChanged();
+        dustbinsAdapter.notifyDataSetChanged();*/
 
 
+    }
+
+    private void loadDustbinList(String wardId){
+
+        StringBuilder urlSb = new StringBuilder(API.BASE + API.DUSTBIN_LIST + "/?wardId=");
+        urlSb.append(wardId);
+        progressBar.setVisibility(View.VISIBLE);
+        defaultTv.setVisibility(View.GONE);
+        final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, urlSb.toString(),  new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e(LOG_TAG, " onResponse: " + response);
+                progressBar.setVisibility(View.GONE);
+                dustbinList = Jsonparser.responseStringToDustbinList(response);
+                dustbinsAdapter.setItems(dustbinList);
+                dustbinsAdapter.notifyDataSetChanged();
+                dustbinsAdapter.getItemCount();
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(LOG_TAG, " onErrorResponse: " + error.toString());
+                if(error.networkResponse != null){
+                    onError(error.networkResponse.statusCode);
+                }
+            }
+        }){
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                params.put("Authorization", "Bearer " + accessToken);
+                return params;
+            }
+
+        };
+
+        SmartDustbinApplication.getInstance().addToRequestQueue(stringRequest);
+    }
+
+    public void onError(int status) {
+        if(status == HttpStatus.UNAUTHORIZED.value()){
+            Toast.makeText(DustbinListActivity.this, "Please login to perform this action.", Toast.LENGTH_SHORT).show();
+            SmartDustbinApplication.getInstance().getDefaultSharedPreferences().edit().clear().apply();
+            Intent login = new Intent(DustbinListActivity.this, LoginActivity.class);
+            finishAffinity();
+            startActivity(login);
+        } else{
+            Toast.makeText(DustbinListActivity.this, "Please try again.", Toast.LENGTH_SHORT).show();
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+        }
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

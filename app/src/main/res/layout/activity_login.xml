@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
-                android:textColor="#9E373434"
+                android:textColor="#99FFFFFF"
                 android:layout_marginTop="24dp"
                 android:textStyle="bold"
                 android:fontFamily="@font/brandon_text_regular"
@@ -64,8 +64,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="28dp"
                 android:hint="Username"
-                app:hintTextColor="#902FFF"
-                app:boxStrokeColor="#902FFF"
+                app:hintTextColor="@android:color/white"
+                app:boxStrokeColor="@android:color/white"
                 android:textColorHint="#a4a4a4">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -86,9 +86,9 @@
                 android:layout_marginTop="16dp"
                 android:hint="Password"
                 app:passwordToggleEnabled="true"
-                app:hintTextColor="#902FFF"
-                app:boxStrokeColor="#902FFF"
-                app:passwordToggleTint="#902FFF"
+                app:hintTextColor="@android:color/white"
+                app:boxStrokeColor="@android:color/white"
+                app:passwordToggleTint="@android:color/white"
                 android:textColorHint="#a4a4a4">
 
                 <com.google.android.material.textfield.TextInputEditText
