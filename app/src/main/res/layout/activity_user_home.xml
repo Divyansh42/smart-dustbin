@@ -31,7 +31,19 @@
 
     </androidx.appcompat.widget.Toolbar>-->
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        />
 
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <include
             android:id="@+id/user_details"
@@ -46,7 +58,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
-           android:layout_height="wrap_content"
+            android:layout_height="wrap_content"
             layout="@layout/install_card_layout">
         </include>
 
@@ -73,20 +85,26 @@
 
 
 
-    <Button
-        android:id="@+id/bt_logout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:text="Logout"
-        android:background="@android:color/white"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        app:strokeColor="#db4c6d"
-        android:textColor="#db4c6d"
-        />
+        <Button
+            android:id="@+id/bt_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:text="Logout"
+            android:background="@android:color/white"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            app:strokeColor="#db4c6d"
+            android:textColor="#db4c6d"
+            />
+
+    </LinearLayout>
+
+
+
+
 
 </LinearLayout>

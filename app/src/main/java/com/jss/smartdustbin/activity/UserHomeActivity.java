@@ -60,11 +60,6 @@ public class UserHomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_home);
-
-
-       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //setTitle("Smart Dustbin");
-
         pref = PreferenceManager.getDefaultSharedPreferences(UserHomeActivity.this);
 
         registerCard = findViewById(R.id.register_card);
@@ -122,14 +117,6 @@ public class UserHomeActivity extends AppCompatActivity {
         });
 
 
-
-        /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();*/
-
-
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( UserHomeActivity.this,  new OnSuccessListener<InstanceIdResult>() {
             @Override
             public void onSuccess(InstanceIdResult instanceIdResult) {
@@ -175,89 +162,11 @@ public class UserHomeActivity extends AppCompatActivity {
             }
         };
 
-        /*NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        View view = navigationView.getHeaderView(0);
-        tvFirstName = view.findViewById(R.id.nav_header_user_first_name);
-        tvLastName = view.findViewById(R.id.nav_header_user_last_name);
-        tvDesignation = view.findViewById(R.id.nav_header_user_designation);*/
-
-        /*navigationView.setNavigationItemSelectedListener(this);
-
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SmartDustbinApplication.getInstance().getDefaultSharedPreferences().edit().clear().apply();
-                Intent intent = new Intent(UserHomeActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });*/
-
     }
 
     public void setActionBarTitle(String title){
         getSupportActionBar().setTitle(title);
     }
-
-   /* @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_edit_profile) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
-
-    /*@SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        Fragment fragment = null;
-        Intent intent;
-
-        if (id == R.id.nav_register) {
-
-            intent = new Intent(UserHomeActivity.this, RegisterDustbinActivity.class);
-            startActivity(intent);
-        }
-        if (id == R.id.nav_dustbins){
-            intent = new Intent(UserHomeActivity.this, AllDustbinActivity.class);
-            startActivity(intent);
-
-        }
-        if (id == R.id.my_account){
-
-            intent = new Intent(UserHomeActivity.this, UserAccountActivity.class);
-            startActivity(intent);
-        }
-
-
-       *//* if (fragment != null){
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.fl_home_activity, fragment);
-            fragmentTransaction.commit();
-        }*//*
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-*/
 
     public void sendFCMToken(String FCMToken) {
         //final String FCMToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("FCM_token", "");
@@ -313,7 +222,6 @@ public class UserHomeActivity extends AppCompatActivity {
             startActivity(login);
         } else{
             Toast.makeText(UserHomeActivity.this, "Error fetching data, Please try again.", Toast.LENGTH_SHORT).show();
-            //startActivity(new Intent(YourRouteActivity.this, MainActivity.class));
         }
     }
 

@@ -14,9 +14,9 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-feature android:name="android.hardware.camera"/>
-    <uses-feature android:name="android.hardware.camera.autofocus"/>
 
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
         android:name=".utils.SmartDustbinApplication"
@@ -27,6 +27,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".activity.DustbinListActivity"></activity>
         <activity android:name=".activity.UserAccountActivity" />
         <activity
             android:name=".activity.SplashActivity"
@@ -41,15 +42,17 @@
         <activity android:name=".activity.AllDustbinActivity" />
         <activity android:name=".activity.RegistrationConfirmationActivity" />
         <activity android:name=".activity.ScanResultActivity" />
-        <activity android:name=".activity.UserHomeActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".activity.UserHomeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.DustbinDetailsActivity"
             android:hardwareAccelerated="true" />
         <activity android:name=".activity.RegisterDustbinActivity" />
         <activity android:name=".activity.ScanActivity" />
-        <activity android:name=".activity.LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar"/> <!-- Firebase Notifications -->
+        <activity
+            android:name=".activity.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- Firebase Notifications -->
         <service android:name=".service.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
