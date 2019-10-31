@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.github.captain_miao.optroundcardview.OptRoundCardView
-    android:layout_marginTop="48dp"
     style="@style/OptRoundCardView.Light"
     android:background="@android:color/white"
-    android:layout_marginRight="8dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     app:optRoundCardCornerRadius="16dp"
     app:optRoundCardLeftTopCorner="true"
     app:optRoundCardRightTopCorner="true"
@@ -19,10 +17,12 @@
     android:elevation="5dp"
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginTop="12dp"
     android:foreground="?android:attr/selectableItemBackground"
     android:clickable="true">
     <LinearLayout
-        android:padding="10dp"
+        android:padding="12dp"
         android:id="@+id/dustbin_details_card"
         android:clickable="true"
         android:focusable="true"
@@ -30,11 +30,24 @@
         android:orientation="horizontal"
         android:layout_gravity="center_vertical"
         android:layout_width="match_parent"
-        android:weightSum="7"
+        android:weightSum="6.5"
         android:layout_height="wrap_content">
 
+        <!--<RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height=""></RelativeLayout>
+
+        <ProgressBar
+            android:id="@+id/dustbin_progressbar"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_gravity="center_vertical"
+            android:layout_width="34dp"
+            android:layout_height="dp"
+            android:progressDrawable="@drawable/progressbar_states" />-->
+
         <ImageView
-            android:src="@drawable/bin_level"
+            android:src="@drawable/ic_garbage_level"
             android:layout_gravity="center_vertical"
             android:layout_width="0dp"
             android:layout_height="51dp"
@@ -48,16 +61,17 @@
             android:layout_marginStart="16dp">
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/dustbin_level_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="17dp"
-                android:textColor="#F43636"
+                android:textColor="@android:color/black"
                 android:text="75% Full"
                 />
 
             <TextView
-                android:layout_below="@+id/title"
+                android:id="@+id/last_updated_tv"
+                android:layout_below="@+id/dustbin_level_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -75,9 +89,8 @@
 
         <ImageView
             android:layout_gravity="center_vertical"
-            app:tint="#b3b3b3"
-            android:layout_weight="1"
-            android:src="@drawable/ic_navigate_next_black_24dp"
+            android:layout_weight="0.5"
+            android:src="@drawable/ic_exclamation_mark"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
 

@@ -6,6 +6,15 @@ public class Dustbin {
     private String id;
     private String state, city, locality;
     private LatLng latLng;
+    private String garbageLevel;
+    private String lastUpdated;
+
+    public Dustbin(String garbageLevel, String lastUpdated) {
+        this.garbageLevel = garbageLevel;
+        this.lastUpdated = lastUpdated;
+    }
+    public Dustbin() {
+    }
 
     public String getId() {
         return id;
@@ -45,5 +54,21 @@ public class Dustbin {
 
     public void setLatLng(LatLng latLng) {
         this.latLng = latLng;
+    }
+
+    public String getGarbageLevel() {
+        return garbageLevel;
+    }
+
+    public void setGarbageLevel(String garbageLevel) {
+        this.garbageLevel = garbageLevel;
+    }
+
+    public String getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(String lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 }

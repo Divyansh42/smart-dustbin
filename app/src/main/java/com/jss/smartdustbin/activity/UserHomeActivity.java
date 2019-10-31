@@ -78,7 +78,7 @@ public class UserHomeActivity extends AppCompatActivity {
         registeredDustbinCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent = new Intent(UserHomeActivity.this, AllDustbinActivity.class);
+                intent = new Intent(UserHomeActivity.this, DustbinListActivity.class);
                 startActivity(intent);
             }
         });

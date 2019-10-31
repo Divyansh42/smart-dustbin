@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/login_background">
+    android:background="#222a2c">
 
    <!-- <com.github.captain_miao.optroundcardview.OptRoundCardView
         style="@style/OptRoundCardView"
@@ -39,25 +39,33 @@
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/ic_bin"/>
 
-            <!--<TextView
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
-                android:textColor="#99FFFFFF"
-                android:layout_marginTop="28dp"
+                android:textColor="#9E373434"
+                android:layout_marginTop="24dp"
+                android:textStyle="bold"
                 android:fontFamily="@font/brandon_text_regular"
-                android:text="Please login to access your account."
-                android:textSize="16dp" />-->
+                android:text="SMART DUSTBIN MANAGER"
+                android:textSize="19sp" />
 
+           <!-- <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:hint="Username"
+                android:textColorHint=""/>
+-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="64dp"
+                android:layout_marginTop="28dp"
                 android:hint="Username"
-                app:hintTextColor="@android:color/white"
-                app:boxStrokeColor="@android:color/white"
+                app:hintTextColor="#902FFF"
+                app:boxStrokeColor="#902FFF"
                 android:textColorHint="#a4a4a4">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -78,9 +86,9 @@
                 android:layout_marginTop="16dp"
                 android:hint="Password"
                 app:passwordToggleEnabled="true"
-                app:hintTextColor="@android:color/white"
-                app:boxStrokeColor="@android:color/white"
-                app:passwordToggleTint="@android:color/white"
+                app:hintTextColor="#902FFF"
+                app:boxStrokeColor="#902FFF"
+                app:passwordToggleTint="#902FFF"
                 android:textColorHint="#a4a4a4">
 
                 <com.google.android.material.textfield.TextInputEditText
