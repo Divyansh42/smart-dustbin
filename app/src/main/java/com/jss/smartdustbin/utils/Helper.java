@@ -65,7 +65,7 @@ public class Helper {
         String contactNo = jsonObject.get("contact_no").getAsString();
 
         User user = new User();
-        user.setName(name);
+       // user.setName(name);
         user.setGender(gender);
         user.setAge(age);
         user.setContactNo(contactNo);

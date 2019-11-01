@@ -20,6 +20,7 @@ public class Dustbin implements Parcelable {
     private String garbageLevel;
     private Date lastUpdated;
     private String comment;
+    private User installedByUser;
 
     public Dustbin(String garbageLevel, Date lastUpdated) {
         this.garbageLevel = garbageLevel;
@@ -125,6 +126,14 @@ public class Dustbin implements Parcelable {
         this.comment = comment;
     }
 
+    public User getInstalledByUser() {
+        return installedByUser;
+    }
+
+    public void setInstalledByUser(User installedByUser) {
+        this.installedByUser = installedByUser;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -138,9 +147,10 @@ public class Dustbin implements Parcelable {
         dest.writeString(latitude);
         dest.writeString(longitude);
         dest.writeString(garbageLevel);
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+        dest.writeParcelable(installedByUser, flags);
+        /*DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
         String lastUpdatedStrDate = dateFormat.format(lastUpdated);
-        dest.writeString(lastUpdatedStrDate);
+        dest.writeString(lastUpdatedStrDate);*/
         dest.writeString(comment);
 
     }
@@ -152,7 +162,8 @@ public class Dustbin implements Parcelable {
         latitude = in.readString();
         longitude = in.readString();
         garbageLevel = in.readString();
-        String lastUpdatedStrDate = in.readString();
+        installedByUser = in.readParcelable(getClass().getClassLoader());
+        //String lastUpdatedStrDate = in.readString();
         //ToDo: Get date from parcel
         comment = in.readString();
     }

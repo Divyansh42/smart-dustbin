@@ -74,7 +74,7 @@ public class LocationTrack extends Service implements LocationListener {
                         //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
                         //                                          int[] grantResults)
                         // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
+                        // for ActivityCompat#requestPermissions for more Details.
                     }
                     locationManager.requestLocationUpdates(
                             LocationManager.GPS_PROVIDER,
@@ -103,7 +103,7 @@ public class LocationTrack extends Service implements LocationListener {
                         //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
                         //                                          int[] grantResults)
                         // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
+                        // for ActivityCompat#requestPermissions for more Details.
                     }
                     locationManager.requestLocationUpdates(
                             LocationManager.NETWORK_PROVIDER,
@@ -188,7 +188,7 @@ public class LocationTrack extends Service implements LocationListener {
                 //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
                 //                                          int[] grantResults)
                 // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
+                // for ActivityCompat#requestPermissions for more Details.
                 return;
             }
             locationManager.removeUpdates(LocationTrack.this);

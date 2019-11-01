@@ -41,14 +41,7 @@ import java.util.HashMap;
 
 public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.OnMarkerClickListener {
 
-    TextView dustbinState;
-    TextView dustbinCity;
-    TextView dustbinLocality;
-    LinearLayout content;
-    ProgressBar loader;
-    ProgressBar dustbinLevelPb;
-    Button dustbinMoreDetails;
-    private HashMap<Marker, Integer> mHashMap;
+
     ArrayList<Dustbin> dustbinArrayList;
     HashMap<String, Dustbin> markerDustbinHashMap;
 
@@ -58,32 +51,16 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
         setContentView(R.layout.activity_all_dustbin);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Dustbins");
-        mHashMap = new HashMap<Marker, Integer>();
 
 
         dustbinArrayList = new ArrayList<>();
 
         Bundle bundle = getIntent().getExtras();
         dustbinArrayList = bundle.getParcelableArrayList("dustbin_list");
-        dustbinState = findViewById(R.id.state_text_view);
-        dustbinCity = findViewById(R.id.city_text_view);
-        dustbinLocality = findViewById(R.id.locality_text_view);
-        content = findViewById(R.id.comtent_all_dustbin_activity);
-        loader = findViewById(R.id.loader_all_dustbin_map);
-        dustbinLevelPb = findViewById(R.id.dustbin_progressbar);
-        dustbinMoreDetails = findViewById(R.id.bt_more_details);
-        markerDustbinHashMap = new HashMap<String, Dustbin>();
+        markerDustbinHashMap = new HashMap<>();
         ArrayList<Marker> markers = new ArrayList<Marker>();
 
         //dustbinLevelPb.setProgress(70);
-
-        dustbinMoreDetails.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent dustbinDetailsActivityIntent = new Intent(AllDustbinActivity.this, DustbinDetailsActivity.class);
-                startActivity(dustbinDetailsActivityIntent);
-            }
-        });
         /*Dustbin dustbin1 = new Dustbin();
         dustbin1.setState("UP");
         dustbin1.setCity("Noida");
@@ -141,7 +118,7 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
                     Marker marker = mMap.addMarker(new MarkerOptions()
                             .position(new LatLng(lat, lng))
                             .title(garbageLevel + "% full")
-                            .snippet("click here for more details")
+                            .snippet("click here for more Details")
                             .icon(getMarkerIcon(garbageStatus)));
                     markerDustbinHashMap.put(marker.getId(), dustbinArrayList.get(i));
                     markers.add(marker);
@@ -152,7 +129,7 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
                 /*Marker marker1 =  mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(28.584881,77.309219))
                         .title("50% full")
-                        .snippet("click here for more details")
+                        .snippet("click here for more Details")
                         .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker_red", 100, 125))));
                 markerDustbinHashMap.put(marker1.getId(), dustbinArrayList.get(1));
                 markers.add(marker1);
@@ -160,7 +137,7 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
                 Marker marker2 = mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(28.583724,77.360467))
                         .title("50% full")
-                        .snippet("click here for more details")
+                        .snippet("click here for more Details")
                         .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker_orange", 75, 115))));
                 markerDustbinHashMap.put(marker2.getId(), dustbinArrayList.get(2));
                 markers.add(marker2);
@@ -168,7 +145,7 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
                 Marker marker3 = mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(28.595203,77.347282))
                         .title("50% full")
-                        .snippet("click here for more details")
+                        .snippet("click here for more Details")
                         .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker_red", 100, 125))));
                 markerDustbinHashMap.put(marker3.getId(), dustbinArrayList.get(3));
                 markers.add(marker3);
@@ -176,7 +153,7 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
                 Marker marker4 = mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(28.605223, 77.376407))
                         .title("50% full")
-                        .snippet("click here for more details")
+                        .snippet("click here for more Details")
                         .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker_green", 75, 115))));
                 markerDustbinHashMap.put(marker4.getId(), dustbinArrayList.get(0));
                 markers.add(marker4);
@@ -215,6 +192,9 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
                     public void onInfoWindowClick(Marker marker) {
                         mMap.getUiSettings().setMapToolbarEnabled(true);
                         Intent dustbinDetailsActivityIntent = new Intent(AllDustbinActivity.this, DustbinDetailsActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("dustbin", markerDustbinHashMap.get(marker.getId()));
+                        dustbinDetailsActivityIntent.putExtras(bundle);
                         startActivity(dustbinDetailsActivityIntent);
                     }
                 });
@@ -226,28 +206,11 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
 
     }
 
-    private void updateMap(){
-
-    }
-
-    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
-        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
-        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
-        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        vectorDrawable.draw(canvas);
-        return BitmapDescriptorFactory.fromBitmap(bitmap);
-    }
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
 
         Toast.makeText(this,"Marker is clicked" ,Toast.LENGTH_LONG).show();
-
-       /* if (marker.equals,(myMarker))
-        {
-            //handle click here
-        }*/
         return true;
     }
 

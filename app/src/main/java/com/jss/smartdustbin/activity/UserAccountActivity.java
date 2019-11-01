@@ -67,7 +67,7 @@ public class UserAccountActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 Log.e(TAG, " onResponse: " + response);
                 User user = Helper.getUserFromResponse(response);
-                userFullName.setText(user.getName());
+                userFullName.setText(user.getFirstName() + " " + user.getLastName());
                 userAge.setText(user.getAge());
                 userContactNo.setText(user.getContactNo());
                 userEmail.setText(user.getEmail());

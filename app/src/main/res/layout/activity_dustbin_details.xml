@@ -36,8 +36,8 @@
                        android:layout_width="68dp"
                        android:layout_height="100dp"
                        android:progressDrawable="@drawable/progressbar_states"
-                       app:layout_constraintTop_toTopOf="@+id/image_view"
-                       app:layout_constraintStart_toStartOf="@id/image_view"
+                       app:layout_constraintTop_toTopOf="@+id/dustbin_image"
+                       app:layout_constraintStart_toStartOf="@id/dustbin_image"
                        android:paddingTop="26dp"
                        android:layout_marginBottom="5dp"
                        android:paddingBottom="2dp"
@@ -45,7 +45,7 @@
                        android:layout_marginStart="16dp" />
 
                    <ImageView
-                       android:id="@+id/image_view"
+                       android:id="@+id/dustbin_image"
                        android:layout_width="100dp"
                        android:layout_height="100dp"
                        app:layout_constraintTop_toTopOf="@+id/constraint_layout"
@@ -54,129 +54,62 @@
                        android:src="@drawable/garbage" />
 
 
-                   <ImageView
-                       android:id="@+id/rc_validity_icon"
-                       android:layout_width="22dp"
-                       android:layout_height="22dp"
-                       android:src="@mipmap/ic_launcher"
-                       app:layout_constraintStart_toEndOf="@id/image_view"
-                       app:layout_constraintTop_toTopOf="@id/image_view"
-                       android:layout_marginLeft="20sp"
-                       android:layout_marginTop="15dp"
-                       android:layout_marginStart="20sp" />
                    <TextView
-                       android:id="@+id/rc_validity"
+                       android:id="@+id/last_updated_tv"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="Last Updated at 12/09/19 10:00 AM"
+                       android:textColor="@android:color/black"
+                       app:layout_constraintStart_toEndOf="@id/dustbin_image"
+                       app:layout_constraintTop_toBottomOf="@id/landmark_tv"
+                       android:layout_marginRight="8dp"
+                       android:layout_marginLeft="20sp"
+                       android:layout_marginTop="12dp"
+                       android:layout_marginStart="20dp"
+                       android:layout_marginEnd="8dp" />
+                   <TextView
+                       android:id="@+id/garbage_level_tv"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
                        android:text="75% full"
                        android:textColor="#689F38"
-                       app:layout_constraintStart_toEndOf="@id/rc_validity_icon"
-                       app:layout_constraintTop_toTopOf="@+id/rc_validity_icon"
-                       android:layout_marginLeft="12dp"
-                       android:textSize="14sp"
-                       android:layout_marginStart="12dp" />
-
-
+                       app:layout_constraintStart_toStartOf="parent"
+                       app:layout_constraintTop_toBottomOf="@+id/dustbin_image"
+                       android:layout_marginTop="24dp"
+                       android:layout_marginLeft="48dp"
+                       android:textSize="17sp"
+                       android:layout_marginStart="48dp" />
+                   <TextView
+                       android:id="@+id/installed_by_tv"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:textColor="@android:color/black"
+                       android:text="Installed By Divyanshu Agrawal"
+                       app:layout_constraintStart_toEndOf="@id/dustbin_image"
+                       app:layout_constraintTop_toBottomOf="@id/last_updated_tv"
+                       android:layout_marginLeft="20dp"
+                       android:layout_marginStart="20dp"
+                       android:layout_marginTop="12dp"/>
+                   <TextView
+                       android:id="@+id/landmark_tv"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="Located near Hospital"
+                       android:textColor="@android:color/black"
+                       app:layout_constraintStart_toEndOf="@id/dustbin_image"
+                       app:layout_constraintTop_toTopOf="parent"
+                       android:layout_marginLeft="20dp"
+                       android:layout_marginTop="24dp"
+                       android:layout_marginStart="20dp" />
                    <ImageView
-                       android:id="@+id/insurance_validity_icon"
-                       android:layout_width="20dp"
-                       android:layout_height="20dp"
-                       android:src="@mipmap/ic_launcher"
-                       app:layout_constraintTop_toBottomOf="@id/rc_validity_icon"
-                       app:layout_constraintStart_toStartOf="@id/rc_validity_icon"
-                       android:layout_marginTop="8dp"
-                       android:layout_marginLeft="2dp"
-                       />
-
-
-                   <TextView
-                       android:id="@+id/insurance_validity"
+                       android:id="@+id/alert_icon"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
-                       android:maxLines="2"
-                       android:text="Last Emptied at 10:00 AM"
-                       android:textColor="#F57C00"
-                       app:layout_constraintStart_toEndOf="@id/insurance_validity_icon"
-                       app:layout_constraintTop_toTopOf="@+id/insurance_validity_icon"
-                       android:layout_marginLeft="12dp"
-                       android:textSize="14sp"
-                       android:layout_marginStart="12dp" />
-
-                   <TextView
-                       android:id="@+id/owner"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:text="City :"
-                       android:textColor="#000000"
-                       app:layout_constraintStart_toStartOf="@id/constraint_layout"
-                       app:layout_constraintTop_toBottomOf="@id/image_view"
-                       android:layout_marginLeft="5dp"
-                       android:layout_marginTop="20dp"
-                       android:textSize="14sp"
-                       android:layout_marginStart="7dp" />
-                   <TextView
-                       android:id="@+id/owner_name"
-                       android:layout_width="179dp"
-                       android:layout_height="wrap_content"
-                       android:text="Noida"
-                       android:textColor="#000000"
-                       android:textAlignment="viewEnd"
-                       android:layout_gravity="end"
-                       android:layout_marginRight="5dp"
-                       app:layout_constraintEnd_toEndOf="@id/constraint_layout"
-                       app:layout_constraintTop_toTopOf="@id/owner"
-                       android:textSize="14sp"
-                       android:layout_marginEnd="5dp" />
-                   <TextView
-                       android:id="@+id/registered"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:layout_marginLeft="7dp"
-                       android:text="Locality :"
-                       app:layout_constraintTop_toBottomOf="@id/owner"
-                       app:layout_constraintStart_toStartOf="@id/constraint_layout"
-                       android:textColor="#000000"
-                       android:textSize="14sp"
-                       android:layout_marginStart="7dp" />
-                   <TextView
-                       android:id="@+id/registered_no"
-                       android:layout_width="179dp"
-                       android:layout_height="wrap_content"
-                       android:layout_gravity="end"
-                       android:text="Sector 34"
-                       app:layout_constraintEnd_toEndOf="@id/constraint_layout"
-                       app:layout_constraintTop_toTopOf="@id/registered"
-                       android:textAlignment="viewEnd"
-                       android:layout_marginRight="5dp"
-                       android:textColor="#000000"
-                       android:textSize="14sp"
-                       android:layout_marginEnd="5dp" />
-
-                   <TextView
-                       android:id="@+id/model"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:layout_marginLeft="7dp"
-                       android:text="S.No :"
-                       android:textColor="#000000"
-                       app:layout_constraintTop_toBottomOf="@id/registered"
-                       app:layout_constraintStart_toStartOf="@id/constraint_layout"
-                       android:textSize="14sp"
-                       android:layout_marginStart="7dp" />
-                   <TextView
-                       android:id="@+id/model_no"
-                       android:layout_width="179dp"
-                       android:layout_height="wrap_content"
-                       android:layout_gravity="end"
-                       android:text="104"
-                       android:textAlignment="viewEnd"
-                       android:layout_marginRight="5dp"
-                       app:layout_constraintEnd_toEndOf="@id/constraint_layout"
-                       app:layout_constraintTop_toTopOf="@id/model"
-                       android:textColor="#000000"
-                       android:textSize="14sp"
-                       android:layout_marginEnd="5dp" />
-
+                       android:src="@drawable/ic_exclamation_mark"
+                       app:layout_constraintTop_toTopOf="parent"
+                       app:layout_constraintRight_toRightOf="parent"
+                       android:layout_marginTop="12dp"
+                       android:layout_marginRight="12dp"/>
 
 
 

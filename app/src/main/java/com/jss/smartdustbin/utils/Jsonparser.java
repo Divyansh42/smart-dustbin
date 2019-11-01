@@ -2,6 +2,7 @@ package com.jss.smartdustbin.utils;
 
 import com.google.gson.JsonObject;
 import com.jss.smartdustbin.model.Dustbin;
+import com.jss.smartdustbin.model.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -69,6 +70,16 @@ public class Jsonparser {
             String dateString = get(statusJsonObject, "lastUpdatedAt");
             dustbin.setLastUpdated(Helper.getDateFromString(dateString));
             dustbin.setComment(get(statusJsonObject, "comment"));
+
+            JSONObject installedByJsonObject = jsonObject.getJSONObject(("installedBy"));
+            User installedByUser = new User();
+            installedByUser.setId(get(installedByJsonObject, "id"));
+            installedByUser.setUserName(get(installedByJsonObject, "username"));
+            installedByUser.setFirstName(get(installedByJsonObject, "firstName"));
+            installedByUser.setLastName(get(installedByJsonObject, "lastName"));
+
+            dustbin.setInstalledByUser(installedByUser);
+
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (ParseException e) {

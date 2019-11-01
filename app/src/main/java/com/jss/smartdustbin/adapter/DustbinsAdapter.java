@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.Image;
 import android.nfc.cardemulation.CardEmulation;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,6 +97,9 @@ public class DustbinsAdapter extends RecyclerView.Adapter<DustbinsAdapter.MyView
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, DustbinDetailsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("dustbin", dustbin);
+                intent.putExtras(bundle);
                 context.startActivity(intent);
 
             }
