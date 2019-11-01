@@ -1,5 +1,6 @@
 package com.jss.smartdustbin.utils;
 
+import android.graphics.Color;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -79,6 +80,15 @@ public class Helper {
         Date date = formatterIST.parse(dateString);
         Log.i(TAG, "Helper parse date {}" + formatterIST.format(date));
         return date;
+    }
+
+    public static int getGarbageStatusFromLevel(String garbageLevel){
+        int garbagePer = Integer.parseInt(garbageLevel);
+        if(garbagePer < 25)
+            return 1;
+        else if(garbagePer <= 74)
+           return 2;
+        else return 3;
     }
 
 

@@ -13,6 +13,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
@@ -80,6 +81,9 @@ public class DustbinListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DustbinListActivity.this, AllDustbinActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("dustbin_list", (ArrayList<? extends Parcelable>) dustbinList);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });

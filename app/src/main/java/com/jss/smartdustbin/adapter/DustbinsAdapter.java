@@ -22,6 +22,7 @@ import com.jss.smartdustbin.activity.DustbinDetailsActivity;
 import com.jss.smartdustbin.activity.DustbinListActivity;
 import com.jss.smartdustbin.activity.LoginActivity;
 import com.jss.smartdustbin.model.Dustbin;
+import com.jss.smartdustbin.utils.Helper;
 import com.jss.smartdustbin.utils.SmartDustbinApplication;
 
 import java.util.ArrayList;
@@ -67,11 +68,12 @@ public class DustbinsAdapter extends RecyclerView.Adapter<DustbinsAdapter.MyView
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         final Dustbin dustbin =  dustbinList.get(position);
-        if(Integer.parseInt(dustbin.getGarbageLevel()) < 25)
+        int garbageStatus = Helper.getGarbageStatusFromLevel(dustbin.getGarbageLevel());
+        if(garbageStatus == 1)
             holder.garbageLevelTv.setTextColor(Color.parseColor("#44A849"));
-        else if(Integer.parseInt(dustbin.getGarbageLevel()) >= 25 && Integer.parseInt(dustbin.getGarbageLevel()) <= 74)
+        else if(garbageStatus == 2)
             holder.garbageLevelTv.setTextColor(Color.parseColor("#FF8922"));
-        else if(Integer.parseInt(dustbin.getGarbageLevel()) > 74)
+        else if(garbageStatus == 3)
             holder.garbageLevelTv.setTextColor(Color.parseColor("#E2574C"));
 
 
