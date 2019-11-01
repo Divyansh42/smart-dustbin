@@ -1,10 +1,15 @@
 package com.jss.smartdustbin.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.android.gms.maps.model.LatLng;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Dustbin {
+public class Dustbin implements Parcelable {
     private String id;
     private String bin;
     private String landmark;
@@ -119,4 +124,48 @@ public class Dustbin {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(bin);
+        dest.writeString(landmark);
+        dest.writeString(latitude);
+        dest.writeString(longitude);
+        dest.writeString(garbageLevel);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+        String lastUpdatedStrDate = dateFormat.format(lastUpdated);
+        dest.writeString(lastUpdatedStrDate);
+        dest.writeString(comment);
+
+    }
+
+    protected Dustbin(Parcel in) {
+        id = in.readString();
+        bin = in.readString();
+        landmark = in.readString();
+        latitude = in.readString();
+        longitude = in.readString();
+        garbageLevel = in.readString();
+        String lastUpdatedStrDate = in.readString();
+        //ToDo: Get date from parcel
+        comment = in.readString();
+    }
+
+    public static final Creator<Dustbin> CREATOR = new Creator<Dustbin>() {
+        @Override
+        public Dustbin createFromParcel(Parcel in) {
+            return new Dustbin(in);
+        }
+
+        @Override
+        public Dustbin[] newArray(int size) {
+            return new Dustbin[size];
+        }
+    };
 }

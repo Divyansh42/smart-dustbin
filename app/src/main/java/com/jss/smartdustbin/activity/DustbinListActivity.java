@@ -1,6 +1,7 @@
 package com.jss.smartdustbin.activity;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -71,6 +73,40 @@ public class DustbinListActivity extends AppCompatActivity {
         dustbinsAdapter = new DustbinsAdapter(this, dustbinList);
         progressBar = findViewById(R.id.progressBar);
         defaultTv = findViewById(R.id.default_tv);
+        mapIcon = findViewById(R.id.map_icon);
+        filterIcon = findViewById(R.id.filter);
+
+        mapIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DustbinListActivity.this, AllDustbinActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        filterIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] choices = {"25% and below", "25% - 50%", "50% - 75%", "75% and above"};
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DustbinListActivity.this)
+                        .setTitle("Filter by Garbage level");
+                alertDialogBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        /*SmartDustbinApplication.getInstance().getDefaultSharedPreferences().edit().clear().apply();
+                        Intent intent = new Intent(DustbinListActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();*/
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("Cancel", null)
+                        .setSingleChoiceItems(choices, 1, null);
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+            }
+        });
 
         mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);

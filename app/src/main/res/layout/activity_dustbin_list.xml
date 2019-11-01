@@ -13,8 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:minHeight="?attr/actionBarSize"
-        android:background="#222A2C"
-        android:alpha="0.9"
+        android:background="@color/colorPrimaryDark"
         app:theme="@style/ToolBarStyle.Base" >
 
         <LinearLayout
