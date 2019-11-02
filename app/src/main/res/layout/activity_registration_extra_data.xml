@@ -10,12 +10,17 @@
     android:layout_marginRight="16dp"
     tools:context=".activity.RegistrationExtraDataActivity">
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:layout_gravity="center_horizontal"/>
+
     <com.jss.smartdustbin.model.NoDefaultSpinner
         android:id="@+id/spinner_wards"
         android:layout_marginTop="64dp"
         android:layout_width="match_parent"
-        android:paddingLeft="@dimen/edit_text_padding"
-        android:paddingRight="@dimen/edit_text_padding"
         android:layout_height="wrap_content"
         android:prompt="@string/ward_prompt"/>
     <View

@@ -1,8 +1,8 @@
 package com.jss.smartdustbin.utils;
 
-import com.google.gson.JsonObject;
 import com.jss.smartdustbin.model.Dustbin;
 import com.jss.smartdustbin.model.User;
+import com.jss.smartdustbin.model.Ward;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,7 +23,7 @@ public class Jsonparser {
             for (int j = 0; j < jsonArray.length(); j++) {
                 Dustbin dustbin;
                 try {
-                    dustbin = toObject(jsonArray.getJSONObject(j).toString());
+                    dustbin = toDustbinObject(jsonArray.getJSONObject(j).toString());
                     dustbinList.add(dustbin);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -52,7 +52,7 @@ public class Jsonparser {
     }
 
 
-    public static Dustbin toObject(String jsonString) {
+    public static Dustbin toDustbinObject(String jsonString) {
         Dustbin dustbin = new Dustbin();
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
@@ -86,5 +86,39 @@ public class Jsonparser {
             e.printStackTrace();
         }
         return dustbin;
+    }
+
+    public static List<Ward> responseStringToWardList(String wardStringResponse) {
+        List<Ward> wardList = new ArrayList<>();
+        try { ;
+            JSONArray jsonArray = new JSONArray(wardStringResponse);
+            for (int j = 0; j < jsonArray.length(); j++) {
+                Ward ward;
+                try {
+                    ward = toWardObject(jsonArray.getJSONObject(j).toString());
+                    wardList.add(ward);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return wardList;
+
+
+    }
+
+    private static Ward toWardObject(String jsonString) {
+       Ward ward = new Ward();
+        try {
+            JSONObject jsonObject = new JSONObject(jsonString);
+            ward.setId(get(jsonObject, "id"));
+            ward.setName(get(jsonObject, "name"));
+            ward.setDescription(get(jsonObject, "description"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return ward;
     }
 }

@@ -91,11 +91,11 @@ public class DustbinListActivity extends AppCompatActivity {
         filterIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String[] choices = {"25% and below", "25% - 50%", "50% - 75%", "75% and above"};
+                String[] choices = {"25% and below", "25% - 75%", "75% and above"};
 
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DustbinListActivity.this)
                         .setTitle("Filter by Garbage level");
-                alertDialogBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                alertDialogBuilder.setPositiveButton("Apply", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int whichButton) {
                         /*SmartDustbinApplication.getInstance().getDefaultSharedPreferences().edit().clear().apply();
@@ -105,7 +105,7 @@ public class DustbinListActivity extends AppCompatActivity {
                     }
                 });
                 alertDialogBuilder.setNegativeButton("Cancel", null)
-                        .setSingleChoiceItems(choices, 1, null);
+                        .setSingleChoiceItems(choices, 0,null);
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
 
