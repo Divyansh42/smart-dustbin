@@ -53,25 +53,12 @@
                        android:layout_margin="30dp"
                        android:src="@drawable/garbage" />
 
-
-                   <TextView
-                       android:id="@+id/last_updated_tv"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:text="Last Updated at 12/09/19 10:00 AM"
-                       android:textColor="@android:color/black"
-                       app:layout_constraintStart_toEndOf="@id/dustbin_image"
-                       app:layout_constraintTop_toBottomOf="@id/landmark_tv"
-                       android:layout_marginRight="8dp"
-                       android:layout_marginLeft="20sp"
-                       android:layout_marginTop="12dp"
-                       android:layout_marginStart="20dp"
-                       android:layout_marginEnd="8dp" />
                    <TextView
                        android:id="@+id/garbage_level_tv"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
                        android:text="75% full"
+                       android:textStyle="bold"
                        android:textColor="#689F38"
                        app:layout_constraintStart_toStartOf="parent"
                        app:layout_constraintTop_toBottomOf="@+id/dustbin_image"
@@ -79,28 +66,84 @@
                        android:layout_marginLeft="48dp"
                        android:textSize="17sp"
                        android:layout_marginStart="48dp" />
+
+                   <TextView
+                       android:id="@+id/landmark_heading_tv"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       app:layout_constraintTop_toTopOf="parent"
+                       android:text="Located Near:"
+                       android:textColor="@android:color/black"
+                       android:textStyle="bold"
+                       app:layout_constraintStart_toEndOf="@id/dustbin_image"
+                       android:layout_marginLeft="20dp"
+                       android:layout_marginStart="20dp"
+                       android:layout_marginTop="24dp"/>
+                   <TextView
+                       android:id="@+id/landmark_tv"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="Hospital"
+                       android:textSize="15sp"
+                       android:textColor="@android:color/black"
+                       app:layout_constraintStart_toEndOf="@id/dustbin_image"
+                       app:layout_constraintTop_toBottomOf="@id/landmark_heading_tv"
+                       android:layout_marginLeft="20dp"
+                       android:layout_marginTop="6dp"
+                       android:layout_marginStart="20dp" />
+                   <TextView
+                       android:id="@+id/last_updated_heading_tv"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       app:layout_constraintTop_toBottomOf="@id/landmark_tv"
+                       android:text="Last Updated At:"
+                       android:textColor="@android:color/black"
+                       android:textStyle="bold"
+                       app:layout_constraintStart_toEndOf="@id/dustbin_image"
+                       android:layout_marginLeft="20dp"
+                       android:layout_marginStart="20dp"
+                       android:layout_marginTop="16dp"/>
+
+                   <TextView
+                       android:id="@+id/last_updated_tv"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="12/09/19 10:00 AM"
+                       android:textSize="15sp"
+                       android:textColor="@android:color/black"
+                       app:layout_constraintStart_toEndOf="@id/dustbin_image"
+                       app:layout_constraintTop_toBottomOf="@id/last_updated_heading_tv"
+                       android:layout_marginRight="8dp"
+                       android:layout_marginLeft="20sp"
+                       android:layout_marginTop="6dp"
+                       android:layout_marginStart="20dp"
+                       android:layout_marginEnd="8dp" />
+                   <TextView
+                       android:id="@+id/installed_by_heading_tv"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       app:layout_constraintTop_toBottomOf="@id/last_updated_tv"
+                       android:text="Installed By:"
+                       android:textColor="@android:color/black"
+                       android:textStyle="bold"
+                       app:layout_constraintStart_toEndOf="@id/dustbin_image"
+                       android:layout_marginLeft="20dp"
+                       android:layout_marginStart="20dp"
+                       android:layout_marginTop="16dp"/>
+
                    <TextView
                        android:id="@+id/installed_by_tv"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
                        android:textColor="@android:color/black"
-                       android:text="Installed By Divyanshu Agrawal"
+                       android:text="Divyanshu Agrawal"
+                       android:textSize="15sp"
                        app:layout_constraintStart_toEndOf="@id/dustbin_image"
-                       app:layout_constraintTop_toBottomOf="@id/last_updated_tv"
+                       app:layout_constraintTop_toBottomOf="@id/installed_by_heading_tv"
                        android:layout_marginLeft="20dp"
                        android:layout_marginStart="20dp"
-                       android:layout_marginTop="12dp"/>
-                   <TextView
-                       android:id="@+id/landmark_tv"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:text="Located near Hospital"
-                       android:textColor="@android:color/black"
-                       app:layout_constraintStart_toEndOf="@id/dustbin_image"
-                       app:layout_constraintTop_toTopOf="parent"
-                       android:layout_marginLeft="20dp"
-                       android:layout_marginTop="24dp"
-                       android:layout_marginStart="20dp" />
+                       android:layout_marginTop="6dp"/>
+
                    <ImageView
                        android:id="@+id/alert_icon"
                        android:layout_width="wrap_content"
@@ -109,7 +152,31 @@
                        app:layout_constraintTop_toTopOf="parent"
                        app:layout_constraintRight_toRightOf="parent"
                        android:layout_marginTop="12dp"
-                       android:layout_marginRight="12dp"/>
+                       android:layout_marginRight="12dp"
+                       android:layout_marginEnd="12dp" />
+
+                   <ImageView
+                       android:id="@+id/note_icon"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       app:layout_constraintBottom_toBottomOf="parent"
+                       android:src="@drawable/ic_note"
+                       app:layout_constraintLeft_toLeftOf="parent"
+                       android:layout_marginLeft="12dp"
+                       android:layout_marginBottom="24dp"/>
+
+                   <TextView
+                       android:id="@+id/note_text"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:textColor="#88222A2C"
+                       android:maxLines="2"
+                       android:text="Click on the dustbin marker on the map to \nget directions of the dustbin on Google maps."
+                       app:layout_constraintStart_toEndOf="@id/note_icon"
+                       app:layout_constraintTop_toTopOf="@id/note_icon"
+                       android:layout_marginLeft="12dp"
+                       android:layout_marginBottom="16dp"
+                       android:layout_marginStart="12dp" />
 
 
 

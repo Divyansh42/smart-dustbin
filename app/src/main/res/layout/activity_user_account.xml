@@ -145,18 +145,25 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginLeft="16dp"/>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/bt_logout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="57dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="48dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:text="Logout"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                app:strokeColor="#db4c6d"
-                android:textColor="#db4c6d"
+                android:backgroundTint="#222a2c"
+                android:elevation="3dp"
+                android:shadowRadius="2"
+                android:shadowDy="2"
+                android:shadowColor="#3C000000"
+                android:alpha="0.9"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:textSize="17sp"
+                android:textColor="@android:color/white"
                 />
-
         </LinearLayout>
 
     </LinearLayout>

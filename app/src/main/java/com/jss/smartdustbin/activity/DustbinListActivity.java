@@ -42,6 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.view.View.GONE;
 import static com.jss.smartdustbin.activity.LoginActivity.LOG_TAG;
 
 public class DustbinListActivity extends AppCompatActivity {
@@ -98,10 +99,7 @@ public class DustbinListActivity extends AppCompatActivity {
                 alertDialogBuilder.setPositiveButton("Apply", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        /*SmartDustbinApplication.getInstance().getDefaultSharedPreferences().edit().clear().apply();
-                        Intent intent = new Intent(DustbinListActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();*/
+
                     }
                 });
                 alertDialogBuilder.setNegativeButton("Cancel", null)
@@ -143,13 +141,14 @@ public class DustbinListActivity extends AppCompatActivity {
         StringBuilder urlSb = new StringBuilder(API.BASE + API.DUSTBIN_LIST + "/?wardId=");
         urlSb.append(wardId);
         progressBar.setVisibility(View.VISIBLE);
-        defaultTv.setVisibility(View.GONE);
+        defaultTv.setVisibility(GONE);
         final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
         StringRequest stringRequest = new StringRequest(Request.Method.GET, urlSb.toString(),  new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.e(LOG_TAG, " onResponse: " + response);
-                progressBar.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(GONE);
                 dustbinList = Jsonparser.responseStringToDustbinList(response);
                 dustbinsAdapter.setItems(dustbinList);
                 dustbinsAdapter.notifyDataSetChanged();

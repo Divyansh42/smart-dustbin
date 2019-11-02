@@ -103,8 +103,8 @@ public class DustbinDetailsActivity extends AppCompatActivity implements GoogleM
             garbageLevelTv.setTextColor(Color.parseColor("#E2574C"));
 
         garbageLevelTv.setText(dustbin.getGarbageLevel() + "% full");
-        landmarkTv.setText("Located near " + dustbin.getLandmark());
-        installedByTv.setText("Installed By " + dustbin.getInstalledByUser().getFirstName() + " " + dustbin.getInstalledByUser().getLastName());
+        landmarkTv.setText(dustbin.getLandmark());
+        installedByTv.setText(dustbin.getInstalledByUser().getFirstName() + " " + dustbin.getInstalledByUser().getLastName());
         double lat = Double.parseDouble(dustbin.getLatitude());
         double lng = Double.parseDouble(dustbin.getLongitude());
         //lastUpdatedTv.setText(dustbin.getLastUpdated().toString());
