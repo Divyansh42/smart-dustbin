@@ -99,7 +99,10 @@ public class DustbinListActivity extends AppCompatActivity {
                 alertDialogBuilder.setPositiveButton("Apply", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int whichButton) {
-
+                        recyclerView.setVisibility(GONE);
+                        dustbinList.clear();
+                        progressBar.setVisibility(View.VISIBLE);
+                        loadDustbinList("5db97bb11a5e5700049482c1");
                     }
                 });
                 alertDialogBuilder.setNegativeButton("Cancel", null)
