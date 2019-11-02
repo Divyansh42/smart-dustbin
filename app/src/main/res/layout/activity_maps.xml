@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/white"
     android:orientation="vertical">
 
@@ -80,19 +80,20 @@
             android:text="Confirm Location"
             android:textSize="18sp"
             android:textColor="@android:color/white" />-->
-        <Button
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/bt_confirm_location"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:textSize="18sp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:textSize="16sp"
             android:text="Confirm Location"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            app:strokeColor="#db4c6d"
-            android:textColor="#db4c6d"
-            />
+            android:textColor="@android:color/white"
+            android:elevation="3dp"
+            android:layout_marginBottom="8dp"
+            app:strokeColor="@android:color/black"
+            android:alpha="0.9"
+            android:backgroundTint="#222a2c"/>
+
 
 
 

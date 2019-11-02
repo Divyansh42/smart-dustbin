@@ -46,6 +46,8 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.jss.smartdustbin.API;
 import com.jss.smartdustbin.R;
 import com.jss.smartdustbin.utils.HttpStatus;
@@ -72,8 +74,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     LatLng latLng;
     TextView locationMarkerText;
     Toolbar mToolbar;
-    Button confirmLocationButton;
+    ExtendedFloatingActionButton confirmLocationButton;
     String qrCodeResult;
+    String selectedWardId;
+    String landmark;
     ProgressDialog progressDialog;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -93,7 +97,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         getSupportActionBar().setTitle("Set Your Location");
 
         qrCodeResult = getIntent().getStringExtra("code");
-
+        selectedWardId = getIntent().getStringExtra("ward_id");
+        landmark = getIntent().getStringExtra("landmark");
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -106,7 +111,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 progressDialog = new ProgressDialog(MapsActivity.this);
-                progressDialog.setTitle("Confirming registration");
+                progressDialog.setTitle("Initializing registration");
                 progressDialog.setMessage("Please wait...");
                 progressDialog.setCanceledOnTouchOutside(false);
                 progressDialog.setCancelable(false);
@@ -331,8 +336,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void sendQrCodeResult(String barCodeResult, double latitude, double longitude) {
+       /* Uri.Builder builder = new Uri.Builder();
+        builder.scheme("https")
+                .authority("www.myawesomesite.com")
+                .appendPath("turtles")
+                .appendPath("types")
+                .appendQueryParameter("type", "1")
+                .appendQueryParameter("sort", "relevance")
+                .fragment("section-name");
+        String myUrl = builder.build().toString();*/
+
         final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, API.BASE + API.REGISTER_DUSTBIN + "?bin=78&lat=2&lng=1", new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, API.BASE + API.REGISTER_DUSTBIN + "?bin=228&lat=2&lng=1&wardId=5db97bb11a5e5700049482c1", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.e(LOG_TAG, " onResponse: " + response);

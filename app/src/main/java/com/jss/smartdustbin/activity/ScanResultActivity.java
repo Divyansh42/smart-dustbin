@@ -100,9 +100,12 @@ public class ScanResultActivity extends AppCompatActivity {
                 progressDialog.setCanceledOnTouchOutside(false);
                 progressDialog.setCancelable(false);
                 progressDialog.show();
+                Intent intent = new Intent(ScanResultActivity.this, RegistrationConfirmationActivity.class);
+                startActivity(intent);
+                finish();
 
 
-               confirmRegistration();
+               //confirmRegistration();
 
 
             }
@@ -152,7 +155,7 @@ public class ScanResultActivity extends AppCompatActivity {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        URL url = new URL(API.BASE + API.CONFIRM_REGISTRATION + "?bin=" + bin);
+        URL url = new URL(API.BASE + API.CONFIRM_REGISTRATION + "?bin=" + "22");
 
         HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
         httpURLConnection.setRequestMethod("GET");

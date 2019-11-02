@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#222a2c">
+    android:background="@drawable/login_background">
 
    <!-- <com.github.captain_miao.optroundcardview.OptRoundCardView
         style="@style/OptRoundCardView"
@@ -32,24 +32,24 @@
 
             <ImageView
                 android:id="@+id/logo"
-                android:layout_width="180dp"
-                android:layout_height="100dp"
+                android:layout_width="234dp"
+                android:layout_height="137dp"
                 android:padding="10dp"
-                android:layout_marginTop="64dp"
+                android:layout_marginTop="50dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_bin"/>
+                android:src="@drawable/login_text" />
 
-            <TextView
+            <!--<TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
-                android:textColor="#99FFFFFF"
+                android:textColor="#222a2c"
                 android:layout_marginTop="24dp"
                 android:textStyle="bold"
                 android:fontFamily="@font/brandon_text_regular"
                 android:text="SMART DUSTBIN MANAGER"
-                android:textSize="19sp" />
+                android:textSize="19sp" />-->
 
            <!-- <EditText
                 android:layout_width="match_parent"
@@ -64,15 +64,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="28dp"
                 android:hint="Username"
-                app:hintTextColor="@android:color/white"
-                app:boxStrokeColor="@android:color/white"
+                app:hintTextColor="#222a2c"
+                app:boxStrokeColor="#222a2c"
                 android:textColorHint="#a4a4a4">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_login_username"
                     android:singleLine="true"
                     android:padding="12dp"
-                    android:textColor="@android:color/white"
+                    android:textColor="@android:color/black"
                     android:textCursorDrawable="@drawable/color_cursor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
@@ -86,16 +86,16 @@
                 android:layout_marginTop="16dp"
                 android:hint="Password"
                 app:passwordToggleEnabled="true"
-                app:hintTextColor="@android:color/white"
-                app:boxStrokeColor="@android:color/white"
-                app:passwordToggleTint="@android:color/white"
+                app:hintTextColor="#222a2c"
+                app:boxStrokeColor="#222a2c"
+                app:passwordToggleTint="#CE222A2C"
                 android:textColorHint="#a4a4a4">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_login_password"
                     android:inputType="textPassword"
                     android:padding="12dp"
-                    android:textColor="@android:color/white"
+                    android:textColor="@android:color/black"
                     android:textCursorDrawable="@drawable/color_cursor"
                     android:singleLine="true"
                     android:layout_width="match_parent"
@@ -103,7 +103,7 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.button.MaterialButton
+           <!-- <com.google.android.material.button.MaterialButton
                 android:id="@+id/bt_login"
                 android:layout_width="match_parent"
                 android:layout_height="57dp"
@@ -112,6 +112,24 @@
                 android:text="Login"
                 android:backgroundTint="#902FFF"
                 style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:textSize="17sp"
+                android:textColor="@android:color/white"
+                />-->
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bt_login"
+                android:layout_width="match_parent"
+                android:layout_height="57dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="48dp"
+                android:text="Login"
+                android:backgroundTint="#222a2c"
+                android:elevation="4dp"
+                android:shadowRadius="2"
+                android:shadowDy="2"
+                android:shadowColor="#3C000000"
+                android:alpha="0.9"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:textSize="17sp"
                 android:textColor="@android:color/white"
                 />

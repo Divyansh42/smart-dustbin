@@ -7,6 +7,17 @@
     android:background="@drawable/bg_gradient"
     tools:context="com.jss.smartdustbin.activity.RegisterDustbinActivity">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:fontFamily="sans-serif-light"
+        android:gravity="center_horizontal"
+        android:text="One last Step and you are done!"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:textSize="18dp" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,6 +28,8 @@
         android:paddingLeft="40dp"
         android:paddingRight="40dp">
 
+
+
         <ImageView
             android:id="@+id/icon"
             android:layout_width="100dp"
@@ -24,8 +37,7 @@
             android:layout_centerHorizontal="true"
             android:clickable="true"
             android:foreground="?attr/selectableItemBackground"
-            android:src="@drawable/press_icon"
-            android:tint="@android:color/black" />
+            android:src="@drawable/ic_done_button"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -53,20 +65,27 @@
         android:text="DONE"
         android:textColor="@android:color/black"
         android:textSize="18sp" />-->
+
     <Button
         android:id="@+id/btn_done"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="57dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="40dp"
-        android:text="DONE"
+        android:text="Proceed"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
         android:textSize="17sp"
+        android:shadowColor="#3C000000"
+        android:elevation="2dp"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        app:strokeColor="#db4c6d"
-        android:textColor="#db4c6d"
+        app:strokeColor="@android:color/black"
+        android:textColor="@android:color/white"
+        android:backgroundTint="#222a2c"
+        android:alpha="0.9"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         />

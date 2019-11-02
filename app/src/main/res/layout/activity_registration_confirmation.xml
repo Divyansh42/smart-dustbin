@@ -24,7 +24,7 @@
             android:layout_centerHorizontal="true"
             android:clickable="true"
             android:foreground="?attr/selectableItemBackground"
-            android:src="@drawable/register_confirm"/>
+            android:src="@drawable/registration_confirm"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,6 +32,7 @@
             android:layout_marginTop="30dp"
             android:fontFamily="sans-serif-light"
             android:gravity="center"
+            android:textStyle="bold"
             android:text="Dustbin registered Sucessfully!"
             android:textColor="@android:color/black"
             android:textSize="16dp" />
@@ -42,25 +43,31 @@
             android:layout_marginTop="30dp"
             android:fontFamily="sans-serif-light"
             android:gravity="center"
-            android:text="Go to All Dustbins tab to check the registered dustbin"
+            android:text="Manage registered bins from the manage section at home."
             android:textColor="@android:color/black"
             android:textSize="16dp" />
     </LinearLayout>
 
     <Button
         android:id="@+id/btn_home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="57dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="40dp"
         android:text="Go back to home"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        app:strokeColor="#db4c6d"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
         android:textSize="17sp"
-        android:textColor="#db4c6d"
+        android:shadowColor="#3C000000"
+        android:elevation="2dp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        app:strokeColor="@android:color/black"
+        android:textColor="@android:color/white"
+        android:backgroundTint="#222a2c"
+        android:alpha="0.9"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         />

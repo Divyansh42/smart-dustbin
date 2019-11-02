@@ -22,7 +22,7 @@
             android:paddingRight="@dimen/edit_text_padding"
             android:backgroundTint="@android:color/black"
             android:layout_height="wrap_content"
-            android:prompt="@string/state_prompt"/>
+            android:prompt="@string/ward_prompt"/>
         <View
             android:layout_width="fill_parent"
             android:layout_height="1px"

@@ -23,8 +23,7 @@
             android:layout_height="100dp"
             android:layout_centerHorizontal="true"
             android:foreground="?attr/selectableItemBackground"
-            android:src="@drawable/qrcode"
-            android:tint="@android:color/black" />
+            android:src="@drawable/ic_scan_qr" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -39,18 +38,23 @@
 
     <Button
         android:id="@+id/btn_scan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="57dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="40dp"
         android:text="Scan qr code"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:textSize="17sp"
+        android:shadowColor="#3C000000"
+        android:elevation="2dp"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        app:strokeColor="#db4c6d"
-        android:textColor="#db4c6d"
+        app:strokeColor="@android:color/black"
+        android:textColor="@android:color/white"
+        android:backgroundTint="#222a2c"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         />

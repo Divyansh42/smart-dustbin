@@ -3,7 +3,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="state_prompt">Choose State</string>
+    <string name="ward_prompt">Choose Ward</string>
     <string name="city_prompt">Choose City</string>
 
     <!-- TODO: Remove or change this placeholder text -->

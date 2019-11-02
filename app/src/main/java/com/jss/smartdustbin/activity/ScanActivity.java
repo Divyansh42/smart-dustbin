@@ -131,7 +131,7 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
     public void handleResult(Result rawResult) {
         playBeep();
         final String barCodeResult = rawResult.getText();
-        Intent intent = new Intent(ScanActivity.this, MapsActivity.class);
+        Intent intent = new Intent(ScanActivity.this, RegistrationExtraDataActivity.class);
         intent.putExtra("code", barCodeResult);
         startActivity(intent);
 
