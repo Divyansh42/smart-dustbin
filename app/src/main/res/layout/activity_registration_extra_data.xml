@@ -14,7 +14,6 @@
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:visibility="gone"
         android:layout_gravity="center_horizontal"/>
 
     <com.jss.smartdustbin.model.NoDefaultSpinner
@@ -68,6 +67,7 @@
         android:textColor="@android:color/white"
         android:backgroundTint="#222a2c"
         android:alpha="0.9"
+        android:textAllCaps="false"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         />

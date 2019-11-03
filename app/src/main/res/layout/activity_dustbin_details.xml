@@ -1,12 +1,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@android:color/white"
-    android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@android:color/white"
+        android:orientation="vertical">
 
-    <LinearLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -23,11 +23,13 @@
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:padding="8dp"
                 android:orientation="vertical">
 
-               <androidx.constraintlayout.widget.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                    android:layout_width="match_parent"
                    android:layout_height="match_parent"
+                    android:background="@drawable/border_card"
                    android:id="@+id/constraint_layout">
 
                    <ProgressBar
@@ -63,9 +65,14 @@
                        app:layout_constraintStart_toStartOf="parent"
                        app:layout_constraintTop_toBottomOf="@+id/dustbin_image"
                        android:layout_marginTop="24dp"
-                       android:layout_marginLeft="48dp"
+                       android:layout_marginLeft="34dp"
                        android:textSize="17sp"
-                       android:layout_marginStart="48dp" />
+                       android:paddingTop="8dp"
+                       android:paddingBottom="8dp"
+                       android:paddingLeft="20dp"
+                       android:paddingRight="20dp"
+                       android:background="@drawable/border_text"
+                       android:layout_marginStart="30dp" />
 
                    <TextView
                        android:id="@+id/landmark_heading_tv"

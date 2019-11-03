@@ -112,7 +112,8 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
                         recyclerView.setVisibility(GONE);
                         dustbinList.clear();
                         progressBar.setVisibility(View.VISIBLE);
-                        loadDustbinList("5db97bb11a5e5700049482c1");
+                        defaultTv.setVisibility(GONE);
+                        loadDustbinList(null);
                     }
                 });
                 alertDialogBuilder.setNegativeButton("Cancel", null)
@@ -125,9 +126,8 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
 
         mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
-        /*recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new MyDividerItemDecoration(this, DividerItemDecoration.VERTICAL, 36));*/
         recyclerView.setAdapter(dustbinsAdapter);
+        defaultTv.setVisibility(GONE);
         fetchWardList();
         loadDustbinList(null);
 
@@ -159,6 +159,7 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
         recyclerView.setVisibility(GONE);
         dustbinList.clear();
         progressBar.setVisibility(View.VISIBLE);
+        defaultTv.setVisibility(GONE);
         Ward ward = wardList.get(pos);
         wardId = ward.getId();
         loadDustbinList(wardId);
@@ -180,7 +181,6 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
             urlSb.append(wardId);
         }
 
-        defaultTv.setVisibility(GONE);
         final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
         StringRequest stringRequest = new StringRequest(Request.Method.GET, urlSb.toString(),  new Response.Listener<String>() {
             @Override
@@ -189,6 +189,8 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
                 progressBar.setVisibility(GONE);
                 recyclerView.setVisibility(View.VISIBLE);
                 dustbinList = Jsonparser.responseStringToDustbinList(response);
+                if(dustbinList.size() == 0)
+                    defaultTv.setVisibility(View.VISIBLE);
                 dustbinsAdapter.setItems(dustbinList);
                 dustbinsAdapter.notifyDataSetChanged();
                 dustbinsAdapter.getItemCount();

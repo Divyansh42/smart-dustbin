@@ -115,6 +115,7 @@
             android:shadowDy="2"
             android:shadowColor="#3C000000"
             android:alpha="0.9"
+            android:textAllCaps="false"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:textSize="17sp"
             android:textColor="@android:color/white"
