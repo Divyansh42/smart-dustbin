@@ -100,12 +100,12 @@ public class ScanResultActivity extends AppCompatActivity {
                 progressDialog.setCanceledOnTouchOutside(false);
                 progressDialog.setCancelable(false);
                 progressDialog.show();
-                Intent intent = new Intent(ScanResultActivity.this, RegistrationConfirmationActivity.class);
+               /* Intent intent = new Intent(ScanResultActivity.this, RegistrationConfirmationActivity.class);
                 startActivity(intent);
-                finish();
+                finish();*/
 
 
-               //confirmRegistration();
+                confirmRegistration();
 
 
             }
@@ -119,7 +119,6 @@ public class ScanResultActivity extends AppCompatActivity {
         final Thread fetchRegistrationConfirmationThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                int count = 0;
                 final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
 
                 while(!success){
@@ -145,32 +144,16 @@ public class ScanResultActivity extends AppCompatActivity {
     }
 
     private void httpRequest(String accessToken, String bin) throws IOException, JSONException {
-        String data = "?";
-        try {
-            data += URLEncoder.encode("bin", "UTF-8") + "=" + URLEncoder.encode("987543222", "UTF-8");
-            /*data += "&" + URLEncoder.encode("description", "UTF-8") + "=" + URLEncoder.encode(params[1], "UTF-8");
-            data += "&" + URLEncoder.encode("remark", "UTF-8") + "=" + URLEncoder.encode(params[2], "UTF-8");
-            data += "&" + URLEncoder.encode("customer", "UTF-8") + "=" + URLEncoder.encode(params[3], "UTF-8");
-            data += "&" + URLEncoder.encode("salesman", "UTF-8") + "=" + URLEncoder.encode(params[4], "UTF-8");*/
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        URL url = new URL(API.BASE + API.CONFIRM_REGISTRATION + "?bin=" + "22");
+        URL url = new URL(API.BASE + API.CONFIRM_REGISTRATION + "?bin=105&q=xyz");
 
         HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
         httpURLConnection.setRequestMethod("GET");
         httpURLConnection.setRequestProperty ("Authorization", "Bearer " + accessToken);
-        httpURLConnection.setUseCaches(false);
+        /*httpURLConnection.setUseCaches(false);
         httpURLConnection.setDoInput(false);
-        httpURLConnection.setDoOutput(false);
-       /* OutputStreamWriter wr = new OutputStreamWriter(httpURLConnection.getOutputStream());
-        wr.write(data);
-        wr.flush();
-        wr.close();*/
+        httpURLConnection.setDoOutput(false);*/
         int responseCode = httpURLConnection.getResponseCode();
         Log.e(TAG, "response code-----------" + responseCode);
-        //System.out.println("--------------" + httpURLConnection.getResponseCode() + "------------------");
-
         if (responseCode == HttpStatus.OK.value()) {
             Log.v(TAG, "json object created");
             success = true;
@@ -202,6 +185,7 @@ public class ScanResultActivity extends AppCompatActivity {
                 if (status == HttpStatus.UNAUTHORIZED.value()) {
                     Toast.makeText(ScanResultActivity.this, "Please login to perform this action.", Toast.LENGTH_SHORT).show();
                     SmartDustbinApplication.getInstance().getDefaultSharedPreferences().edit().clear().apply();
+                    success = true;
                     Intent login = new Intent(ScanResultActivity.this, LoginActivity.class);
                     finishAffinity();
                     startActivity(login);

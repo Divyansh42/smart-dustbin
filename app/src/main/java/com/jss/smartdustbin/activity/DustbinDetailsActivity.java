@@ -1,37 +1,21 @@
 package com.jss.smartdustbin.activity;
 
-import android.Manifest;
-import android.content.DialogInterface;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -39,15 +23,8 @@ import com.jss.smartdustbin.R;
 import com.jss.smartdustbin.model.Dustbin;
 import com.jss.smartdustbin.utils.Helper;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
 
 public class DustbinDetailsActivity extends AppCompatActivity implements GoogleMap.OnMarkerClickListener {
 
@@ -69,7 +46,7 @@ public class DustbinDetailsActivity extends AppCompatActivity implements GoogleM
         dustbinLevelPb = findViewById(R.id.dustbin_progressbar);
         landmarkTv = findViewById(R.id.landmark_tv);
         installedByTv = findViewById(R.id.installed_by_tv);
-        alertIcon = findViewById(R.id.alert_icon);
+        alertIcon = findViewById(R.id.info_icon);
 
         alertIcon.setOnClickListener(new View.OnClickListener() {
             @Override

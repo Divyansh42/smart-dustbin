@@ -64,6 +64,7 @@ public class RegistrationExtraDataActivity extends AppCompatActivity {
         continueBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                selectedWardId = wardsSpinner.getSelectedItem().toString();
                 Intent intent = new Intent(RegistrationExtraDataActivity.this, MapsActivity.class);
                 intent.putExtra("code", qrCodeResult);
                 intent.putExtra("ward_id", selectedWardId);

@@ -1,11 +1,8 @@
 package com.jss.smartdustbin.adapter;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.media.Image;
-import android.nfc.cardemulation.CardEmulation;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,17 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.vision.L;
 import com.jss.smartdustbin.R;
 import com.jss.smartdustbin.activity.DustbinDetailsActivity;
-import com.jss.smartdustbin.activity.DustbinListActivity;
-import com.jss.smartdustbin.activity.LoginActivity;
 import com.jss.smartdustbin.model.Dustbin;
 import com.jss.smartdustbin.utils.Helper;
-import com.jss.smartdustbin.utils.SmartDustbinApplication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +35,7 @@ public class DustbinsAdapter extends RecyclerView.Adapter<DustbinsAdapter.MyView
             super(view);
             garbageLevelTv = view.findViewById(R.id.dustbin_level_tv);
             lastUpdatedTv = view.findViewById(R.id.last_updated_tv);
-            alertIcon = view.findViewById(R.id.alert_icon);
+            alertIcon = view.findViewById(R.id.info_icon);
             dustbinDetailsCard = view.findViewById(R.id.dustbin_details_card);
             context = view.getContext();
 

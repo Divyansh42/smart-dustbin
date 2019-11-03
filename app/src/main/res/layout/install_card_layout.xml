@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.github.captain_miao.optroundcardview.OptRoundCardView
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="48dp"
         style="@style/OptRoundCardView.Light"
         android:background="@android:color/white"

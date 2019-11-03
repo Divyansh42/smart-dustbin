@@ -4,7 +4,7 @@
     android:background="@android:color/white"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:optRoundCardCornerRadius="16dp"
+    app:optRoundCardCornerRadius="6dp"
     app:optRoundCardLeftTopCorner="true"
     app:optRoundCardRightTopCorner="true"
     app:optRoundCardTopEdges="false"
@@ -14,11 +14,12 @@
     android:layout_marginEnd="8dp"
     android:layout_marginStart="8dp"
     android:layout_marginLeft="8dp"
-    android:elevation="5dp"
+    android:elevation="3dp"
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
     android:layout_marginRight="8dp"
-    android:layout_marginTop="12dp"
+    android:layout_marginTop="7dp"
+    android:layout_marginBottom="7dp"
     android:foreground="?android:attr/selectableItemBackground"
     android:clickable="true">
     <LinearLayout
@@ -88,10 +89,10 @@
             android:layout_weight="1" />-->
 
         <ImageView
-            android:id="@+id/alert_icon"
+            android:id="@+id/info_icon"
             android:layout_gravity="center_vertical"
             android:layout_weight="0.5"
-            android:src="@drawable/ic_exclamation_mark"
+            android:src="@drawable/ic_info"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
 

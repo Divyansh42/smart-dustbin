@@ -116,7 +116,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 progressDialog.setCanceledOnTouchOutside(false);
                 progressDialog.setCancelable(false);
                 progressDialog.show();
-                sendQrCodeResult(qrCodeResult, latLng.latitude, latLng.longitude);
+                sendQrCodeResult(qrCodeResult, latLng.latitude, latLng.longitude, selectedWardId);
 
 
             }
@@ -335,7 +335,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    private void sendQrCodeResult(String barCodeResult, double latitude, double longitude) {
+    private void sendQrCodeResult(String barCodeResult, double latitude, double longitude, String selectedWardId) {
        /* Uri.Builder builder = new Uri.Builder();
         builder.scheme("https")
                 .authority("www.myawesomesite.com")
@@ -347,7 +347,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         String myUrl = builder.build().toString();*/
 
         final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, API.BASE + API.REGISTER_DUSTBIN + "?bin=228&lat=2&lng=1&wardId=5db97bb11a5e5700049482c1", new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, API.BASE + API.REGISTER_DUSTBIN + "?bin=105&lat=2&lng=1&wardId=5d84d663283c8400048ad8fc", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.e(LOG_TAG, " onResponse: " + response);

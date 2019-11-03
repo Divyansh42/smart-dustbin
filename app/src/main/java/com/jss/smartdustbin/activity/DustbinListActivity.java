@@ -18,8 +18,11 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +36,7 @@ import com.jss.smartdustbin.API;
 import com.jss.smartdustbin.R;
 import com.jss.smartdustbin.adapter.DustbinsAdapter;
 import com.jss.smartdustbin.model.Dustbin;
+import com.jss.smartdustbin.model.Ward;
 import com.jss.smartdustbin.utils.HttpStatus;
 import com.jss.smartdustbin.utils.Jsonparser;
 import com.jss.smartdustbin.utils.SmartDustbinApplication;
@@ -45,7 +49,7 @@ import java.util.Map;
 import static android.view.View.GONE;
 import static com.jss.smartdustbin.activity.LoginActivity.LOG_TAG;
 
-public class DustbinListActivity extends AppCompatActivity {
+public class DustbinListActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private static final String TAG = DustbinListActivity.class.getSimpleName();
     private RecyclerView recyclerView;
@@ -56,6 +60,8 @@ public class DustbinListActivity extends AppCompatActivity {
     TextView defaultTv;
     ImageView mapIcon;
     ImageView filterIcon;
+    List<Ward> wardList;
+    Spinner wardsSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +76,8 @@ public class DustbinListActivity extends AppCompatActivity {
         //getSupportActionBar().setTitle("Dustbins");
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
 
+        wardList = new ArrayList<>();
+
         recyclerView = findViewById(R.id.rv_dustbins);
         dustbinList = new ArrayList<>();
         dustbinsAdapter = new DustbinsAdapter(this, dustbinList);
@@ -77,6 +85,7 @@ public class DustbinListActivity extends AppCompatActivity {
         defaultTv = findViewById(R.id.default_tv);
         mapIcon = findViewById(R.id.map_icon);
         filterIcon = findViewById(R.id.filter);
+        wardsSpinner = findViewById(R.id.spinner_wards_select);
 
         mapIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,7 +127,9 @@ public class DustbinListActivity extends AppCompatActivity {
         /*recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new MyDividerItemDecoration(this, DividerItemDecoration.VERTICAL, 36));*/
         recyclerView.setAdapter(dustbinsAdapter);
+        fetchWardList();
         loadDustbinList("5db97bb11a5e5700049482c1");
+
 
        /* Dustbin d1 = new Dustbin("75", "12/09/19 10:14 AM");
         Dustbin d2 = new Dustbin("25", "12/09/19 10:14 AM");
@@ -135,7 +146,21 @@ public class DustbinListActivity extends AppCompatActivity {
         dustbinList.add(d6);
 
         dustbinsAdapter.notifyDataSetChanged();*/
+        wardsSpinner.setOnItemSelectedListener(this);
 
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        recyclerView.setVisibility(GONE);
+        dustbinList.clear();
+        progressBar.setVisibility(View.VISIBLE);
+        loadDustbinList("5db97bb11a5e5700049482c1");
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 
@@ -143,15 +168,14 @@ public class DustbinListActivity extends AppCompatActivity {
 
         StringBuilder urlSb = new StringBuilder(API.BASE + API.DUSTBIN_LIST + "/?wardId=");
         urlSb.append(wardId);
-        progressBar.setVisibility(View.VISIBLE);
         defaultTv.setVisibility(GONE);
         final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
         StringRequest stringRequest = new StringRequest(Request.Method.GET, urlSb.toString(),  new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.e(LOG_TAG, " onResponse: " + response);
-                recyclerView.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(GONE);
+                recyclerView.setVisibility(View.VISIBLE);
                 dustbinList = Jsonparser.responseStringToDustbinList(response);
                 dustbinsAdapter.setItems(dustbinList);
                 dustbinsAdapter.notifyDataSetChanged();
@@ -196,6 +220,44 @@ public class DustbinListActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
+    private void fetchWardList() {
+        final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, API.BASE + API.WARDS_LIST , new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e(LOG_TAG, " onResponse: " + response);
+                wardList = Jsonparser.responseStringToWardList(response);
+                ArrayAdapter<Ward> statesDataAdapter = new ArrayAdapter<Ward>(DustbinListActivity.this, R.layout.spinner_item, wardList);
+                statesDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                wardsSpinner.setAdapter(statesDataAdapter);
+
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(LOG_TAG, " onErrorResponse: " + error.toString());
+                if(error.networkResponse != null){
+                    onError(error.networkResponse.statusCode);
+                }
+            }
+        }){
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                params.put("Authorization", "Bearer " + accessToken);
+                return params;
+            }
+
+        };
+
+        SmartDustbinApplication.getInstance().addToRequestQueue(stringRequest);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
