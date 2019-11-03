@@ -34,7 +34,6 @@ public class DustbinDetailsActivity extends AppCompatActivity implements GoogleM
     TextView landmarkTv;
     TextView installedByTv;
     ImageView alertIcon;
-
     Dustbin dustbin;
 
     @Override
@@ -84,7 +83,7 @@ public class DustbinDetailsActivity extends AppCompatActivity implements GoogleM
         installedByTv.setText(dustbin.getInstalledByUser().getFirstName() + " " + dustbin.getInstalledByUser().getLastName());
         double lat = Double.parseDouble(dustbin.getLatitude());
         double lng = Double.parseDouble(dustbin.getLongitude());
-        //lastUpdatedTv.setText(dustbin.getLastUpdated().toString());
+        lastUpdatedTv.setText(dustbin.getLastUpdated());
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()

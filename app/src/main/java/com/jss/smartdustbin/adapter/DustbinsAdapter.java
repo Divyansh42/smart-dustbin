@@ -71,7 +71,7 @@ public class DustbinsAdapter extends RecyclerView.Adapter<DustbinsAdapter.MyView
 
 
         holder.garbageLevelTv.setText(dustbin.getGarbageLevel()+ "%" + " full");
-        holder.lastUpdatedTv.setText("Last updated at " + dustbin.getLastUpdated());
+        holder.lastUpdatedTv.setText("Last updated " + dustbin.getLastUpdated());
         holder.alertIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

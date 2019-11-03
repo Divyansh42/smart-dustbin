@@ -94,9 +94,9 @@ public class RegistrationExtraDataActivity extends AppCompatActivity {
                 Log.e(LOG_TAG, " onResponse: " + response);
                 progressBar.setVisibility(View.GONE);
                 wardList = Jsonparser.responseStringToWardList(response);
-                ArrayAdapter<Ward> statesDataAdapter = new ArrayAdapter<Ward>(RegistrationExtraDataActivity.this, R.layout.spinner_item, wardList);
-                statesDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                wardsSpinner.setAdapter(statesDataAdapter);
+                ArrayAdapter<Ward> wardsDataAdapter = new ArrayAdapter<Ward>(RegistrationExtraDataActivity.this, R.layout.spinner_item, wardList);
+                wardsDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                wardsSpinner.setAdapter(wardsDataAdapter);
 
 
 

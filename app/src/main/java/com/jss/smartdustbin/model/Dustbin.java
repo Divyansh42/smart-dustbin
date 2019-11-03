@@ -16,13 +16,12 @@ public class Dustbin implements Parcelable {
     private String state, city, locality;
     private String latitude;
     private String longitude;
-    private LatLng latLng;
     private String garbageLevel;
-    private Date lastUpdated;
+    private String lastUpdated;
     private String comment;
     private User installedByUser;
 
-    public Dustbin(String garbageLevel, Date lastUpdated) {
+    public Dustbin(String garbageLevel, String lastUpdated) {
         this.garbageLevel = garbageLevel;
         this.lastUpdated = lastUpdated;
     }
@@ -93,15 +92,6 @@ public class Dustbin implements Parcelable {
         this.longitude = longitude;
     }
 
-    public LatLng getLatLng() {
-        return latLng;
-    }
-
-    public void setLatLng(LatLng latLng) {
-
-        this.latLng = latLng;
-    }
-
     public String getGarbageLevel() {
         return garbageLevel;
     }
@@ -110,11 +100,11 @@ public class Dustbin implements Parcelable {
         this.garbageLevel = garbageLevel;
     }
 
-    public Date getLastUpdated() {
+    public String getLastUpdated() {
         return lastUpdated;
     }
 
-    public void setLastUpdated(Date lastUpdated) {
+    public void setLastUpdated(String lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
 
@@ -148,9 +138,7 @@ public class Dustbin implements Parcelable {
         dest.writeString(longitude);
         dest.writeString(garbageLevel);
         dest.writeParcelable(installedByUser, flags);
-        /*DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-        String lastUpdatedStrDate = dateFormat.format(lastUpdated);
-        dest.writeString(lastUpdatedStrDate);*/
+        dest.writeString(lastUpdated);
         dest.writeString(comment);
 
     }
@@ -163,8 +151,7 @@ public class Dustbin implements Parcelable {
         longitude = in.readString();
         garbageLevel = in.readString();
         installedByUser = in.readParcelable(getClass().getClassLoader());
-        //String lastUpdatedStrDate = in.readString();
-        //ToDo: Get date from parcel
+        lastUpdated = in.readString();
         comment = in.readString();
     }
 

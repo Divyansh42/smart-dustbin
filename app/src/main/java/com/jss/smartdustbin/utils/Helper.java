@@ -1,6 +1,7 @@
 package com.jss.smartdustbin.utils;
 
 import android.graphics.Color;
+import android.text.format.DateUtils;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -74,12 +75,21 @@ public class Helper {
         return  user;
     }
 
-    public static Date getDateFromString(String dateString) throws ParseException {
-        DateFormat formatterIST = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH);
+    public static String getDateFromString(String dateString) throws ParseException {
+        /*DateFormat formatterIST = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH);
         formatterIST.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date date = formatterIST.parse(dateString);
         Log.i(TAG, "Helper parse date {}" + formatterIST.format(date));
-        return date;
+        return date;*/
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+        long time = sdf.parse(dateString).getTime();
+        long now = System.currentTimeMillis();
+
+        CharSequence ago =
+                DateUtils.getRelativeTimeSpanString(time, now, DateUtils.MINUTE_IN_MILLIS);
+        return ago.toString();
     }
 
     public static int getGarbageStatusFromLevel(String garbageLevel){
@@ -90,6 +100,8 @@ public class Helper {
            return 2;
         else return 3;
     }
+
+
 
 
 }

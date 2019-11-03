@@ -62,6 +62,7 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
     ImageView filterIcon;
     List<Ward> wardList;
     Spinner wardsSpinner;
+    String wardId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +129,9 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
         recyclerView.addItemDecoration(new MyDividerItemDecoration(this, DividerItemDecoration.VERTICAL, 36));*/
         recyclerView.setAdapter(dustbinsAdapter);
         fetchWardList();
-        loadDustbinList("5db97bb11a5e5700049482c1");
+        loadDustbinList(null);
+
+
 
 
        /* Dustbin d1 = new Dustbin("75", "12/09/19 10:14 AM");
@@ -156,7 +159,9 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
         recyclerView.setVisibility(GONE);
         dustbinList.clear();
         progressBar.setVisibility(View.VISIBLE);
-        loadDustbinList("5db97bb11a5e5700049482c1");
+        Ward ward = wardList.get(pos);
+        wardId = ward.getId();
+        loadDustbinList(wardId);
     }
 
     @Override
@@ -166,8 +171,15 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
 
     private void loadDustbinList(String wardId){
 
-        StringBuilder urlSb = new StringBuilder(API.BASE + API.DUSTBIN_LIST + "/?wardId=");
-        urlSb.append(wardId);
+        StringBuilder urlSb = new StringBuilder(API.BASE);
+        urlSb.append(API.DUSTBIN_LIST);
+
+
+        if(wardId != null){
+            urlSb.append("?wardId=");
+            urlSb.append(wardId);
+        }
+
         defaultTv.setVisibility(GONE);
         final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
         StringRequest stringRequest = new StringRequest(Request.Method.GET, urlSb.toString(),  new Response.Listener<String>() {
