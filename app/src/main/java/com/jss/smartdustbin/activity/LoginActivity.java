@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
                         toast.show();
                     } else{
                         progressDialog = new ProgressDialog(LoginActivity.this);
-                        progressDialog.setTitle("Checking Credentials");
+                        progressDialog.setTitle("Validating");
                         progressDialog.setMessage("Logging you in...");
                         etUsername.setEnabled(false);
                         etUserPassword.setEnabled(false);

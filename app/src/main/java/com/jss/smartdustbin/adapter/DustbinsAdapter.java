@@ -76,10 +76,10 @@ public class DustbinsAdapter extends RecyclerView.Adapter<DustbinsAdapter.MyView
             @Override
             public void onClick(View v) {
                 final androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Alert");
-                builder.setMessage("Garbage bin is full.");
+                builder.setTitle("Message");
+                builder.setMessage(dustbin.getComment());
                 builder.setPositiveButton("OK", null);
-                builder.setIcon(android.R.drawable.ic_dialog_alert);
+                builder.setIcon(R.drawable.ic_message);
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
             }

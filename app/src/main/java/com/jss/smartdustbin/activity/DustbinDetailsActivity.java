@@ -51,10 +51,10 @@ public class DustbinDetailsActivity extends AppCompatActivity implements GoogleM
             @Override
             public void onClick(View v) {
                 final androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(DustbinDetailsActivity.this);
-                builder.setTitle("Alert");
-                builder.setMessage("Garbage bin is full.");
+                builder.setTitle("Message");
+                builder.setMessage(dustbin.getComment());
                 builder.setPositiveButton("OK", null);
-                builder.setIcon(android.R.drawable.ic_dialog_alert);
+                builder.setIcon(R.drawable.ic_message);
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
             }
