@@ -25,6 +25,7 @@ import com.jss.smartdustbin.R;
 import com.jss.smartdustbin.model.Ward;
 import com.jss.smartdustbin.utils.HttpStatus;
 import com.jss.smartdustbin.utils.Jsonparser;
+import com.jss.smartdustbin.utils.NetworkReceiver;
 import com.jss.smartdustbin.utils.SmartDustbinApplication;
 
 import java.util.ArrayList;
@@ -43,6 +44,8 @@ public class RegistrationExtraDataActivity extends AppCompatActivity {
     String selectedWardId;
     ProgressBar progressBar;
     List<Ward> wardList;
+    private NetworkReceiver receiver;
+    String landMark;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,25 +56,42 @@ public class RegistrationExtraDataActivity extends AppCompatActivity {
         qrCodeResult = getIntent().getStringExtra("code");
         setTitle("Register");
 
+        receiver = new NetworkReceiver();
+
         wardsSpinner = findViewById(R.id.spinner_wards);
         landmarkEditText = findViewById(R.id.et_landmark);
         progressBar = findViewById(R.id.progress_bar);
 
         continueBt = findViewById(R.id.btn_continue);
         wardList = new ArrayList<>();
-        fetchWardList();
+
+
 
         continueBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedWardId = wardsSpinner.getSelectedItem().toString();
-                Intent intent = new Intent(RegistrationExtraDataActivity.this, MapsActivity.class);
-                intent.putExtra("code", qrCodeResult);
-                intent.putExtra("ward_id", selectedWardId);
-                intent.putExtra("landmark", landmarkEditText.toString());
-                startActivity(intent);
+                landMark = landmarkEditText.getText().toString();
+                if (wardsSpinner.getSelectedItem()==null|| landMark.isEmpty()) {
+                    Toast toast = Toast.makeText(RegistrationExtraDataActivity.this, "Enter all fields!", Toast.LENGTH_SHORT);
+                    toast.show();
+                }else {
+                    landMark = landmarkEditText.getText().toString();
+                    selectedWardId = wardsSpinner.getSelectedItem().toString();
+                    Intent intent = new Intent(RegistrationExtraDataActivity.this, MapsActivity.class);
+                    intent.putExtra("code", qrCodeResult);
+                    intent.putExtra("ward_id", selectedWardId);
+                    intent.putExtra("landmark", landMark);
+                    startActivity(intent);
+                }
             }
         });
+
+        if (receiver.isConnected()) {
+            fetchWardList();
+        }
+        else {
+            Toast.makeText(RegistrationExtraDataActivity.this, "No internet!", Toast.LENGTH_SHORT).show();
+        }
 
 
     }
