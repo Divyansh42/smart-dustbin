@@ -3,6 +3,8 @@ package com.jss.smartdustbin.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -173,6 +175,21 @@ public class RegistrationExtraDataActivity extends AppCompatActivity {
         super.onBackPressed();
         finish();
     }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        this.registerReceiver(receiver, filter);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        RegistrationExtraDataActivity.this.unregisterReceiver(receiver);
+    }
+
 
 
 }

@@ -3,8 +3,10 @@ package com.jss.smartdustbin.activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -51,6 +53,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.jss.smartdustbin.API;
 import com.jss.smartdustbin.R;
 import com.jss.smartdustbin.utils.HttpStatus;
+import com.jss.smartdustbin.utils.NetworkReceiver;
 import com.jss.smartdustbin.utils.SmartDustbinApplication;
 
 import java.io.IOException;
@@ -79,6 +82,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     String selectedWardId;
     String landmark;
     ProgressDialog progressDialog;
+    NetworkReceiver receiver;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -96,6 +100,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Set Your Location");
 
+        receiver = new NetworkReceiver();
+
         qrCodeResult = getIntent().getStringExtra("code");
         selectedWardId = getIntent().getStringExtra("ward_id");
         landmark = getIntent().getStringExtra("landmark");
@@ -110,13 +116,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         confirmLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog = new ProgressDialog(MapsActivity.this);
-                progressDialog.setTitle("Initializing registration");
-                progressDialog.setMessage("Please wait...");
-                progressDialog.setCanceledOnTouchOutside(false);
-                progressDialog.setCancelable(false);
-                progressDialog.show();
-                sendQrCodeResult(qrCodeResult, latLng.latitude, latLng.longitude, selectedWardId);
+                if(receiver.isConnected()){
+                    progressDialog = new ProgressDialog(MapsActivity.this);
+                    progressDialog.setTitle("Initializing registration");
+                    progressDialog.setMessage("Please wait...");
+                    progressDialog.setCanceledOnTouchOutside(false);
+                    progressDialog.setCancelable(false);
+                    progressDialog.show();
+                    sendQrCodeResult(qrCodeResult, latLng.latitude, latLng.longitude, selectedWardId);
+                } else
+                    Toast.makeText(MapsActivity.this, "No Internet Connection!", Toast.LENGTH_SHORT).show();
 
 
             }
@@ -405,13 +414,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        this.registerReceiver(receiver, filter);
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        MapsActivity.this.unregisterReceiver(receiver);
+    }
 
-
-    /*@Override
-    public void onBackPressed() {
-        //super.onBackPressed();
-        finish();
-    }*/
 }
 

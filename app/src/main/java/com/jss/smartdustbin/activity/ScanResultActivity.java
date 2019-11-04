@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -16,6 +18,7 @@ import com.jss.smartdustbin.API;
 import com.jss.smartdustbin.R;
 import com.jss.smartdustbin.utils.HttpStatus;
 import com.jss.smartdustbin.utils.LocationTrack;
+import com.jss.smartdustbin.utils.NetworkReceiver;
 import com.jss.smartdustbin.utils.SmartDustbinApplication;
 
 import org.json.JSONException;
@@ -43,7 +46,7 @@ public class ScanResultActivity extends AppCompatActivity {
     LocationTrack locationTrack;
     double longitude, latitude;
 
-    Timer timer;
+    NetworkReceiver receiver;
     boolean success = false;
 
 
@@ -56,58 +59,23 @@ public class ScanResultActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         barCodeResult = getIntent().getStringExtra("code");
         setTitle("Register");
+        receiver = new NetworkReceiver();
 
-        /*permissions.add(ACCESS_FINE_LOCATION);
-        permissions.add(ACCESS_COARSE_LOCATION);
-
-        permissionsToRequest = findUnAskedPermissions(permissions);
-        //get the permissions we have asked for before but are not granted..
-        //we will store this in a global list to access later.
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-
-            if (permissionsToRequest.size() > 0)
-                requestPermissions(permissionsToRequest.toArray(new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
-        }
-
-
-        locationTrack = new LocationTrack(ScanResultActivity.this);
-
-
-        if (locationTrack.canGetLocation()) {
-
-
-            longitude = locationTrack.getLongitude();
-            latitude = locationTrack.getLatitude();
-
-            Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
-        } else {
-
-            locationTrack.showSettingsAlert();
-        }
-
-        timer = new Timer();*/
         btnDone = findViewById(R.id.btn_done);
 
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog = new ProgressDialog(ScanResultActivity.this);
-                progressDialog.setTitle("Confirming registration");
-                progressDialog.setMessage("Please wait...");
-                progressDialog.setCanceledOnTouchOutside(false);
-                progressDialog.setCancelable(false);
-                progressDialog.show();
-               /* Intent intent = new Intent(ScanResultActivity.this, RegistrationConfirmationActivity.class);
-                startActivity(intent);
-                finish();*/
-
-
-                confirmRegistration();
-
-
+                if(receiver.isConnected()){
+                    progressDialog = new ProgressDialog(ScanResultActivity.this);
+                    progressDialog.setTitle("Confirming registration");
+                    progressDialog.setMessage("Please wait...");
+                    progressDialog.setCanceledOnTouchOutside(false);
+                    progressDialog.setCancelable(false);
+                    progressDialog.show();
+                    confirmRegistration();
+                } else
+                    Toast.makeText(ScanResultActivity.this, "No Internet Connection!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -203,79 +171,7 @@ public class ScanResultActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /*private ArrayList<String> findUnAskedPermissions(ArrayList<String> wanted) {
-        ArrayList result = new ArrayList();
 
-        for (String perm : wanted) {
-            if (!hasPermission(perm)) {
-                result.add(perm);
-            }
-        }
-
-        return result;
-    }
-
-    private boolean hasPermission(String permission) {
-        if (canMakeSmores()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                return (checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED);
-            }
-        }
-        return true;
-    }
-
-    private boolean canMakeSmores() {
-        return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
-    }
-
-
-    @TargetApi(Build.VERSION_CODES.M)
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-
-        switch (requestCode) {
-
-            case ALL_PERMISSIONS_RESULT:
-                for (String perms : permissionsToRequest) {
-                    if (!hasPermission(perms)) {
-                        permissionsRejected.add(perms);
-                    }
-                }
-
-                if (permissionsRejected.size() > 0) {
-
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (shouldShowRequestPermissionRationale(permissionsRejected.get(0))) {
-                            showMessageOKCancel("These permissions are mandatory for the application. Please allow access.",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                requestPermissions(permissionsRejected.toArray(new String[permissionsRejected.size()]), ALL_PERMISSIONS_RESULT);
-                                            }
-                                        }
-                                    });
-                            return;
-                        }
-                    }
-
-                }
-
-                break;
-        }
-
-    }
-
-    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
-        new AlertDialog.Builder(ScanResultActivity.this)
-                .setMessage(message)
-                .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", null)
-                .create()
-                .show();
-    }
-*/
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -286,6 +182,18 @@ public class ScanResultActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        this.registerReceiver(receiver, filter);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ScanResultActivity.this.unregisterReceiver(receiver);
     }
 
 

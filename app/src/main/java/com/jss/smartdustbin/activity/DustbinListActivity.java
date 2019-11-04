@@ -1,17 +1,16 @@
 package com.jss.smartdustbin.activity;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
@@ -31,7 +30,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.jss.smartdustbin.API;
 import com.jss.smartdustbin.R;
 import com.jss.smartdustbin.adapter.DustbinsAdapter;
@@ -39,6 +37,7 @@ import com.jss.smartdustbin.model.Dustbin;
 import com.jss.smartdustbin.model.Ward;
 import com.jss.smartdustbin.utils.HttpStatus;
 import com.jss.smartdustbin.utils.Jsonparser;
+import com.jss.smartdustbin.utils.NetworkReceiver;
 import com.jss.smartdustbin.utils.SmartDustbinApplication;
 
 import java.util.ArrayList;
@@ -63,6 +62,7 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
     List<Ward> wardList;
     Spinner wardsSpinner;
     String wardId;
+    private NetworkReceiver receiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,10 +73,8 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
         toolbar.setTitle("Dustbins");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-       // getSupportActionBar().setDisplayShowTitleEnabled(true);
-        //getSupportActionBar().setTitle("Dustbins");
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
-
+        receiver = new NetworkReceiver();
         wardList = new ArrayList<>();
 
         recyclerView = findViewById(R.id.rv_dustbins);
@@ -109,11 +107,16 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
                 alertDialogBuilder.setPositiveButton("Apply", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        recyclerView.setVisibility(GONE);
-                        dustbinList.clear();
-                        progressBar.setVisibility(View.VISIBLE);
-                        defaultTv.setVisibility(GONE);
-                        loadDustbinList(null);
+                        if(receiver.isConnected()){
+                            recyclerView.setVisibility(GONE);
+                            dustbinList.clear();
+                            progressBar.setVisibility(View.VISIBLE);
+                            defaultTv.setVisibility(GONE);
+                            loadDustbinList(dustbinList.get(0).getId());
+                            fetchDustbinList(wardId);
+                        } else
+                            Toast.makeText(DustbinListActivity.this, "No Internet Connection!", Toast.LENGTH_SHORT).show();
+
                     }
                 });
                 alertDialogBuilder.setNegativeButton("Cancel", null)
@@ -127,9 +130,12 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
         mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(dustbinsAdapter);
-        defaultTv.setVisibility(GONE);
-        fetchWardList();
-        loadDustbinList(null);
+        if(receiver.isConnected()){
+            defaultTv.setVisibility(GONE);
+            loadWardList();
+
+        } else
+            Toast.makeText(DustbinListActivity.this, "No Internet Connection!", Toast.LENGTH_SHORT).show();
 
 
 
@@ -154,15 +160,46 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
 
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-        recyclerView.setVisibility(GONE);
-        dustbinList.clear();
-        progressBar.setVisibility(View.VISIBLE);
-        defaultTv.setVisibility(GONE);
-        Ward ward = wardList.get(pos);
+    private void fetchDustbinList(String wardId) {
+        loadDustbinList(wardId);
+    }
+
+    private void fetchDustbinList() {
+        Ward ward = wardList.get(0);
         wardId = ward.getId();
         loadDustbinList(wardId);
+    }
+    private void setSpinnerItems(){
+        ArrayAdapter<Ward> statesDataAdapter = new ArrayAdapter<Ward>(DustbinListActivity.this, R.layout.spinner_item, wardList);
+        statesDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        wardsSpinner.setAdapter(statesDataAdapter);
+        wardsSpinner.setSelection(0, true);
+
+    }
+
+    private void setDustbinList(){
+        if(dustbinList.size() == 0)
+            defaultTv.setVisibility(View.VISIBLE);
+        dustbinsAdapter.setItems(dustbinList);
+        dustbinsAdapter.notifyDataSetChanged();
+    }
+
+
+
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        if(receiver.isConnected()){
+            recyclerView.setVisibility(GONE);
+            dustbinList.clear();
+            progressBar.setVisibility(View.VISIBLE);
+            defaultTv.setVisibility(GONE);
+            Ward ward = wardList.get(pos);
+            wardId = ward.getId();
+            loadDustbinList(wardId);
+        } else
+            Toast.makeText(DustbinListActivity.this, "No Internet Connection!", Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
@@ -189,13 +226,41 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
                 progressBar.setVisibility(GONE);
                 recyclerView.setVisibility(View.VISIBLE);
                 dustbinList = Jsonparser.responseStringToDustbinList(response);
-                if(dustbinList.size() == 0)
-                    defaultTv.setVisibility(View.VISIBLE);
-                dustbinsAdapter.setItems(dustbinList);
-                dustbinsAdapter.notifyDataSetChanged();
-                dustbinsAdapter.getItemCount();
+                setDustbinList();
 
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(LOG_TAG, " onErrorResponse: " + error.toString());
+                if(error.networkResponse != null){
+                    onError(error.networkResponse.statusCode);
+                }
+            }
+        }){
 
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                params.put("Authorization", "Bearer " + accessToken);
+                return params;
+            }
+
+        };
+
+        SmartDustbinApplication.getInstance().addToRequestQueue(stringRequest);
+    }
+
+    private void loadWardList() {
+        final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, API.BASE + API.WARDS_LIST , new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e(LOG_TAG, " onResponse: " + response);
+                wardList = Jsonparser.responseStringToWardList(response);
+                setSpinnerItems();
+                fetchDustbinList();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -235,43 +300,6 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
         }
     }
 
-    private void fetchWardList() {
-        final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, API.BASE + API.WARDS_LIST , new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.e(LOG_TAG, " onResponse: " + response);
-                wardList = Jsonparser.responseStringToWardList(response);
-                ArrayAdapter<Ward> statesDataAdapter = new ArrayAdapter<Ward>(DustbinListActivity.this, R.layout.spinner_item, wardList);
-                statesDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                wardsSpinner.setAdapter(statesDataAdapter);
-
-
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(LOG_TAG, " onErrorResponse: " + error.toString());
-                if(error.networkResponse != null){
-                    onError(error.networkResponse.statusCode);
-                }
-            }
-        }){
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                params.put("Content-Type","application/x-www-form-urlencoded");
-                params.put("Authorization", "Bearer " + accessToken);
-                return params;
-            }
-
-        };
-
-        SmartDustbinApplication.getInstance().addToRequestQueue(stringRequest);
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -286,4 +314,19 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
         super.onBackPressed();
         finish();
     }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        this.registerReceiver(receiver, filter);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        DustbinListActivity.this.unregisterReceiver(receiver);
+    }
+
 }
