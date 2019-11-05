@@ -45,6 +45,12 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+    <include
+        layout="@layout/empty_ward_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
     <include layout="@layout/content_dustbins_main"/>
 
 

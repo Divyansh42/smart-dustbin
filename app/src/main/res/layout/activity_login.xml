@@ -124,7 +124,7 @@
                 android:layout_marginTop="48dp"
                 android:text="Login"
                 android:backgroundTint="#222a2c"
-                android:elevation="4dp"
+                android:elevation="2dp"
                 android:shadowRadius="2"
                 android:shadowDy="2"
                 android:shadowColor="#3C000000"

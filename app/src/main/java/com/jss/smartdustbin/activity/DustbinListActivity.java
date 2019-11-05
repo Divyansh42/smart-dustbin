@@ -22,7 +22,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -56,7 +55,8 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
     private List<Dustbin> dustbinList;
     private DustbinsAdapter dustbinsAdapter;
     ProgressBar progressBar;
-    TextView defaultTv;
+    View defaultTv;
+    View defaultEmptyWardTv;
     ImageView mapIcon;
     ImageView filterIcon;
     List<Ward> wardList;
@@ -81,7 +81,8 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
         dustbinList = new ArrayList<>();
         dustbinsAdapter = new DustbinsAdapter(this, dustbinList);
         progressBar = findViewById(R.id.progressBar);
-        defaultTv = findViewById(R.id.default_tv);
+        defaultTv = findViewById(R.id.empty_dustbin_list_default_tv);
+        defaultEmptyWardTv = findViewById(R.id.empty_ward_list_default_tv);
         mapIcon = findViewById(R.id.map_icon);
         filterIcon = findViewById(R.id.filter);
         wardsSpinner = findViewById(R.id.spinner_wards_select);
@@ -89,11 +90,16 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
         mapIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DustbinListActivity.this, AllDustbinActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList("dustbin_list", (ArrayList<? extends Parcelable>) dustbinList);
-                intent.putExtras(bundle);
-                startActivity(intent);
+                if(dustbinList.size() == 0){
+                    Toast.makeText(DustbinListActivity.this, "No dustbins to show on map", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(DustbinListActivity.this, AllDustbinActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList("dustbin_list", (ArrayList<? extends Parcelable>) dustbinList);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+
             }
         });
 
@@ -112,8 +118,11 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
                             dustbinList.clear();
                             progressBar.setVisibility(View.VISIBLE);
                             defaultTv.setVisibility(GONE);
-                            loadDustbinList(dustbinList.get(0).getId());
-                            fetchDustbinList(wardId);
+                            defaultEmptyWardTv.setVisibility(GONE);
+                            if(wardList.size() == 0)
+                                defaultEmptyWardTv.setVisibility(View.VISIBLE);
+                            else
+                                loadDustbinList(wardList.get(0).getId());
                         } else
                             Toast.makeText(DustbinListActivity.this, "No Internet Connection!", Toast.LENGTH_SHORT).show();
 
@@ -132,6 +141,7 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
         recyclerView.setAdapter(dustbinsAdapter);
         if(receiver.isConnected()){
             defaultTv.setVisibility(GONE);
+            defaultEmptyWardTv.setVisibility(GONE);
             loadWardList();
 
         } else
@@ -160,20 +170,16 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
 
     }
 
-    private void fetchDustbinList(String wardId) {
-        loadDustbinList(wardId);
-    }
-
-    private void fetchDustbinList() {
-        Ward ward = wardList.get(0);
-        wardId = ward.getId();
-        loadDustbinList(wardId);
-    }
     private void setSpinnerItems(){
-        ArrayAdapter<Ward> statesDataAdapter = new ArrayAdapter<Ward>(DustbinListActivity.this, R.layout.spinner_item, wardList);
-        statesDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        wardsSpinner.setAdapter(statesDataAdapter);
-        wardsSpinner.setSelection(0, true);
+        if(wardList.size() == 0){
+            defaultEmptyWardTv.setVisibility(View.VISIBLE);
+        } else {
+            ArrayAdapter<Ward> statesDataAdapter = new ArrayAdapter<Ward>(DustbinListActivity.this, R.layout.spinner_item, wardList);
+            statesDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            wardsSpinner.setAdapter(statesDataAdapter);
+            wardsSpinner.setSelection(0, true);
+        }
+
 
     }
 
@@ -194,6 +200,7 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
             dustbinList.clear();
             progressBar.setVisibility(View.VISIBLE);
             defaultTv.setVisibility(GONE);
+            defaultEmptyWardTv.setVisibility(GONE);
             Ward ward = wardList.get(pos);
             wardId = ward.getId();
             loadDustbinList(wardId);
@@ -260,7 +267,6 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
                 Log.e(LOG_TAG, " onResponse: " + response);
                 wardList = Jsonparser.responseStringToWardList(response);
                 setSpinnerItems();
-                fetchDustbinList();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -293,8 +299,8 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
             finishAffinity();
             startActivity(login);
         } else{
-            Toast.makeText(DustbinListActivity.this, "Please try again.", Toast.LENGTH_SHORT).show();
-            Intent intent = getIntent();
+            Toast.makeText(DustbinListActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(DustbinListActivity.this, UserHomeActivity.class);
             finish();
             startActivity(intent);
         }

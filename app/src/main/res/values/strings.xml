@@ -6,10 +6,9 @@
     <string name="ward_prompt">Choose Ward</string>
     <string name="city_prompt">Choose City</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <string name="msg_token_fmt">Token value %s </string>
+    <string name="no_dustbin_default_tv">Dustbins are not installed in your ward yet !</string>
+    <string name="empty_wards_default_text">Wards are not alloacated to you !</string>
 
 
 </resources>

@@ -179,7 +179,7 @@ public class AllDustbinActivity extends AppCompatActivity implements GoogleMap.O
                         marker.getId();
                         //dustbinCity.setText(markerDustbinHashMap.get(marker.getId()).getCity());
                         //dustbinLocality.setText(markerDustbinHashMap.get(marker.getId()).getLocality());
-                        Toast.makeText(getApplicationContext(),"Marker is clicked" ,Toast.LENGTH_LONG).show();
+                       // Toast.makeText(getApplicationContext(),"Marker is clicked" ,Toast.LENGTH_LONG).show();
                         marker.showInfoWindow();
                         mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
                         mMap.getUiSettings().setMapToolbarEnabled(true);
