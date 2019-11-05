@@ -12,13 +12,14 @@
 
     <ProgressBar
         android:id="@+id/progress_bar"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"/>
 
     <com.jss.smartdustbin.model.NoDefaultSpinner
         android:id="@+id/spinner_wards"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="48dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:prompt="@string/ward_prompt"/>
@@ -27,11 +28,31 @@
         android:layout_height="1px"
         android:background="@android:color/black"
         android:layout_marginBottom="8dp"/>
+
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="30dp"
+        android:hint="Bin"
+        app:hintTextColor="@android:color/black"
+        app:boxStrokeColor="@android:color/black"
+        android:textColorHint="#a4a4a4">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_bin"
+            android:singleLine="true"
+            android:padding="12dp"
+            android:textColor="@android:color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:hint="Landmark"
         app:hintTextColor="@android:color/black"
         app:boxStrokeColor="@android:color/black"

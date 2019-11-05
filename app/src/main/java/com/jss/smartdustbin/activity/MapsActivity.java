@@ -123,7 +123,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     progressDialog.setCanceledOnTouchOutside(false);
                     progressDialog.setCancelable(false);
                     progressDialog.show();
-                    sendQrCodeResult(qrCodeResult, latLng.latitude, latLng.longitude, selectedWardId);
+                    sendQrCodeResult(qrCodeResult, latLng.latitude, latLng.longitude, selectedWardId, landmark);
                 } else
                     Toast.makeText(MapsActivity.this, "No Internet Connection!", Toast.LENGTH_SHORT).show();
 
@@ -344,7 +344,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    private void sendQrCodeResult(String barCodeResult, double latitude, double longitude, String selectedWardId) {
+    private void sendQrCodeResult(String barCodeResult, double latitude, double longitude, String selectedWardId, String landmark) {
        /* Uri.Builder builder = new Uri.Builder();
         builder.scheme("https")
                 .authority("www.myawesomesite.com")
@@ -354,9 +354,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .appendQueryParameter("sort", "relevance")
                 .fragment("section-name");
         String myUrl = builder.build().toString();*/
-
+       StringBuilder stringBuilder = new StringBuilder(API.BASE);
+       stringBuilder.append(API.REGISTER_DUSTBIN);
+       stringBuilder.append("?bin=");
+       stringBuilder.append(qrCodeResult);
+       stringBuilder.append("&lat=");
+       stringBuilder.append(latitude);
+       stringBuilder.append("&lng=");
+       stringBuilder.append(longitude);
+       stringBuilder.append("&wardId=");
+       stringBuilder.append(selectedWardId);
+       stringBuilder.append("&landmark=");
+       stringBuilder.append(landmark);
+       String  url = stringBuilder.toString();
         final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, API.BASE + API.REGISTER_DUSTBIN + "?bin=105&lat=2&lng=1&wardId=5d84d663283c8400048ad8fc", new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.e(LOG_TAG, " onResponse: " + response);

@@ -32,6 +32,7 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Register");
 

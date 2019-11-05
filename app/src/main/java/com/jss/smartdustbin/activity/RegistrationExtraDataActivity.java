@@ -48,6 +48,7 @@ public class RegistrationExtraDataActivity extends AppCompatActivity {
     List<Ward> wardList;
     private NetworkReceiver receiver;
     String landMark;
+    EditText binEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,12 +64,12 @@ public class RegistrationExtraDataActivity extends AppCompatActivity {
         wardsSpinner = findViewById(R.id.spinner_wards);
         landmarkEditText = findViewById(R.id.et_landmark);
         progressBar = findViewById(R.id.progress_bar);
+        binEditText = findViewById(R.id.et_bin);
 
         continueBt = findViewById(R.id.btn_continue);
         wardList = new ArrayList<>();
 
-
-
+        binEditText.setText(qrCodeResult);
         continueBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,7 +79,8 @@ public class RegistrationExtraDataActivity extends AppCompatActivity {
                     toast.show();
                 }else {
                     landMark = landmarkEditText.getText().toString();
-                    selectedWardId = wardsSpinner.getSelectedItem().toString();
+                    selectedWardId = wardList.get(wardsSpinner.getSelectedItemPosition()).getId();
+                    qrCodeResult = binEditText.getText().toString();
                     Intent intent = new Intent(RegistrationExtraDataActivity.this, MapsActivity.class);
                     intent.putExtra("code", qrCodeResult);
                     intent.putExtra("ward_id", selectedWardId);

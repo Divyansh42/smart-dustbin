@@ -58,6 +58,7 @@ public class ScanResultActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         barCodeResult = getIntent().getStringExtra("code");
+
         setTitle("Register");
         receiver = new NetworkReceiver();
 

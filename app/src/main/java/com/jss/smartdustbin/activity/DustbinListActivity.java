@@ -100,7 +100,7 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
         filterIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String[] choices = {"25% and below", "25% - 75%", "75% and above"};
+                String[] choices = {"25% and below", "25% - 75%", "75% and above", "Faulty dustbins"};
 
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DustbinListActivity.this)
                         .setTitle("Filter by Garbage level");
