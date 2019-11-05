@@ -10,6 +10,7 @@ public class API {
     public static final String CONFIRM_REGISTRATION = "/api/bin/status";
     public static final String DUSTBIN_LIST = "/api/bin";
     public static final String WARDS_LIST = "/api/ward/supervisor_wards";
+    public static final String USER_INFO = "/api/users/me";
 
 
 

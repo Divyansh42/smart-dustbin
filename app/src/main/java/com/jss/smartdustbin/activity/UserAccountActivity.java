@@ -23,6 +23,7 @@ import com.jss.smartdustbin.model.User;
 import com.jss.smartdustbin.R;
 import com.jss.smartdustbin.utils.Helper;
 import com.jss.smartdustbin.utils.HttpStatus;
+import com.jss.smartdustbin.utils.Jsonparser;
 import com.jss.smartdustbin.utils.SmartDustbinApplication;
 
 import java.util.HashMap;
@@ -66,7 +67,7 @@ public class UserAccountActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 Log.e(TAG, " onResponse: " + response);
-                User user = Helper.getUserFromResponse(response);
+                User user = Jsonparser.getUserFromResponse(response);
                 userFullName.setText(user.getFirstName() + " " + user.getLastName());
                 userAge.setText(user.getAge());
                 userContactNo.setText(user.getContactNo());

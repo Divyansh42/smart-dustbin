@@ -16,6 +16,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -24,7 +25,10 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 //import com.jss.smartdustbin.Fragments.AllDustbinsFragment;
@@ -33,19 +37,25 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.jss.smartdustbin.API;
 import com.jss.smartdustbin.R;
+import com.jss.smartdustbin.model.User;
+import com.jss.smartdustbin.model.Ward;
 import com.jss.smartdustbin.utils.Config;
 import com.jss.smartdustbin.utils.HttpStatus;
+import com.jss.smartdustbin.utils.Jsonparser;
+import com.jss.smartdustbin.utils.NetworkReceiver;
 import com.jss.smartdustbin.utils.NotificationUtils;
 import com.jss.smartdustbin.utils.SmartDustbinApplication;
+
+import org.json.JSONException;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.jss.smartdustbin.activity.LoginActivity.LOG_TAG;
+
 public class UserHomeActivity extends AppCompatActivity {
 
-    //TextView tvFirstName;
-    //TextView tvLastName;
-   // TextView tvDesignation;
+    TextView tvFirstName;
     private static final String TAG =  UserHomeActivity.class.getSimpleName();
     private SharedPreferences pref;
     //TextView accessToken;
@@ -54,7 +64,10 @@ public class UserHomeActivity extends AppCompatActivity {
     View registeredDustbinCard;
     View myAccountCard;
     Intent intent;
-    View registerCard;;
+    View registerCard;
+    ProgressBar progressBar;
+    NetworkReceiver receiver;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +78,16 @@ public class UserHomeActivity extends AppCompatActivity {
         registerCard = findViewById(R.id.register_card);
         registeredDustbinCard = (View) findViewById(R.id.registered_dustbin_card);
         myAccountCard = (View) findViewById(R.id.my_account_card);
+        progressBar = findViewById(R.id.progressBar);
+        tvFirstName = findViewById(R.id.user_first_name_tv);
 
         logoutButton = findViewById(R.id.bt_logout);
+        receiver = new NetworkReceiver();
+        if(receiver.isConnected()){
+            fetchUserData();
+        } else {
+            Toast.makeText(UserHomeActivity.this, "No internet connection!", Toast.LENGTH_SHORT);
+        }
         registerCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,7 +167,12 @@ public class UserHomeActivity extends AppCompatActivity {
                     String FCMToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("FCM_token", null);
                     //Toast.makeText(getApplicationContext(), "FCM Token :" + FCMToken, Toast.LENGTH_SHORT).show();
                     if(FCMToken != null){
-                        sendFCMToken(FCMToken);
+                        if(receiver.isConnected()){
+                            sendFCMToken(FCMToken);
+                        } else {
+                            Toast.makeText(UserHomeActivity.this, "No internet Connection!", Toast.LENGTH_SHORT).show();
+                        }
+
                     }
 
 
@@ -212,6 +238,43 @@ public class UserHomeActivity extends AppCompatActivity {
         SmartDustbinApplication.getInstance().addToRequestQueue(fcmTokenPostReq);
     }
 
+    private void fetchUserData() {
+        final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, API.BASE + API.USER_INFO , new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e(LOG_TAG, " onResponse: " + response);
+                user = Jsonparser.getUserFromResponse(response);
+                tvFirstName.setText(user.getFirstName());
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(LOG_TAG, " onErrorResponse: " + error.toString());
+                progressBar.setVisibility(View.GONE);
+
+                /*if(error.networkResponse != null){
+                    onError(error.networkResponse.statusCode);
+                }*/
+                tvFirstName.setText("Welcome User");
+            }
+        }){
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                params.put("Authorization", "Bearer " + accessToken);
+                return params;
+            }
+
+        };
+
+        SmartDustbinApplication.getInstance().addToRequestQueue(stringRequest);
+    }
+
+
     public void onError(int status) {
         if(status == HttpStatus.UNAUTHORIZED.value()){
             Toast.makeText(UserHomeActivity.this, "Please login to perform this action.", Toast.LENGTH_SHORT).show();
@@ -222,6 +285,8 @@ public class UserHomeActivity extends AppCompatActivity {
             startActivity(login);
         } else{
             Toast.makeText(UserHomeActivity.this, "Error fetching data, Please try again.", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(UserHomeActivity.this, LoginActivity.class);
+            startActivity(intent);
         }
     }
 
@@ -246,6 +311,19 @@ public class UserHomeActivity extends AppCompatActivity {
     protected void onPause() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
         super.onPause();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        this.registerReceiver(receiver, filter);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        UserHomeActivity.this.unregisterReceiver(receiver);
     }
 
 }

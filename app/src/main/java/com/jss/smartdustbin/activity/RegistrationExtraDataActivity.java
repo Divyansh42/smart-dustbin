@@ -101,16 +101,6 @@ public class RegistrationExtraDataActivity extends AppCompatActivity {
     }
 
     private void fetchWardList() {
-       /* Uri.Builder builder = new Uri.Builder();
-        builder.scheme("https")
-                .authority("www.myawesomesite.com")
-                .appendPath("turtles")
-                .appendPath("types")
-                .appendQueryParameter("type", "1")
-                .appendQueryParameter("sort", "relevance")
-                .fragment("section-name");
-        String myUrl = builder.build().toString();*/
-
         final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
         StringRequest stringRequest = new StringRequest(Request.Method.GET, API.BASE + API.WARDS_LIST , new Response.Listener<String>() {
             @Override
@@ -121,8 +111,6 @@ public class RegistrationExtraDataActivity extends AppCompatActivity {
                 ArrayAdapter<Ward> wardsDataAdapter = new ArrayAdapter<Ward>(RegistrationExtraDataActivity.this, R.layout.spinner_item, wardList);
                 wardsDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 wardsSpinner.setAdapter(wardsDataAdapter);
-
-
 
             }
         }, new Response.ErrorListener() {

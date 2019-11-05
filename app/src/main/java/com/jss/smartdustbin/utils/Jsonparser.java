@@ -1,5 +1,7 @@
 package com.jss.smartdustbin.utils;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.jss.smartdustbin.model.Dustbin;
 import com.jss.smartdustbin.model.User;
 import com.jss.smartdustbin.model.Ward;
@@ -120,5 +122,21 @@ public class Jsonparser {
             e.printStackTrace();
         }
         return ward;
+    }
+
+    public static User getUserFromResponse(String response) {
+        User user = new User();
+        try{
+            JSONObject jsonObject = new JSONObject(response);
+            user.setUserName(get(jsonObject, "username"));
+            user.setFirstName(get(jsonObject, "firstName"));
+            user.setLastName(get(jsonObject, "lastName"));
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+
+
+        return  user;
+
     }
 }
