@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -49,6 +50,8 @@ public class RegistrationExtraDataActivity extends AppCompatActivity {
     private NetworkReceiver receiver;
     String landMark;
     EditText binEditText;
+    View emptyWardDefaultTv;
+    TextView notAllowedTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,8 @@ public class RegistrationExtraDataActivity extends AppCompatActivity {
         landmarkEditText = findViewById(R.id.et_landmark);
         progressBar = findViewById(R.id.progress_bar);
         binEditText = findViewById(R.id.et_bin);
+        emptyWardDefaultTv = findViewById(R.id.empty_ward_list_default_tv);
+        notAllowedTv = findViewById(R.id.registration_not_allowed);
 
         continueBt = findViewById(R.id.btn_continue);
         wardList = new ArrayList<>();
@@ -108,6 +113,10 @@ public class RegistrationExtraDataActivity extends AppCompatActivity {
                 Log.e(LOG_TAG, " onResponse: " + response);
                 progressBar.setVisibility(View.GONE);
                 wardList = Jsonparser.responseStringToWardList(response);
+                if(wardList.size() == 0){
+                    emptyWardDefaultTv.setVisibility(View.VISIBLE);
+                    notAllowedTv.setText("Registration can't be proceeded further as wards has not been allocated yet !");
+                }
                 ArrayAdapter<Ward> wardsDataAdapter = new ArrayAdapter<Ward>(RegistrationExtraDataActivity.this, R.layout.spinner_item, wardList);
                 wardsDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 wardsSpinner.setAdapter(wardsDataAdapter);
@@ -144,8 +153,8 @@ public class RegistrationExtraDataActivity extends AppCompatActivity {
             finishAffinity();
             startActivity(login);
         } else{
-            Toast.makeText(RegistrationExtraDataActivity.this, "Please try again.", Toast.LENGTH_SHORT).show();
-            Intent intent = getIntent();
+            Toast.makeText(RegistrationExtraDataActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(RegistrationExtraDataActivity.this, UserHomeActivity.class);
             finish();
             startActivity(intent);
         }

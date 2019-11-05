@@ -12,10 +12,15 @@
 
     <ProgressBar
         android:id="@+id/progress_bar"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"/>
+    <include
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        layout="@layout/empty_ward_list"
+        android:visibility="gone"/>
 
     <com.jss.smartdustbin.model.NoDefaultSpinner
         android:id="@+id/spinner_wards"
