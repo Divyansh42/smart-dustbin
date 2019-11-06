@@ -17,6 +17,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -39,6 +40,9 @@ import com.jss.smartdustbin.utils.Jsonparser;
 import com.jss.smartdustbin.utils.NetworkReceiver;
 import com.jss.smartdustbin.utils.SmartDustbinApplication;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +54,7 @@ import static com.jss.smartdustbin.activity.LoginActivity.LOG_TAG;
 public class DustbinListActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private static final String TAG = DustbinListActivity.class.getSimpleName();
+     private static final int NO_OF_ITEMS_IN_RECYCLER_VIEW = 10;
     private RecyclerView recyclerView;
     LinearLayoutManager mLayoutManager;
     private List<Dustbin> dustbinList;
@@ -62,6 +67,10 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
     List<Ward> wardList;
     Spinner wardsSpinner;
     String wardId;
+    private Boolean isScrolling = false;
+    int currentItems, totalItems, scrollOutItems;
+    int pageCount = 1;
+    int totalPages = 1;
     private NetworkReceiver receiver;
 
     @Override
@@ -86,6 +95,32 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
         mapIcon = findViewById(R.id.map_icon);
         filterIcon = findViewById(R.id.filter);
         wardsSpinner = findViewById(R.id.spinner_wards_select);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
+                {
+                    isScrolling = true;
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                currentItems = mLayoutManager.getChildCount();
+                totalItems = mLayoutManager.getItemCount();
+                scrollOutItems = mLayoutManager.findFirstVisibleItemPosition();
+
+                if(isScrolling && (currentItems + scrollOutItems == totalItems) && pageCount < totalPages)
+                {
+                    isScrolling = false;
+                    pageCount++;
+                    loadDustbinList(wardId, pageCount, NO_OF_ITEMS_IN_RECYCLER_VIEW);
+                }
+            }
+        });
 
         mapIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,7 +157,7 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
                             if(wardList.size() == 0)
                                 defaultEmptyWardTv.setVisibility(View.VISIBLE);
                             else
-                                loadDustbinList(wardList.get(0).getId());
+                                loadDustbinList(wardList.get(0).getId(), pageCount, NO_OF_ITEMS_IN_RECYCLER_VIEW );
                         } else
                             Toast.makeText(DustbinListActivity.this, "No Internet Connection!", Toast.LENGTH_SHORT).show();
 
@@ -203,7 +238,8 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
             defaultEmptyWardTv.setVisibility(GONE);
             Ward ward = wardList.get(pos);
             wardId = ward.getId();
-            loadDustbinList(wardId);
+            pageCount = 1;
+            loadDustbinList(wardId, pageCount, NO_OF_ITEMS_IN_RECYCLER_VIEW);
         } else
             Toast.makeText(DustbinListActivity.this, "No Internet Connection!", Toast.LENGTH_SHORT).show();
 
@@ -214,16 +250,18 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
 
     }
 
-    private void loadDustbinList(String wardId){
+    private void loadDustbinList(String wardId, int pageCount, int noOfItems){
 
         StringBuilder urlSb = new StringBuilder(API.BASE);
         urlSb.append(API.DUSTBIN_LIST);
+        urlSb.append("?wardId=");
+        urlSb.append(wardId);
+        urlSb.append("&pageCount=");
+        urlSb.append(pageCount);
+        urlSb.append("&noOfItems=");
+        urlSb.append(noOfItems);
 
-
-        if(wardId != null){
-            urlSb.append("?wardId=");
-            urlSb.append(wardId);
-        }
+        progressBar.setVisibility(View.VISIBLE);
 
         final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
         StringRequest stringRequest = new StringRequest(Request.Method.GET, urlSb.toString(),  new Response.Listener<String>() {
@@ -232,6 +270,14 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
                 Log.e(LOG_TAG, " onResponse: " + response);
                 progressBar.setVisibility(GONE);
                 recyclerView.setVisibility(View.VISIBLE);
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = new JSONObject(response);
+                    totalPages = Integer.parseInt(jsonObject.get("totalPages").toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
                 dustbinList = Jsonparser.responseStringToDustbinList(response);
                 setDustbinList();
 
