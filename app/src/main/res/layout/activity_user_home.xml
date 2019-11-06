@@ -10,26 +10,46 @@
     tools:context=".activity.UserHomeActivity"
     >
 
-    <!--<androidx.appcompat.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_top"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:minHeight="?attr/actionBarSize"
-        android:background="#222A2C"
-        android:alpha="0.9"
-        app:theme="@style/ToolBarStyle.Base" >
+        android:background="#222a2c"
+        android:alpha="0.98"
+        android:minHeight="?attr/actionBarSize">
 
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:padding="10dp"
-            android:layout_gravity="start"
-            android:src="@drawable/ic_bin"
-            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#222a2c"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:alpha="0.98"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="10dp"
+                android:layout_gravity="start"
+                android:src="@drawable/ic_bin"
+                />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Smart Dustbin Manager"
+                android:textColor="#bfFFFFFF"
+                android:textSize="18sp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp" />
+
+        </LinearLayout>
 
 
-    </androidx.appcompat.widget.Toolbar>-->
+    </androidx.appcompat.widget.Toolbar>
 
     <ProgressBar
         android:id="@+id/progressBar"
