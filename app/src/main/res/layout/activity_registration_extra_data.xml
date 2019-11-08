@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:hint="Bin"
+        android:hint="@string/bin_heading_text"
         app:hintTextColor="@android:color/black"
         app:boxStrokeColor="@android:color/black"
         android:textColorHint="#a4a4a4">
@@ -58,7 +58,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:hint="Landmark"
+        android:hint="@string/landmark_heading_text"
         app:hintTextColor="@android:color/black"
         app:boxStrokeColor="@android:color/black"
         android:textColorHint="#a4a4a4">
@@ -80,7 +80,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="40dp"
-        android:text="Continue"
+        android:text="@string/continue_bt_text"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:layout_marginTop="72dp"

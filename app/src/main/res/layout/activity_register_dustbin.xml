@@ -31,7 +31,7 @@
             android:layout_marginTop="30dp"
             android:fontFamily="sans-serif-light"
             android:gravity="center"
-            android:text="Scan the QR code on the dustbin and register the dustbin"
+            android:text="@string/scan_qr_instruction_text"
             android:textColor="@android:color/black"
             android:textSize="16dp" />
     </LinearLayout>
@@ -43,7 +43,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="40dp"
-        android:text="Scan QR Code"
+        android:text="@string/scan_qr_bt_text"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:layout_marginLeft="16dp"

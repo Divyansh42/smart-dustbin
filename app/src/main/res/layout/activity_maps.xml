@@ -35,7 +35,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Current Location"
+                android:text="@string/current_location_text"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="5dp"
@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
             android:textSize="16sp"
-            android:text="Confirm Location"
+            android:text="@string/confirm_location_bt_text"
             android:textColor="@android:color/white"
             android:elevation="2dp"
             android:layout_marginBottom="8dp"

@@ -33,7 +33,7 @@
             android:fontFamily="sans-serif-light"
             android:gravity="center"
             android:textStyle="bold"
-            android:text="Dustbin registered Sucessfully!"
+            android:text="@string/registration_successful_text"
             android:textColor="@android:color/black"
             android:textSize="16dp" />
 
@@ -43,7 +43,7 @@
             android:layout_marginTop="30dp"
             android:fontFamily="sans-serif-light"
             android:gravity="center"
-            android:text="Manage registered bins from the manage section at home."
+            android:text="@string/registration_success_text"
             android:textColor="@android:color/black"
             android:textSize="16dp" />
     </LinearLayout>
@@ -55,7 +55,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="40dp"
-        android:text="Go Back To Home"
+        android:text="@string/back_to_home_bt_text"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:layout_marginRight="16dp"

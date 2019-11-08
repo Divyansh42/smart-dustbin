@@ -32,7 +32,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Dustbins under your supervision"
+            android:text="@string/select_ward_text"
             android:textColor="#9A222A2C"
             android:textSize="16sp"
             android:textStyle="bold"
