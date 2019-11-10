@@ -17,7 +17,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -25,9 +24,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,15 +35,12 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.jss.smartdustbin.API;
 import com.jss.smartdustbin.R;
 import com.jss.smartdustbin.model.User;
-import com.jss.smartdustbin.model.Ward;
 import com.jss.smartdustbin.utils.Config;
 import com.jss.smartdustbin.utils.HttpStatus;
 import com.jss.smartdustbin.utils.Jsonparser;
 import com.jss.smartdustbin.utils.NetworkReceiver;
 import com.jss.smartdustbin.utils.NotificationUtils;
 import com.jss.smartdustbin.utils.SmartDustbinApplication;
-
-import org.json.JSONException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,20 +59,21 @@ public class UserHomeActivity extends AppCompatActivity {
     View myAccountCard;
     Intent intent;
     View registerCard;
-    ProgressBar progressBar;
+    View progressBar;
     NetworkReceiver receiver;
     User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+       // overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         setContentView(R.layout.activity_user_home);
         pref = PreferenceManager.getDefaultSharedPreferences(UserHomeActivity.this);
 
         registerCard = findViewById(R.id.register_card);
         registeredDustbinCard = (View) findViewById(R.id.registered_dustbin_card);
         myAccountCard = (View) findViewById(R.id.my_account_card);
-        progressBar = findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progress_bar);
         tvFirstName = findViewById(R.id.user_first_name_tv);
 
         logoutButton = findViewById(R.id.bt_logout);

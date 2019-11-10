@@ -19,6 +19,7 @@ public class RegisterDustbinActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Register");

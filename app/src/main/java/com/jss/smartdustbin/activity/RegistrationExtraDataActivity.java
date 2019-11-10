@@ -45,7 +45,7 @@ public class RegistrationExtraDataActivity extends AppCompatActivity {
     EditText landmarkEditText;
     Button continueBt;
     String selectedWardId;
-    ProgressBar progressBar;
+    View progressBar;
     List<Ward> wardList;
     private NetworkReceiver receiver;
     String landMark;
