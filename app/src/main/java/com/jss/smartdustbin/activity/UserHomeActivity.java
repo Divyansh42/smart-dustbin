@@ -240,19 +240,20 @@ public class UserHomeActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 Log.e(LOG_TAG, " onResponse: " + response);
                 user = Jsonparser.getUserFromResponse(response);
-                tvFirstName.setText(user.getFirstName());
+                progressBar.setVisibility(View.GONE);
+                tvFirstName.setText("Welcome " + user.getFirstName() );
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(LOG_TAG, " onErrorResponse: " + error.toString());
-                progressBar.setVisibility(View.GONE);
+                //progressBar.setVisibility(View.GONE);
 
-                /*if(error.networkResponse != null){
+                if(error.networkResponse != null){
                     onError(error.networkResponse.statusCode);
-                }*/
-                tvFirstName.setText("Welcome User");
+                }
+                //tvFirstName.setText("Welcome User");
             }
         }){
 

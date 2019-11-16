@@ -22,8 +22,11 @@ import com.jss.smartdustbin.utils.NetworkReceiver;
 import com.jss.smartdustbin.utils.SmartDustbinApplication;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -113,7 +116,7 @@ public class ScanResultActivity extends AppCompatActivity {
     }
 
     private void httpRequest(String accessToken, String bin) throws IOException, JSONException {
-        URL url = new URL(API.BASE + API.CONFIRM_REGISTRATION + "?bin=105&q=xyz");
+        URL url = new URL(API.BASE + API.CONFIRM_REGISTRATION + "?bin=" + bin + "&q=xyz");
 
         HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
         httpURLConnection.setRequestMethod("GET");
@@ -122,23 +125,39 @@ public class ScanResultActivity extends AppCompatActivity {
         httpURLConnection.setDoInput(false);
         httpURLConnection.setDoOutput(false);*/
         int responseCode = httpURLConnection.getResponseCode();
+
+
+        //Log.v(TAG, "Activation Response" + sb.toString());
+
         Log.e(TAG, "response code-----------" + responseCode);
         if (responseCode == HttpStatus.OK.value()) {
             Log.v(TAG, "json object created");
-            success = true;
-            runOnUiThread(new Runnable() {
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+            StringBuilder sb = new StringBuilder();
+            String response;
+            while ((response = bufferedReader.readLine()) != null) {
+                sb.append(response);
+            }
+            JSONObject jsonObject = new JSONObject(sb.toString());
+            String status = jsonObject.getString("status");
+            if(status.equals("active")){
+                success = true;
+                runOnUiThread(new Runnable() {
 
-                @Override
-                public void run() {
+                    @Override
+                    public void run() {
 
-                    // Stuff that updates the UI
-                    progressDialog.hide();
-                    Intent intent = new Intent(ScanResultActivity.this, RegistrationConfirmationActivity.class);
-                    startActivity(intent);
-                    finish();
+                        // Stuff that updates the UI
+                        progressDialog.hide();
+                        Intent intent = new Intent(ScanResultActivity.this, RegistrationConfirmationActivity.class);
+                        startActivity(intent);
+                        finish();
 
-                }
-            });
+                    }
+                });
+            }
+
+
         } else{
             success = false;
             onError(httpURLConnection.getResponseCode());
@@ -158,6 +177,11 @@ public class ScanResultActivity extends AppCompatActivity {
                     Intent login = new Intent(ScanResultActivity.this, LoginActivity.class);
                     finishAffinity();
                     startActivity(login);
+                } else{
+                    Toast.makeText(ScanResultActivity.this, "Please try again.", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(ScanResultActivity.this, MapsActivity.class);
+                    finishAffinity();
+                    startActivity(intent);
                 }
             }
         });

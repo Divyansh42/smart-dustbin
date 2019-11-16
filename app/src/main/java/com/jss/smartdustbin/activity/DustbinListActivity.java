@@ -69,7 +69,7 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
     String wardId;
     private Boolean isScrolling = false;
     int currentItems, totalItems, scrollOutItems;
-    int pageCount = 1;
+    int pageCount = 0;
     int totalPages = 1;
     private NetworkReceiver receiver;
 
@@ -112,6 +112,7 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
                 currentItems = mLayoutManager.getChildCount();
                 totalItems = mLayoutManager.getItemCount();
                 scrollOutItems = mLayoutManager.findFirstVisibleItemPosition();
+               // progressBar.setVisibility(View.VISIBLE);
 
                 if(isScrolling && (currentItems + scrollOutItems == totalItems) && pageCount < totalPages)
                 {
@@ -238,7 +239,7 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
             defaultEmptyWardTv.setVisibility(GONE);
             Ward ward = wardList.get(pos);
             wardId = ward.getId();
-            pageCount = 1;
+            pageCount = 0;
             loadDustbinList(wardId, pageCount, NO_OF_ITEMS_IN_RECYCLER_VIEW);
         } else
             Toast.makeText(DustbinListActivity.this, "No Internet Connection!", Toast.LENGTH_SHORT).show();
@@ -256,9 +257,9 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
         urlSb.append(API.DUSTBIN_LIST);
         urlSb.append("?wardId=");
         urlSb.append(wardId);
-        urlSb.append("&pageCount=");
+        urlSb.append("&page=");
         urlSb.append(pageCount);
-        urlSb.append("&noOfItems=");
+        urlSb.append("&size=");
         urlSb.append(noOfItems);
 
         progressBar.setVisibility(View.VISIBLE);
@@ -268,6 +269,11 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
             @Override
             public void onResponse(String response) {
                 Log.e(LOG_TAG, " onResponse: " + response);
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 progressBar.setVisibility(GONE);
                 recyclerView.setVisibility(View.VISIBLE);
                 JSONObject jsonObject = null;
@@ -277,8 +283,9 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                List<Dustbin> dustbins = Jsonparser.responseStringToDustbinList(response);
 
-                dustbinList = Jsonparser.responseStringToDustbinList(response);
+                dustbinList.addAll(dustbins);
                 setDustbinList();
 
             }

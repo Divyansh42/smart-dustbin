@@ -31,19 +31,20 @@
                    android:layout_height="match_parent"
                    android:id="@+id/constraint_layout">
 
+
+
                    <ProgressBar
                        android:id="@+id/dustbin_progressbar"
                        style="@android:style/Widget.ProgressBar.Horizontal"
-                       android:layout_width="68dp"
-                       android:layout_height="100dp"
+                       android:layout_width="71dp"
+                       android:layout_height="72dp"
                        android:progressDrawable="@drawable/progressbar_states"
                        app:layout_constraintTop_toTopOf="@+id/dustbin_image"
                        app:layout_constraintStart_toStartOf="@id/dustbin_image"
-                       android:paddingTop="26dp"
-                       android:layout_marginBottom="5dp"
-                       android:paddingBottom="2dp"
-                       android:layout_marginLeft="16dp"
-                       android:layout_marginStart="16dp" />
+                       android:layout_marginTop="26dp"
+                       android:elevation="1dp"
+                       android:layout_marginLeft="15dp"
+                       android:layout_marginStart="15dp" />
 
                    <ImageView
                        android:id="@+id/dustbin_image"
@@ -52,15 +53,15 @@
                        app:layout_constraintTop_toTopOf="@+id/constraint_layout"
                        app:layout_constraintStart_toStartOf="@id/constraint_layout"
                        android:layout_margin="30dp"
-                       android:src="@drawable/garbage" />
+                       android:src="@drawable/dustbin_level" />
 
                    <TextView
                        android:id="@+id/garbage_level_tv"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
-                       android:text="75% full"
+                       android:text="77% full"
                        android:textStyle="bold"
-                       android:textColor="#689F38"
+                       android:textColor="#E2574C"
                        app:layout_constraintStart_toStartOf="parent"
                        app:layout_constraintTop_toBottomOf="@+id/dustbin_image"
                        android:layout_marginTop="24dp"
@@ -73,29 +74,54 @@
                        android:background="@drawable/border_text"
                        android:layout_marginStart="30dp" />
 
+                    <TextView
+                        android:id="@+id/bin_heading_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:text="BIN:"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="@id/dustbin_image"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="12dp"/>
+                    <TextView
+                        android:id="@+id/bin_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="7418529639"
+                        android:textSize="15sp"
+                        android:textColor="@android:color/black"
+                        app:layout_constraintStart_toEndOf="@id/dustbin_image"
+                        app:layout_constraintTop_toBottomOf="@id/bin_heading_tv"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginStart="20dp" />
+
                    <TextView
                        android:id="@+id/landmark_heading_tv"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
-                       app:layout_constraintTop_toTopOf="parent"
+                       app:layout_constraintTop_toBottomOf="@id/bin_tv"
                        android:text="@string/located_near_text"
                        android:textColor="@android:color/black"
                        android:textStyle="bold"
                        app:layout_constraintStart_toEndOf="@id/dustbin_image"
                        android:layout_marginLeft="20dp"
                        android:layout_marginStart="20dp"
-                       android:layout_marginTop="24dp"/>
+                       android:layout_marginTop="8dp"/>
                    <TextView
                        android:id="@+id/landmark_tv"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
-                       android:text="Hospital"
+                       android:text="City Hospital"
                        android:textSize="15sp"
                        android:textColor="@android:color/black"
                        app:layout_constraintStart_toEndOf="@id/dustbin_image"
                        app:layout_constraintTop_toBottomOf="@id/landmark_heading_tv"
                        android:layout_marginLeft="20dp"
-                       android:layout_marginTop="6dp"
+                       android:layout_marginTop="2dp"
                        android:layout_marginStart="20dp" />
                    <TextView
                        android:id="@+id/last_updated_heading_tv"
@@ -108,20 +134,20 @@
                        app:layout_constraintStart_toEndOf="@id/dustbin_image"
                        android:layout_marginLeft="20dp"
                        android:layout_marginStart="20dp"
-                       android:layout_marginTop="16dp"/>
+                       android:layout_marginTop="8dp"/>
 
                    <TextView
                        android:id="@+id/last_updated_tv"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
-                       android:text="12/09/19 10:00 AM"
+                       android:text="Nov 12, 2019 10:20 AM"
                        android:textSize="15sp"
                        android:textColor="@android:color/black"
                        app:layout_constraintStart_toEndOf="@id/dustbin_image"
                        app:layout_constraintTop_toBottomOf="@id/last_updated_heading_tv"
                        android:layout_marginRight="8dp"
                        android:layout_marginLeft="20sp"
-                       android:layout_marginTop="6dp"
+                       android:layout_marginTop="2dp"
                        android:layout_marginStart="20dp"
                        android:layout_marginEnd="8dp" />
                    <TextView
@@ -135,20 +161,20 @@
                        app:layout_constraintStart_toEndOf="@id/dustbin_image"
                        android:layout_marginLeft="20dp"
                        android:layout_marginStart="20dp"
-                       android:layout_marginTop="16dp"/>
+                       android:layout_marginTop="8dp"/>
 
                    <TextView
                        android:id="@+id/installed_by_tv"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
                        android:textColor="@android:color/black"
-                       android:text="Divyanshu Agrawal"
+                       android:text="Sudhir Singh"
                        android:textSize="15sp"
                        app:layout_constraintStart_toEndOf="@id/dustbin_image"
                        app:layout_constraintTop_toBottomOf="@id/installed_by_heading_tv"
                        android:layout_marginLeft="20dp"
                        android:layout_marginStart="20dp"
-                       android:layout_marginTop="6dp"/>
+                       android:layout_marginTop="2dp"/>
 
                    <ImageView
                        android:id="@+id/info_icon"

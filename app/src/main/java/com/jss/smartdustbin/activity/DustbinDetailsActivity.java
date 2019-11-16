@@ -3,6 +3,7 @@ package com.jss.smartdustbin.activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.jss.smartdustbin.R;
 import com.jss.smartdustbin.model.Dustbin;
 import com.jss.smartdustbin.utils.Helper;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -35,7 +37,9 @@ public class DustbinDetailsActivity extends AppCompatActivity implements GoogleM
     TextView installedByTv;
     ImageView alertIcon;
     Dustbin dustbin;
+    TextView binTv;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +50,7 @@ public class DustbinDetailsActivity extends AppCompatActivity implements GoogleM
         landmarkTv = findViewById(R.id.landmark_tv);
         installedByTv = findViewById(R.id.installed_by_tv);
         alertIcon = findViewById(R.id.info_icon);
+        binTv = findViewById(R.id.bin_tv);
 
         alertIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,12 +76,19 @@ public class DustbinDetailsActivity extends AppCompatActivity implements GoogleM
 
 
         dustbinLevelPb.setProgress(Integer.parseInt(dustbin.getGarbageLevel()));
-        if(garbageStatus == 1)
+        /*dustbinLevelPb.setProgress(77);
+        dustbinLevelPb.setBackgroundColor(Color.parseColor("#E2574C"));*/
+        if(garbageStatus == 1) {
             garbageLevelTv.setTextColor(Color.parseColor("#44A849"));
-        else if(garbageStatus == 2)
+            dustbinLevelPb.setProgressDrawable(getDrawable(R.drawable.progressbar_green));
+        } else if(garbageStatus == 2) {
             garbageLevelTv.setTextColor(Color.parseColor("#FF8922"));
-        else if(garbageStatus == 3)
+            dustbinLevelPb.setProgressDrawable(getDrawable(R.drawable.progressbar_orange));
+        } else if(garbageStatus == 3) {
             garbageLevelTv.setTextColor(Color.parseColor("#E2574C"));
+            dustbinLevelPb.setProgressDrawable(getDrawable(R.drawable.progressbar_red));
+        }
+
 
         garbageLevelTv.setText(dustbin.getGarbageLevel() + "% full");
         landmarkTv.setText(dustbin.getLandmark());
@@ -84,6 +96,7 @@ public class DustbinDetailsActivity extends AppCompatActivity implements GoogleM
         double lat = Double.parseDouble(dustbin.getLatitude());
         double lng = Double.parseDouble(dustbin.getLongitude());
         lastUpdatedTv.setText(dustbin.getLastUpdated());
+        binTv.setText(dustbin.getBin());
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()

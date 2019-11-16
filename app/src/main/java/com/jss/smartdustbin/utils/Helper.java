@@ -75,7 +75,7 @@ public class Helper {
 
     public static int getGarbageStatusFromLevel(String garbageLevel){
         int garbagePer = Integer.parseInt(garbageLevel);
-        if(garbagePer < 25)
+        if(garbagePer < 50)
             return 1;
         else if(garbagePer <= 74)
            return 2;

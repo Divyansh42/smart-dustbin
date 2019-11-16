@@ -30,11 +30,13 @@ public class DustbinsAdapter extends RecyclerView.Adapter<DustbinsAdapter.MyView
         TextView lastUpdatedTv;
         ImageView alertIcon;
         View dustbinDetailsCard;
+        TextView binTv;
 
         public MyViewHolder(View view) {
             super(view);
             garbageLevelTv = view.findViewById(R.id.dustbin_level_tv);
             lastUpdatedTv = view.findViewById(R.id.last_updated_tv);
+            binTv = view.findViewById(R.id.bin_tv);
             alertIcon = view.findViewById(R.id.info_icon);
             dustbinDetailsCard = view.findViewById(R.id.dustbin_details_card);
             context = view.getContext();
@@ -72,6 +74,7 @@ public class DustbinsAdapter extends RecyclerView.Adapter<DustbinsAdapter.MyView
 
         holder.garbageLevelTv.setText(dustbin.getGarbageLevel()+ "%" + " full");
         holder.lastUpdatedTv.setText("Last updated " + dustbin.getLastUpdated());
+        holder.binTv.setText("BIN: " + dustbin.getBin());
         holder.alertIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

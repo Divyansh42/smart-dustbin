@@ -72,15 +72,29 @@
                 />
 
             <TextView
-                android:id="@+id/last_updated_tv"
+                android:id="@+id/bin_tv"
                 android:layout_below="@+id/dustbin_level_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
+                android:textSize="14dp"
+                android:textColor="#808080"
+                android:text="BIN: 7418529632"
+                />
+
+
+            <TextView
+                android:id="@+id/last_updated_tv"
+                android:layout_below="@id/bin_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:textSize="14dp"
                 android:textColor="#808080"
                 android:text="Last updated at 17/09/19 10:00 AM"
                 />
+
+
 
         </RelativeLayout>
 
