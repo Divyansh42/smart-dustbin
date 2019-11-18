@@ -17,10 +17,12 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -72,6 +74,8 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
     int pageCount = 0;
     int totalPages = 1;
     private NetworkReceiver receiver;
+    LinearLayout contentLayout;
+    RecyclerView.LayoutParams param;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +99,12 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
         mapIcon = findViewById(R.id.map_icon);
         filterIcon = findViewById(R.id.filter);
         wardsSpinner = findViewById(R.id.spinner_wards_select);
+        contentLayout = findViewById(R.id.content);
+
+        param = new RecyclerView.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+        );
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -112,9 +122,8 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
                 currentItems = mLayoutManager.getChildCount();
                 totalItems = mLayoutManager.getItemCount();
                 scrollOutItems = mLayoutManager.findFirstVisibleItemPosition();
-               // progressBar.setVisibility(View.VISIBLE);
 
-                if(isScrolling && (currentItems + scrollOutItems == totalItems) && pageCount < totalPages)
+                if(isScrolling && (currentItems + scrollOutItems == totalItems) && pageCount < totalPages-1)
                 {
                     isScrolling = false;
                     pageCount++;
@@ -263,18 +272,24 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
         urlSb.append(noOfItems);
 
         progressBar.setVisibility(View.VISIBLE);
+        contentLayout.setWeightSum(7);
+//        contentLayout.setLayoutParams(param);
+        /*ViewGroup.LayoutParams params=recyclerView.getLayoutParams();
+        recyclerView.setLayoutParams(params);*/
 
         final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
         StringRequest stringRequest = new StringRequest(Request.Method.GET, urlSb.toString(),  new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.e(LOG_TAG, " onResponse: " + response);
-                try {
+                /*try {
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                }
+                }*/
                 progressBar.setVisibility(GONE);
+                contentLayout.setWeightSum(6);
+                //contentLayout.setLayoutParams(param);
                 recyclerView.setVisibility(View.VISIBLE);
                 JSONObject jsonObject = null;
                 try {

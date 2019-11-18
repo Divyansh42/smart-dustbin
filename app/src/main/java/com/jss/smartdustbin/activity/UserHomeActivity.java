@@ -16,12 +16,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -43,6 +46,7 @@ import com.jss.smartdustbin.utils.NotificationUtils;
 import com.jss.smartdustbin.utils.SmartDustbinApplication;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import static com.jss.smartdustbin.activity.LoginActivity.LOG_TAG;
@@ -75,6 +79,7 @@ public class UserHomeActivity extends AppCompatActivity {
         myAccountCard = (View) findViewById(R.id.my_account_card);
         progressBar = findViewById(R.id.progress_bar);
         tvFirstName = findViewById(R.id.user_first_name_tv);
+
 
         logoutButton = findViewById(R.id.bt_logout);
         receiver = new NetworkReceiver();
@@ -111,7 +116,7 @@ public class UserHomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                    final androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(UserHomeActivity.this);
+                   /* final androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(UserHomeActivity.this);
                     builder.setTitle("Logout");
                     builder.setMessage("Are you sure you want to logout?");
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -129,6 +134,8 @@ public class UserHomeActivity extends AppCompatActivity {
                     AlertDialog alert1 = builder.create();
                     alert1.show();
 
+*/
+                setLocale("hi");
             }
         });
 
@@ -284,6 +291,18 @@ public class UserHomeActivity extends AppCompatActivity {
             Intent intent = new Intent(UserHomeActivity.this, LoginActivity.class);
             startActivity(intent);
         }
+    }
+
+    public void setLocale(String lang) {
+        Locale myLocale = new Locale(lang);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = myLocale;
+        res.updateConfiguration(conf, dm);
+        Intent refresh = new Intent(this, UserHomeActivity.class);
+        finish();
+        startActivity(refresh);
     }
 
     @Override

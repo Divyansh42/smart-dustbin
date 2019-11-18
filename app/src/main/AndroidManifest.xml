@@ -25,6 +25,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:configChanges="locale|orientation"
         android:usesCleartextTraffic="true">
         <activity android:name=".activity.RegistrationExtraDataActivity"></activity>
         <activity
