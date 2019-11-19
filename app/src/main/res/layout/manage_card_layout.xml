@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="17dp"
                 android:textColor="#000000"
-                android:text="Manage"
+                android:text="@string/manage"
                 />
 
             <TextView
@@ -67,7 +67,7 @@
                 android:layout_marginTop="8dp"
                 android:textSize="14dp"
                 android:textColor="#808080"
-                android:text="Click to monitor bins in the allocated wards."
+                android:text="@string/click_to_monitor_bins_in_the_allocated_wards"
                 />
 
         </RelativeLayout>

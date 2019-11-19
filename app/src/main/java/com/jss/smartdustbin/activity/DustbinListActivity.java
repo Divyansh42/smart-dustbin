@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,7 +76,6 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
     int totalPages = 1;
     private NetworkReceiver receiver;
     LinearLayout contentLayout;
-    RecyclerView.LayoutParams param;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +85,7 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
         Toolbar toolbar = findViewById(R.id.toolbar_top);
         toolbar.setTitle("Dustbins");
         setSupportActionBar(toolbar);
+        toolbar.showOverflowMenu();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
         receiver = new NetworkReceiver();
@@ -96,15 +97,11 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
         progressBar = findViewById(R.id.progressBar);
         defaultTv = findViewById(R.id.empty_dustbin_list_default_tv);
         defaultEmptyWardTv = findViewById(R.id.empty_ward_list_default_tv);
-        mapIcon = findViewById(R.id.map_icon);
-        filterIcon = findViewById(R.id.filter);
+//        mapIcon = findViewById(R.id.map_icon);
+//        filterIcon = findViewById(R.id.filter);
         wardsSpinner = findViewById(R.id.spinner_wards_select);
         contentLayout = findViewById(R.id.content);
 
-        param = new RecyclerView.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT
-        );
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -132,7 +129,7 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
             }
         });
 
-        mapIcon.setOnClickListener(new View.OnClickListener() {
+        /*mapIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(dustbinList.size() == 0){
@@ -179,7 +176,7 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
                 alertDialog.show();
 
             }
-        });
+        });*/
 
         mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -273,23 +270,14 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
 
         progressBar.setVisibility(View.VISIBLE);
         contentLayout.setWeightSum(7);
-//        contentLayout.setLayoutParams(param);
-        /*ViewGroup.LayoutParams params=recyclerView.getLayoutParams();
-        recyclerView.setLayoutParams(params);*/
 
         final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
         StringRequest stringRequest = new StringRequest(Request.Method.GET, urlSb.toString(),  new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.e(LOG_TAG, " onResponse: " + response);
-                /*try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }*/
                 progressBar.setVisibility(GONE);
                 contentLayout.setWeightSum(6);
-                //contentLayout.setLayoutParams(param);
                 recyclerView.setVisibility(View.VISIBLE);
                 JSONObject jsonObject = null;
                 try {
@@ -373,13 +361,60 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
             startActivity(intent);
         }
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.dustbin_list_menu, menu);
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
+        switch (item.getItemId()) {
+            case R.id.filter: {
+                String[] choices = {"25% and below", "25% - 75%", "75% and above", "Faulty dustbins"};
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DustbinListActivity.this)
+                        .setTitle("Filter by Garbage level");
+                alertDialogBuilder.setPositiveButton("Apply", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        if(receiver.isConnected()){
+                            recyclerView.setVisibility(GONE);
+                            dustbinList.clear();
+                            progressBar.setVisibility(View.VISIBLE);
+                            defaultTv.setVisibility(GONE);
+                            defaultEmptyWardTv.setVisibility(GONE);
+                            pageCount = 0;
+                            if(wardList.size() == 0)
+                                defaultEmptyWardTv.setVisibility(View.VISIBLE);
+                            else
+                                loadDustbinList(wardList.get(0).getId(), pageCount, NO_OF_ITEMS_IN_RECYCLER_VIEW );
+                        } else
+                            Toast.makeText(DustbinListActivity.this, "No Internet Connection!", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("Cancel", null)
+                        .setSingleChoiceItems(choices, 0,null);
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+                break;
+            }
+            case R.id.map: {
+                if(dustbinList.size() == 0){
+                    Toast.makeText(DustbinListActivity.this, "No dustbins to show on map", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(DustbinListActivity.this, "Please wait for a while.", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(DustbinListActivity.this, AllDustbinActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList("dustbin_list", (ArrayList<? extends Parcelable>) dustbinList);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+                break;
+            }
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
 

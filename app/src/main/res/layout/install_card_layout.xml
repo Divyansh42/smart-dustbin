@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="17dp"
                 android:textColor="#000000"
-                android:text="Install"
+                android:text="@string/install"
                 />
 
             <TextView
@@ -63,7 +63,7 @@
                 android:layout_marginTop="8dp"
                 android:textSize="14dp"
                 android:textColor="#808080"
-                android:text="Install and activate new bins in the allocated wards."
+                android:text="@string/install_and_activate_new_bins_in_the_allocated_wards"
                 />
 
         </RelativeLayout>

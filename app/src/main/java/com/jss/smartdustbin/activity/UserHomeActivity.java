@@ -21,11 +21,14 @@ import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -79,9 +82,12 @@ public class UserHomeActivity extends AppCompatActivity {
         myAccountCard = (View) findViewById(R.id.my_account_card);
         progressBar = findViewById(R.id.progress_bar);
         tvFirstName = findViewById(R.id.user_first_name_tv);
-
-
         logoutButton = findViewById(R.id.bt_logout);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_top);
+        setSupportActionBar(toolbar);
+        toolbar.showOverflowMenu();
+        toolbar.setOverflowIcon(getResources().getDrawable(R.drawable.ic_language));
         receiver = new NetworkReceiver();
         if(receiver.isConnected()){
             fetchUserData();
@@ -116,7 +122,7 @@ public class UserHomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                   /* final androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(UserHomeActivity.this);
+                    final androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(UserHomeActivity.this);
                     builder.setTitle("Logout");
                     builder.setMessage("Are you sure you want to logout?");
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -134,8 +140,6 @@ public class UserHomeActivity extends AppCompatActivity {
                     AlertDialog alert1 = builder.create();
                     alert1.show();
 
-*/
-                setLocale("hi");
             }
         });
 
@@ -148,9 +152,9 @@ public class UserHomeActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString("FCM_token" , fcmToken);
                 editor.apply();
-                Intent registrationComplete = new Intent(Config.REGISTRATION_COMPLETE);
+                /*Intent registrationComplete = new Intent(Config.REGISTRATION_COMPLETE);
                 registrationComplete.putExtra("token",fcmToken);
-                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(registrationComplete);
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(registrationComplete);*/
 
                 //notify server for the token change
 
@@ -288,8 +292,8 @@ public class UserHomeActivity extends AppCompatActivity {
             startActivity(login);
         } else{
             Toast.makeText(UserHomeActivity.this, "Error fetching data, Please try again.", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(UserHomeActivity.this, LoginActivity.class);
-            startActivity(intent);
+            /*Intent intent = new Intent(UserHomeActivity.this, LoginActivity.class);
+            startActivity(intent);*/
         }
     }
 
@@ -303,6 +307,27 @@ public class UserHomeActivity extends AppCompatActivity {
         Intent refresh = new Intent(this, UserHomeActivity.class);
         finish();
         startActivity(refresh);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.hindi: {
+                setLocale("hi");
+                break;
+            }
+            case R.id.english: {
+                setLocale("en");
+                break;
+            }
+        }
+        return true;
     }
 
     @Override
