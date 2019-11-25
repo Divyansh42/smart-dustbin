@@ -73,8 +73,11 @@ public class RegistrationExtraDataActivity extends AppCompatActivity {
 
         continueBt = findViewById(R.id.btn_continue);
         wardList = new ArrayList<>();
+        if(qrCodeResult != null){
+            binEditText.setText(qrCodeResult);
+        }
 
-        binEditText.setText(qrCodeResult);
+
         continueBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

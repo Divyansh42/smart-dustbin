@@ -32,6 +32,13 @@ public class RegisterDustbinActivity extends AppCompatActivity {
                 startActivity(new Intent(RegisterDustbinActivity.this, ScanActivity.class));
             }
         });
+
+        findViewById(R.id.enter_manually).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(RegisterDustbinActivity.this, RegistrationExtraDataActivity.class));
+            }
+        });
     }
 
     private void transparentToolbar() {
