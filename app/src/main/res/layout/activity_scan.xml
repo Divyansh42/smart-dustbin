@@ -18,7 +18,6 @@
         android:layout_marginStart="15dp"
         android:layout_weight="1"
         android:focusable="true"
-        android:fontFamily="@font/brandon_text_medium"
         android:text="Scan the QR code or enter the code mentioned on the dustbin."
         android:textColor="@android:color/black"
         android:textSize="16sp" />

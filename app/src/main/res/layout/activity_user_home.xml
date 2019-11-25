@@ -66,6 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
+            android:fontFamily="@font/fibel_sued"
             android:layout_below="@id/image_progress"
             android:text="@string/loading"/>
 

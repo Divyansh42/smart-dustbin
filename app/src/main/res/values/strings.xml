@@ -37,6 +37,11 @@
     <string name="logout">Logout</string>
     <string name="title_activity_settings">Settings</string>
 
+    <string name="key_send_feedback">key_send_feedback</string>
+    <string name="key_choose_language">key_choose_language</string>
+
+    <string name="choose_email_client">Choose email client</string>
+
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
     <string name="sync_header">Sync</string>

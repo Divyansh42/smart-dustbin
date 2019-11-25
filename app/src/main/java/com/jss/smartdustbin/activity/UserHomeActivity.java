@@ -318,14 +318,22 @@ public class UserHomeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.hindi: {
-                setLocale("hi");
+            /*case R.id.hindi: {
+//                setLocale("hi");
+                Intent intent = new Intent(UserHomeActivity.this, SettingsActivity.class);
+                startActivity(intent);
                 break;
             }
             case R.id.english: {
                 setLocale("en");
                 break;
+            }*/
+            case R.id.settings: {
+                Intent intent = new Intent(UserHomeActivity.this, SettingsActivity.class);
+                startActivity(intent);
+                break;
             }
+
         }
         return true;
     }

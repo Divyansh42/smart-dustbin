@@ -404,7 +404,7 @@ public class DustbinListActivity extends AppCompatActivity implements AdapterVie
                 if(dustbinList.size() == 0){
                     Toast.makeText(DustbinListActivity.this, "No dustbins to show on map", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(DustbinListActivity.this, "Please wait for a while.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DustbinListActivity.this, "Please wait for a while.  ", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(DustbinListActivity.this, AllDustbinActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putParcelableArrayList("dustbin_list", (ArrayList<? extends Parcelable>) dustbinList);
