@@ -1,7 +1,10 @@
 package com.jss.smartdustbin.utils;
 
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.text.format.DateUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -81,6 +84,15 @@ public class Helper {
            return 2;
         else return 3;
     }
+
+    /*public void setLocale(String lang) {
+        Locale myLocale = new Locale(lang);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = myLocale;
+        res.updateConfiguration(conf, dm);
+    }*/
 
 
 

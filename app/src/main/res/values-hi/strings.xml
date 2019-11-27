@@ -8,4 +8,5 @@
     <string name="click_to_monitor_bins_in_the_allocated_wards">"आवंटित वार्ड में डिब्बे की निगरानी के लिए क्लिक करें।"</string>
     <string name="install">"इंस्टॉल"</string>
     <string name="install_and_activate_new_bins_in_the_allocated_wards">आवंटित वार्डों में नए डिब्बे स्थापित और सक्रिय करें।</string>
+    <string name="scan_qr_bt_text">लॉगआउट</string>
 </resources>

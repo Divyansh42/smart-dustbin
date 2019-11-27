@@ -2,15 +2,19 @@ package com.jss.smartdustbin.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.ListPreference;
@@ -18,18 +22,20 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.jss.smartdustbin.R;
+import com.jss.smartdustbin.utils.Helper;
 
 import java.util.Locale;
+import java.util.Set;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private Context context;
+    public static SharedPreferences pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
-        context = getBaseContext();
+        pref = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.settings, new SettingsFragment())
@@ -53,35 +59,66 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
 
-            Preference languagePref = findPreference("language");
+
+            ListPreference languagePref = findPreference("language");
+            String language = PreferenceManager.getDefaultSharedPreferences(getContext()).getString("app_language", "en");
+            if(language.equals("hi"))
+                languagePref.setValueIndex(1);
+            else
+                languagePref.setValueIndex(0);
             languagePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     String stringValue = newValue.toString();
                     ListPreference listPreference = (ListPreference) preference;
                     int index = listPreference.findIndexOfValue(stringValue);
-                    if(listPreference.getEntries()[index].toString().equals("English"))
-                        setLocale("en");
-                    else if(listPreference.getEntries()[index].toString().equals("Hindi"))
-                        setLocale("hi");
+                    if(listPreference.getEntries()[index].toString().equals("English")) {
+                        setLocale("en", getActivity());
+                        languagePref.setValueIndex(0);
+                    } else if(listPreference.getEntries()[index].toString().equals("Hindi")) {
+                        setLocale("hi", getActivity());
+                        languagePref.setValueIndex(1);
+                    }
 
                     return true;
                 }
             });
+
+
         }
 
-        public void setLocale(String lang) {
-            Locale myLocale = new Locale(lang);
-            Resources res = getResources();
-            DisplayMetrics dm = res.getDisplayMetrics();
-            Configuration conf = res.getConfiguration();
-            conf.locale = myLocale;
-            res.updateConfiguration(conf, dm);
-        }
+
 
 
     }
 
+    /*@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public static void setLocale(String lang, Context context) {
+        Locale myLocale = new Locale(lang);
+        Locale.setDefault(myLocale);
+        Resources res = context.getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        context.createConfigurationContext(conf);
+        conf.locale = myLocale;
+        res.updateConfiguration(conf, dm);
+    }*/
+
+
+
+
+    public static void setLocale(String lang, Context context) {
+        Locale myLocale = new Locale(lang);
+        Resources res = context.getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = myLocale;
+        res.updateConfiguration(conf, dm);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("app_language", lang);
+        editor.apply();
+    }
 
 
     @Override
@@ -110,4 +147,12 @@ public class SettingsActivity extends AppCompatActivity {
         context.startActivity(Intent.createChooser(intent, context.getString(R.string.choose_email_client)));
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(SettingsActivity.this, UserHomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
 }

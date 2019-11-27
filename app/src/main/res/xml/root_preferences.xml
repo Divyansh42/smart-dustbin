@@ -21,11 +21,11 @@
 
 
         <ListPreference
-            app:defaultValue="english"
+            app:defaultValue="0"
             app:entries="@array/language_entries"
             app:entryValues="@array/language_values"
             app:key="language"
-            app:title="Choose language"
+            app:title="App language"
             android:summary="Change your preferred language"
             app:useSimpleSummaryProvider="true" />
 

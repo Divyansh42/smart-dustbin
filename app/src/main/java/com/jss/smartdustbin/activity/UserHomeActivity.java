@@ -74,6 +74,8 @@ public class UserHomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        // overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        String language = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("app_language", "en");
+        setLocale(language);
         setContentView(R.layout.activity_user_home);
         pref = PreferenceManager.getDefaultSharedPreferences(UserHomeActivity.this);
 
@@ -88,6 +90,7 @@ public class UserHomeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.showOverflowMenu();
         toolbar.setOverflowIcon(getResources().getDrawable(R.drawable.ic_language));
+
         receiver = new NetworkReceiver();
         if(receiver.isConnected()){
             fetchUserData();
@@ -304,9 +307,6 @@ public class UserHomeActivity extends AppCompatActivity {
         Configuration conf = res.getConfiguration();
         conf.locale = myLocale;
         res.updateConfiguration(conf, dm);
-        Intent refresh = new Intent(this, UserHomeActivity.class);
-        finish();
-        startActivity(refresh);
     }
 
     @Override
@@ -318,16 +318,6 @@ public class UserHomeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            /*case R.id.hindi: {
-//                setLocale("hi");
-                Intent intent = new Intent(UserHomeActivity.this, SettingsActivity.class);
-                startActivity(intent);
-                break;
-            }
-            case R.id.english: {
-                setLocale("en");
-                break;
-            }*/
             case R.id.settings: {
                 Intent intent = new Intent(UserHomeActivity.this, SettingsActivity.class);
                 startActivity(intent);
