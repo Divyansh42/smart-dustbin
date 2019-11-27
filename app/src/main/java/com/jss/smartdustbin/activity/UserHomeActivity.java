@@ -42,6 +42,7 @@ import com.jss.smartdustbin.API;
 import com.jss.smartdustbin.R;
 import com.jss.smartdustbin.model.User;
 import com.jss.smartdustbin.utils.Config;
+import com.jss.smartdustbin.utils.Helper;
 import com.jss.smartdustbin.utils.HttpStatus;
 import com.jss.smartdustbin.utils.Jsonparser;
 import com.jss.smartdustbin.utils.NetworkReceiver;
@@ -177,7 +178,8 @@ public class UserHomeActivity extends AppCompatActivity {
                     //Toast.makeText(getApplicationContext(), "FCM Token :" + FCMToken, Toast.LENGTH_SHORT).show();
                     if(FCMToken != null){
                         if(receiver.isConnected()){
-                            sendFCMToken(FCMToken);
+                            String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
+                            Helper.sendFCMToken(FCMToken, accessToken, getApplicationContext());
                         } else {
                             Toast.makeText(UserHomeActivity.this, "No internet Connection!", Toast.LENGTH_SHORT).show();
                         }
@@ -203,49 +205,6 @@ public class UserHomeActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(title);
     }
 
-    public void sendFCMToken(String FCMToken) {
-        //final String FCMToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("FCM_token", "");
-        final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
-        StringRequest fcmTokenPostReq = new StringRequest(Request.Method.POST,API.BASE + API.FCM_TOKEN_POST, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.e(TAG, " onResponse: " + response);
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, " onErrorResponse: " + error.toString());
-                Toast.makeText(UserHomeActivity.this, "Something went wrong! Please login again", Toast.LENGTH_SHORT).show();
-                SmartDustbinApplication.getInstance().getDefaultSharedPreferences().edit().clear().apply();
-                pref.edit().clear().apply();
-                Intent login = new Intent(UserHomeActivity.this, LoginActivity.class);
-                finishAffinity();
-                startActivity(login);
-               /* if(error.networkResponse != null){
-                    onError(error.networkResponse.statusCode);
-                }*/
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams(){
-                Map<String,String> params = new HashMap<>();
-                params.put("token", FCMToken);
-                return params;
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                params.put("Content-Type","application/x-www-form-urlencoded");
-                params.put("Authorization", "Bearer " + accessToken);
-
-                return params;
-            }
-        };
-
-        SmartDustbinApplication.getInstance().addToRequestQueue(fcmTokenPostReq);
-    }
 
     private void fetchUserData() {
         final String accessToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("access_token", "");
@@ -263,11 +222,12 @@ public class UserHomeActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Log.e(LOG_TAG, " onErrorResponse: " + error.toString());
                 //progressBar.setVisibility(View.GONE);
+                Toast.makeText(UserHomeActivity.this, "Error fetching data, Please try again.", Toast.LENGTH_SHORT).show();
+
 
                 if(error.networkResponse != null){
                     onError(error.networkResponse.statusCode);
                 }
-                //tvFirstName.setText("Welcome User");
             }
         }){
 

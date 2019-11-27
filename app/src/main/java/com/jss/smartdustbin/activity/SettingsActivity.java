@@ -89,21 +89,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
 
-
-
     }
-
-    /*@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-    public static void setLocale(String lang, Context context) {
-        Locale myLocale = new Locale(lang);
-        Locale.setDefault(myLocale);
-        Resources res = context.getResources();
-        DisplayMetrics dm = res.getDisplayMetrics();
-        Configuration conf = res.getConfiguration();
-        context.createConfigurationContext(conf);
-        conf.locale = myLocale;
-        res.updateConfiguration(conf, dm);
-    }*/
 
 
 
